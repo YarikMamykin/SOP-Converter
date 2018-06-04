@@ -17,7 +17,8 @@ done
 
 fi
 # # # # # # # # # # # # # 
-pscp -r -pw yarik@"192.168.0.$1":/home/yarik/Documents/diploma/* .
+IP="192.168.0.$1"
+pscp -r -pw yarik@$IP:/home/yarik/Documents/diploma/* .
 git add --all
 git commit -m "$com"
 git push diploma master
