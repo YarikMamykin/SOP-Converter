@@ -17,7 +17,8 @@ done
 
 fi
 # # # # # # # # # # # # # 
-
+pscp -r -pw yarik yarik@192.168.0.$1:/home/yarik/Documents/diploma/* .
+rm -fr Qt/openFOAM-configurator/*.pro*
 git add --all
 git commit -m "$com"
 git push diploma master
