@@ -2,13 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLayout>
+#include <QtWidgets>
+#include <QHBoxLayout>
+#include "Buttons.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QWidget // make window as widget!!
 {
     Q_OBJECT
 
@@ -18,7 +20,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
+    QWidget* buttonsPad;
+    QHBoxLayout* padLayout;
+    Ui::OkButton* okbutton;
 };
 
 #endif // MAINWINDOW_H
