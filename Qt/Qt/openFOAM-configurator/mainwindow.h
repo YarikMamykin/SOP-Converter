@@ -18,11 +18,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
-    Ui::MainWindow *ui;
-    QWidget* buttonsPad;
+private:        
     QHBoxLayout* padLayout;
     Ui::OkButton* okbutton;
+
 };
 
 #endif // MAINWINDOW_H

@@ -1,5 +1,5 @@
 #include "Buttons.h"
-#include <QMessageBox>
+//#include <QMessageBox>
 
 Ui::OkButton::OkButton(QString name, QWidget* parent) :
     QPushButton(name, parent)
@@ -14,12 +14,13 @@ Ui::OkButton::~OkButton()
 
 void Ui::OkButton::showMessage()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Name");
-    msgBox.setInformativeText("Message from Ok button");
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
-                              QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Save);
-    msgBox.show();
-    msgBox.exec();
+//    QMessageBox msgBox;
+//    msgBox.setText("Name");
+//    msgBox.setInformativeText("Message from Ok button");
+//    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+//                              QMessageBox::Cancel);
+//    msgBox.setDefaultButton(QMessageBox::Save);
+//    msgBox.show();
+//    msgBox.exec();
+
 }
