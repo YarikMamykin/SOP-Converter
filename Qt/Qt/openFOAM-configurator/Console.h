@@ -7,7 +7,7 @@
 namespace Ui
 {
 
-class Console : public QTextEdit
+class Console : public QTextEdit // MAKE IT SINGLETON FOR LOGGER!!!
 {
     Q_OBJECT
 

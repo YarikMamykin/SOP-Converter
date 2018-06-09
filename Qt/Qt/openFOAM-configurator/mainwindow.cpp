@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     mainLayout(new QVBoxLayout),
-    buttonsLayout(new QHBoxLayout),
+    buttonsLayout(new QVBoxLayout),
     okbutton(new Ui::OkButton),
     table(new Ui::SetTable)
 {
