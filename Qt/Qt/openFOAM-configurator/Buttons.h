@@ -3,6 +3,7 @@
 
 #include <QPushButton>
 #include <QString>
+#include <Messanger.h>
 
 namespace Ui
 {

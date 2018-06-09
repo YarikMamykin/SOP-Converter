@@ -3,18 +3,21 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
-    padLayout(new QHBoxLayout),
-    okbutton(new Ui::OkButton)
+    mainLayout(new QVBoxLayout),
+    buttonsLayout(new QHBoxLayout),
+    okbutton(new Ui::OkButton),
+    table(new Ui::SetTable)
 {
-    padLayout->setMargin(100);
-    padLayout->setSpacing(200);
-    padLayout->addWidget(okbutton);
-    this->setLayout(padLayout);
-//    okbutton->show();
+    buttonsLayout->setMargin(0);
+    buttonsLayout->setSpacing(11);
+    buttonsLayout->addWidget(table, 0, Qt::AlignLeft);
+    buttonsLayout->addWidget(okbutton, 0, Qt::AlignRight | Qt::AlignAbsolute);
+    this->setLayout(buttonsLayout);
+    okbutton->move(200,200);
 }
 
 MainWindow::~MainWindow()
 {
     delete okbutton;
-    delete padLayout;
+    delete table;
 }

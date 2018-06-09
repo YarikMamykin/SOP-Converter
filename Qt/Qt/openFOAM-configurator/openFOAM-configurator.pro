@@ -16,11 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Buttons.cpp \
     Logger.cpp \
-    Messanger.cpp
+    Messanger.cpp \
+    Tables.cpp \
+    Console.cpp
 
 HEADERS  += mainwindow.h \
     Buttons.h \
     Logger.h \
-    Messanger.h
+    Messanger.h \
+    Tables.h \
+    Console.h
 
 FORMS    += mainwindow.ui
