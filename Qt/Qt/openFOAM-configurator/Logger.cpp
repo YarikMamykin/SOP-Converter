@@ -7,8 +7,10 @@ logging::Logger::Logger() :
     QString filePath("/tmp/LOG");
     do
     {
-        filePath = QString("%s%d").arg(filePath).arg(fileNumber);
-        logFile.setFileName(filePath);
+        logFile.setFileName
+                (
+                    QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
+                );
         fileNumber++;
     }while(logFile.exists());
 
@@ -24,4 +26,16 @@ logging::Logger::Logger() :
 logging::Logger::~Logger()
 {
 
+}
+
+logging::Logger* logging::Logger::getInstance()
+{
+    static Logger instance;
+    return &instance;
+}
+
+void logging::Logger::sendLogToConsole(const QString& log)
+{
+    // format of log must be @Current date and time + log message@
+    emit getInstance()->logToConsole(log);
 }

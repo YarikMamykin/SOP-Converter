@@ -3,21 +3,34 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
-    mainLayout(new QVBoxLayout),
-    buttonsLayout(new QVBoxLayout),
+    /* Layouts */
+    mainLayout(new QVBoxLayout), buttonsLayout(new QVBoxLayout),
+    buttonsAndConsoleLayout(new QHBoxLayout), tableAndOthersLayout(new QHBoxLayout),
+    /* Main widgets groups */
+    buttonsGroup(new QWidget), buttonsAndConsoleGroup(new QWidget), tableAndOthersGroup(new QWidget),
+    /* Control elements */
     okbutton(new Ui::OkButton),
-    table(new Ui::SetTable)
+    table(new Ui::SetTable),
+    console(new Ui::Console)
 {
-    buttonsLayout->setMargin(0);
-    buttonsLayout->setSpacing(11);
-    buttonsLayout->addWidget(table, 0, Qt::AlignLeft);
-    buttonsLayout->addWidget(okbutton, 0, Qt::AlignRight | Qt::AlignAbsolute);
-    this->setLayout(buttonsLayout);
-    okbutton->move(200,200);
+    tableAndOthersLayout->addWidget(table);
+    buttonsAndConsoleLayout->addWidget(console);
+    buttonsAndConsoleLayout->addWidget(okbutton);
+    mainLayout->addWidget(tableAndOthersGroup);
+    mainLayout->addWidget(buttonsAndConsoleGroup);
+    tableAndOthersGroup->setLayout(tableAndOthersLayout);
+    buttonsAndConsoleGroup->setLayout(buttonsAndConsoleLayout);
+    this->setLayout(mainLayout);
+    logging::Logger::getInstance()->sendLogToConsole("window inited");
 }
 
 MainWindow::~MainWindow()
-{
-    delete okbutton;
+{    
+    delete console;
     delete table;
+    delete okbutton;
+    delete tableAndOthersGroup;  delete buttonsAndConsoleGroup; delete buttonsGroup;
+    delete tableAndOthersLayout;
+    delete buttonsAndConsoleLayout;
+    delete buttonsLayout; delete mainLayout;
 }
