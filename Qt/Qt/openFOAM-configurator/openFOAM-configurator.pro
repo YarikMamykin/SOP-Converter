@@ -28,3 +28,6 @@ HEADERS  += mainwindow.h \
     Console.h
 
 FORMS    += mainwindow.ui
+
+OTHER_FILES += \
+    test/removeLogs.sh

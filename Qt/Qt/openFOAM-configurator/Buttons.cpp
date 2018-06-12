@@ -1,5 +1,6 @@
 #include "Buttons.h"
 #include <QRect>
+#include "Logger.h"
 
 Ui::OkButton::OkButton(QString name, QWidget* parent) :
     QPushButton(name, parent)
@@ -14,6 +15,5 @@ Ui::OkButton::~OkButton()
 
 void Ui::OkButton::showMessage()
 {
-    QRect r = this->rect();
-    logging::Messanger::getInstance()->showMessage(QString().sprintf("%d-%d-%d-%d",r.left(),r.top(),r.right(),r.bottom()));
+    logging::Logger::getInstance()->log(QString("Button pressed"));
 }

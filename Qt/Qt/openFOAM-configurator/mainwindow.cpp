@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tableAndOthersGroup->setLayout(tableAndOthersLayout);
     buttonsAndConsoleGroup->setLayout(buttonsAndConsoleLayout);
     this->setLayout(mainLayout);
-    logging::Logger::getInstance()->sendLogToConsole("window inited");
+    logging::Logger::getInstance()->log("Window created");
 }
 
 MainWindow::~MainWindow()
@@ -29,7 +29,9 @@ MainWindow::~MainWindow()
     delete console;
     delete table;
     delete okbutton;
-    delete tableAndOthersGroup;  delete buttonsAndConsoleGroup; delete buttonsGroup;
+    delete tableAndOthersGroup;
+    delete buttonsAndConsoleGroup;
+    delete buttonsGroup;
     delete tableAndOthersLayout;
     delete buttonsAndConsoleLayout;
     delete buttonsLayout; delete mainLayout;

@@ -4,12 +4,20 @@
 #include <QObject>
 #include <QFile>
 #include <QDateTime>
+#include <QStringList>
 #include <memory>
 #include <string>
-#include "Console.h"
+#include <Console.h>
 
 namespace logging
 {
+
+enum class LogDirection
+{
+    file = 1,
+    console = 2,
+    fileAndConsole = 3
+};
 
 class Logger : public QObject
 {
@@ -18,15 +26,20 @@ private:
     explicit Logger();
     explicit Logger(const Logger&) = delete;
     virtual ~Logger();
+
+    const QString formatLog(const QString& log);
+    void logToFile(const QString& log);
+
 signals:
     void logToConsole(const QString& log);
 public:
     static Logger* getInstance();
-    bool sendLogToFile(const QString& log);
-    void sendLogToConsole(const QString& log);
-
+    bool log(const QString& log, const logging::LogDirection& direction = logging::LogDirection::fileAndConsole);
 private:
     QFile logFile;
+    QStringList fullLog;
+    QDateTime currentDateTime;
+    QString dateTimeFormat;
 };
 
 }
