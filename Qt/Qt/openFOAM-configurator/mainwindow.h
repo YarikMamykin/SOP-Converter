@@ -10,6 +10,7 @@
 #include "Tables.h"
 #include "Console.h"
 #include "Logger.h"
+#include "Menu.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,18 +26,21 @@ public:
 
 private:
 /* Layouts */
-    QVBoxLayout* mainLayout;
-    QVBoxLayout* buttonsLayout;
-    QHBoxLayout* buttonsAndConsoleLayout;
-    QHBoxLayout* tableAndOthersLayout;
+    std::unique_ptr<QVBoxLayout> mainLayout;
+    std::unique_ptr<QVBoxLayout> buttonsLayout;
+    std::unique_ptr<QHBoxLayout> buttonsAndConsoleLayout;
+    std::unique_ptr<QHBoxLayout> tableAndOthersLayout;
 /* Main widgets groups */
-    QWidget* buttonsGroup;
-    QWidget* buttonsAndConsoleGroup;
-    QWidget* tableAndOthersGroup;
+    std::unique_ptr<QWidget> buttonsGroup;
+    std::unique_ptr<QWidget> buttonsAndConsoleGroup;
+    std::unique_ptr<QWidget> tableAndOthersGroup;
 /* Control elements */
-    Ui::OkButton* okbutton;
-    Ui::SetTable* table;
-    Ui::Console* console;
+    std::unique_ptr<Ui::StartConvertionButton> startConvertionButton;
+    std::unique_ptr<Ui::ResetSettingsButton>   resetSettingsButton;
+    std::unique_ptr<Ui::SaveSettingsButton>    saveSettingsButton;
+    std::unique_ptr<Ui::SetTable> table;
+    std::unique_ptr<Ui::Console>  console;
+    std::unique_ptr<Ui::Menu>     menu;
 };
 
 #endif // MAINWINDOW_H

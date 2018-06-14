@@ -8,6 +8,7 @@
 namespace logging
 {
 
+/* Displays message via message box */
 class Messanger : public QObject
 {
     Q_OBJECT

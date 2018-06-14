@@ -8,12 +8,34 @@
 namespace Ui
 {
 
-class OkButton : public QPushButton
+class StartConvertionButton : public QPushButton
 {
     Q_OBJECT
 public:
-    OkButton(QString name = "OK", QWidget* parent = 0);
-    ~OkButton();
+    StartConvertionButton(QString name = "Start Convertion", QWidget* parent = 0);
+    ~StartConvertionButton();
+
+private slots:
+    void showMessage();
+};
+
+class ResetSettingsButton : public QPushButton
+{
+    Q_OBJECT
+public:
+    ResetSettingsButton(QString name = "Reset settings", QWidget* parent = 0);
+    ~ResetSettingsButton();
+
+private slots:
+    void showMessage();
+};
+
+class SaveSettingsButton : public QPushButton
+{
+    Q_OBJECT
+public:
+    SaveSettingsButton(QString name = "Save settings", QWidget* parent = 0);
+    ~SaveSettingsButton();
 
 private slots:
     void showMessage();

@@ -18,14 +18,18 @@ SOURCES += main.cpp\
     Logger.cpp \
     Messanger.cpp \
     Tables.cpp \
-    Console.cpp
+    Console.cpp \
+    Parser.cpp \
+    Menu.cpp
 
 HEADERS  += mainwindow.h \
     Buttons.h \
     Logger.h \
     Messanger.h \
     Tables.h \
-    Console.h
+    Console.h \
+    Parser.h \
+    Menu.h
 
 FORMS    += mainwindow.ui
 

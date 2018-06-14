@@ -38,11 +38,12 @@ logging::Logger* logging::Logger::getInstance()
 }
 
 const QString logging::Logger::formatLog(const QString& log)
-{
+{    
     // format of log must be @Current date and time + log message@
     currentDateTime = QDateTime::currentDateTime();
     fullLog.clear();
     fullLog << currentDateTime.toString(dateTimeFormat);
+    fullLog << "->";
     fullLog << log;
     return fullLog.join(" ");
 }

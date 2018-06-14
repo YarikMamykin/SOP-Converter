@@ -19,6 +19,7 @@ enum class LogDirection
     fileAndConsole = 3
 };
 
+/* Puts log into console or log file or both */
 class Logger : public QObject
 {
     Q_OBJECT
