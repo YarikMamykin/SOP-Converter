@@ -44,3 +44,5 @@ FORMS    += mainwindow.ui
 OTHER_FILES += \
     test/valgrind_test.sh \
     test/removeLogs.sh
+
+unix:!macx: LIBS += -lQt5Widgets

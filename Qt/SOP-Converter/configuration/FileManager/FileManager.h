@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include <QFile>
+#include <QDir>
 #include <memory>
+#include <vector>
 #include "../../logging/Messanger/Messanger.h"
 #include "../../logging/Logger/Logger.h"
 
@@ -22,6 +24,10 @@ public slots:
     void logToFile(const QString& log);
 private:
     QFile* logFile;
+    std::shared_ptr<QFile> meshFile;
+    std::shared_ptr<QDir> workDir;
+    std::vector<QFile*> settingFiles; // p, U, (T), boundary ...
+
 };
 
 }
