@@ -4,4 +4,7 @@ set workspace=/home/yarik/Documents/diploma
 set password=yarik
 set file=%2
 
-pscp -r -pw %password% %target_ip%:%workspace%/%file% ./%file%
+IF EXIST %file%\NUL rmdir %file% /s /q
+ELSE erase %file% 
+
+pscp -r -pw %password% %target_ip%:%workspace%/%file% .\%file%
