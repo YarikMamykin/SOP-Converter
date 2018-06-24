@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +25,8 @@ SOURCES += main.cpp\
     Ui/Buttons/ButtonsGroup.cpp \
     Ui/Console/ConsoleAndButtonsGroup.cpp \
     Ui/Tables/TableAndEtcGroup.cpp \
-    configuration/FileManager/FileManager.cpp
+    configuration/FileManager/FileManager.cpp \
+    configuration/ProjectFile/ProjectFile.cpp
 
 HEADERS  += MainWindow.h \
     logging/Logger/Logger.h \
@@ -37,7 +39,8 @@ HEADERS  += MainWindow.h \
     Ui/Buttons/ButtonsGroup.h \
     Ui/Console/ConsoleAndButtonsGroup.h \
     Ui/Tables/TableAndEtcGroup.h \
-    configuration/FileManager/FileManager.h
+    configuration/FileManager/FileManager.h \
+    configuration/ProjectFile/ProjectFile.h
 
 FORMS    += mainwindow.ui
 

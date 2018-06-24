@@ -4,11 +4,12 @@
 #include <QObject>
 #include <QFile>
 #include <QDir>
-#include <QtXml/QDomDocument>
+#include <QStringList>
 #include <memory>
-#include <vector>
+#include <map>
 #include "../../logging/Messanger/Messanger.h"
 #include "../../logging/Logger/Logger.h"
+#include "../ProjectFile/ProjectFile.h"
 
 namespace configuration
 {
@@ -23,20 +24,24 @@ private:
     void createLogFile();
 public:
     static configuration::FileManager* getInstance();
-    void setMeshFilePath(const std::string& path);
+    void setMeshFilePath(const QString& path);
+    std::shared_ptr<QFile> getProjectFile();
+    std::shared_ptr<QFile> getMeshFile();
+    std::shared_ptr<QDir> getWorkDir();
+    std::shared_ptr<QFile> getSettingFile(std::string& filename);
+    QStringList getListOfSettingFiles();
+
+
 public slots:
     void logToFile(const QString& log);
-public:
-    enum class FileID {P,U,boundary, controlDict};
-
+    void saveProjectFile(const configuration::ProjectFile& pfile);
 private:
     QFile* logFile;
     QDir* backupDir;
-    QDomDocument* projectFile; // XML file for saving project settings
+    std::shared_ptr<QFile> projectFile; // XML file for saving project settings
     std::shared_ptr<QFile> meshFile;
     std::shared_ptr<QDir> workDir; // where mesh file is placed
-    std::vector<std::shared_ptr<QFile>> settingFiles; // p, U, (T), boundary, controlDict ...
-
+    std::map<std::string, std::shared_ptr<QFile>> settingFiles; // p, U, (T), boundary, controlDict ...
 };
 
 }
