@@ -3,25 +3,18 @@
 
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
-    logFile(new QFile)
+    logFile(new QFile),
+    backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
+    projectFile(new QDomDocument),
+    meshFile(std::make_shared<QFile>()),
+    workDir(std::make_shared<QDir>())
 {
-    int fileNumber = 0;
-    QString filePath("/tmp/LOG");
-    do
+    createLogFile();
+    // init vector of files
+    for(auto i = 0; i < 4; i++)
     {
-        logFile->setFileName
-                (
-                    QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
-                );
-        fileNumber++;
-    }while(logFile->exists());
-
-    // create file
-    if(!logFile->open(QIODevice::Append|QIODevice::Text))
-    {
-        logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
+        settingFiles.push_back(std::make_shared<QFile>());
     }
-    logFile->close();
 }
 
 configuration::FileManager::~FileManager()
@@ -45,4 +38,25 @@ void configuration::FileManager::logToFile(const QString &log)
             logging::Messanger::getInstance()->showMessage(QString("file write didn't occur"));
         logFile->close();
     } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}
+}
+
+void configuration::FileManager::createLogFile()
+{
+    int fileNumber = 0;
+    QString filePath("/tmp/LOG");
+    do
+    {
+        logFile->setFileName
+                (
+                    QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
+                );
+        fileNumber++;
+    }while(logFile->exists());
+
+    // create file
+    if(!logFile->open(QIODevice::Append|QIODevice::Text))
+    {
+        logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
+    }
+    logFile->close();
 }

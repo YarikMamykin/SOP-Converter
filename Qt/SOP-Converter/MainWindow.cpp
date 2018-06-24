@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuBar(new Ui::Menu(this)),
     tableAndEtc(new Ui::TableAndEtcGroup(this)),
     consoleAndButtons(new Ui::ConsoleAndButtonsGroup(this)),
-    layout(new QVBoxLayout())
+    layout(new QVBoxLayout)
 {
     ui->setupUi(this);
     this->layout->addWidget(menuBar);
