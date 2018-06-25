@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include <QApplication>
+#include <QFileDialog>
 #include "logging/Logger/Logger.h"
 #include "configuration/FileManager/FileManager.h"
 #include "configuration/ProjectFile/ProjectFile.h"
@@ -18,5 +19,7 @@ int main(int argc, char *argv[])
     configuration::ProjectFile pf;
     pf.setFileStructure();
     configuration::FileManager::getInstance()->saveProjectFile(pf);
+//    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("Image Files (*.png *.jpg *.bmp)"));
+    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("All Files (*)"));
     return a.exec();
 }

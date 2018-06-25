@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     Ui/Console/ConsoleAndButtonsGroup.cpp \
     Ui/Tables/TableAndEtcGroup.cpp \
     configuration/FileManager/FileManager.cpp \
-    configuration/ProjectFile/ProjectFile.cpp
+    configuration/ProjectFile/ProjectFile.cpp \
+    configuration/ClientManager/ClientManager.cpp
 
 HEADERS  += MainWindow.h \
     logging/Logger/Logger.h \
@@ -40,12 +41,14 @@ HEADERS  += MainWindow.h \
     Ui/Console/ConsoleAndButtonsGroup.h \
     Ui/Tables/TableAndEtcGroup.h \
     configuration/FileManager/FileManager.h \
-    configuration/ProjectFile/ProjectFile.h
+    configuration/ProjectFile/ProjectFile.h \
+    configuration/ClientManager/ClientManager.h
 
 FORMS    += mainwindow.ui
 
 OTHER_FILES += \
     test/valgrind_test.sh \
-    test/removeLogs.sh
+    test/removeLogs.sh \
+    BusinessLogicDescription.txt
 
 unix:!macx: LIBS += -lQt5Widgets
