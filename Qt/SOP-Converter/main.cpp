@@ -20,6 +20,6 @@ int main(int argc, char *argv[])
     pf.setFileStructure();
     configuration::FileManager::getInstance()->saveProjectFile(pf);
 //    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("Image Files (*.png *.jpg *.bmp)"));
-    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("All Files (*)"));
+//    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("All Files (*)"));
     return a.exec();
 }

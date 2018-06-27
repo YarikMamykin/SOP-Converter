@@ -4,13 +4,14 @@
 #include <QObject>
 #include <QFile>
 #include <QtXml/QDomDocument>
-//#include "../../logging/Logger/Logger.h"
+
 
 namespace configuration
 {
 
 class ProjectFile : public QDomDocument
 {
+    // Q_OBJECT <-- adding this causes vtable error
     /* ProjectFile is represented as XML document */
 public:
     explicit ProjectFile();
