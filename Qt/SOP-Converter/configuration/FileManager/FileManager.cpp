@@ -73,7 +73,7 @@ std::shared_ptr<QFile> configuration::FileManager::getMeshFile() {return meshFil
 std::shared_ptr<QDir> configuration::FileManager::getWorkDir() {return workDir;}
 std::shared_ptr<QFile> configuration::FileManager::getSettingFile(std::string& filename) {return settingFiles.find(filename)->second;}
 
-QStringList configuration::FileManager::getListOfSettingFiles()
+QStringList& configuration::FileManager::getListOfSettingFiles()
 {
     QStringList result;
     for(auto e : settingFiles)

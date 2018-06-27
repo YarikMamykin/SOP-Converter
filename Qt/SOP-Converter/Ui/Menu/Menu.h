@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QAction>
 #include "../../logging/Logger/Logger.h"
+#include "../../configuration/ClientManager/ClientManager.h"
 #include <map>
 #include <memory>
 
@@ -23,10 +24,11 @@ public:
 //    class MenuAction;
 
 public slots:
-    void showMessage();
+    void openWorkspace();
 private:
     std::map<QString, QMenu*> menuItem;
-    std::map<QString, QAction*> menuAction;    
+    std::map<QString, QAction*> menuAction;
+    std::shared_ptr<configuration::ClientManager> clientManager;
 };
 
 }

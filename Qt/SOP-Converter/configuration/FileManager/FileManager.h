@@ -29,7 +29,7 @@ public:
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
     std::shared_ptr<QFile> getSettingFile(std::string& filename);
-    QStringList getListOfSettingFiles();
+    QStringList& getListOfSettingFiles();
 
 
 public slots:

@@ -13,8 +13,10 @@ class ClientManager : public QObject
 public:
     explicit ClientManager();
     virtual ~ClientManager();
+
+    void selectWorkspace();
 private:
-    QFileDialog selectFileDialog;
+    QFileDialog* selectDialog;
 };
 
 }
