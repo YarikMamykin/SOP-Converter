@@ -3,6 +3,7 @@
 #include "../../configuration/FileManager/FileManager.h"
 
 using LogManager = logging::Logger;
+using FManager = configuration::FileManager;
 
 configuration::ClientManager::ClientManager() :
     selectDialog(new QFileDialog)
@@ -27,7 +28,7 @@ void configuration::ClientManager::selectWorkspace()
     {
         try
         {
-            configuration::FileManager::getInstance()->setWorkDirPath(selectDialog->selectedFiles()[0]);
+            FManager::getInstance()->setPathToDir(FManager::getInstance()->getWorkDir(), selectDialog->selectedFiles()[0]);
         }
         catch(configuration::FileManager::Exception& e)
         {
@@ -39,14 +40,33 @@ void configuration::ClientManager::selectWorkspace()
 void configuration::ClientManager::selectMeshFile()
 {
     selectDialog->setFileMode(QFileDialog::AnyFile);
-    selectDialog->setNameFilter(tr("Mesh file (*.unv)"));
+    selectDialog->setNameFilter(tr("Mesh file *.unv"));
     selectDialog->setViewMode(QFileDialog::Detail);
 
     if(selectDialog->exec())
     {
         try
         {
-            configuration::FileManager::getInstance()->setMeshFilePath(selectDialog->selectedFiles()[0]);
+            FManager::getInstance()->setPathToFile(FManager::getInstance()->getMeshFile(), selectDialog->selectedFiles()[0]);
+        }
+        catch(configuration::FileManager::Exception& e)
+        {
+            LogManager::getInstance()->log(e.what());
+        }
+    }
+}
+
+void configuration::ClientManager::selectProjectFile()
+{
+    selectDialog->setFileMode(QFileDialog::AnyFile);
+    selectDialog->setNameFilter(tr("Project file *.xml"));
+    selectDialog->setViewMode(QFileDialog::Detail);
+
+    if(selectDialog->exec())
+    {
+        try
+        {
+            FManager::getInstance()->setPathToFile(FManager::getInstance()->getProjectFile(), selectDialog->selectedFiles()[0]);
         }
         catch(configuration::FileManager::Exception& e)
         {

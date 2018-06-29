@@ -26,6 +26,7 @@ public:
 public slots:
     void openWorkspace();
     void openMeshFile();
+    void openProjectFile();
 private:
     std::vector<Menu::MenuItem*> items;
     std::shared_ptr<configuration::ClientManager> clientManager;

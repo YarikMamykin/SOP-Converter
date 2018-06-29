@@ -26,8 +26,11 @@ private:
 
 public:
     static configuration::FileManager* getInstance();
-    void setMeshFilePath(const QString& path);
-    void setWorkDirPath(const QString& path);
+    void setPathToFile(std::shared_ptr<QFile> file, const QString& path);
+    void setPathToDir(std::shared_ptr<QDir> dir, const QString& path);
+//    void setMeshFilePath(const QString& path);
+//    void setWorkDirPath(const QString& path);
+//    void setProjectFilePath(const QString& path);
     void validatePaths();
 
     std::shared_ptr<QFile> getProjectFile();
@@ -41,6 +44,7 @@ public slots:
     void logToFile(const QString& log);
     void saveProjectFile(const configuration::ProjectFile& pfile);
 private:
+    unsigned int maxLogFilesCount;
     QFile* logFile;
     QDir* backupDir;
     std::shared_ptr<QFile> projectFile; // XML file for saving project settings

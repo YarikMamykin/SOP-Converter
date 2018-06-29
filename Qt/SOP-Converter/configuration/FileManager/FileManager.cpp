@@ -3,6 +3,7 @@
 
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
+    maxLogFilesCount(5),
     logFile(new QFile),
     backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     projectFile(std::make_shared<QFile>("/tmp/Test.xml")),
@@ -64,15 +65,59 @@ void configuration::FileManager::createLogFile()
         logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
     }
     logFile->close();
+
+
+    QDir logDir("/tmp");
+    QStringList logList = logDir.entryList(QDir::Files);
+//    logging::Messanger::getInstance()->showMessage(logList.join("\n"));
+    std::vector<QString> logFiles;
+
+    for (auto e : logList)
+    {
+        if(e.contains("LOG")) logFiles.push_back(e);
+        if(logFiles.size() > maxLogFilesCount)
+        {
+            for(auto i : logFiles)
+            {
+                QFile::remove(logDir.path() + QString("/") + i);
+            }
+            logFiles.clear();
+        }
+    }
 }
 
-void configuration::FileManager::setMeshFilePath(const QString& path)
+void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
 {
-    meshFile.get()->setFileName(path);
-    if(meshFile.get()->exists())
-        logging::Logger::getInstance()->log(QString("Mesh file selected: ") + meshFile.get()->fileName());
+    if (file == meshFile)
+    {
+        if(!path.contains(".unv", Qt::CaseSensitive))
+        {
+            QStringList emessage;
+            emessage << QString("Wrong file type of:");
+            emessage << path;
+            throw(configuration::FileManager::Exception(emessage.join(" ")));
+        }
+    }
+
+    if (file == projectFile)
+    {
+        if(!path.contains(".xml", Qt::CaseSensitive))
+        {
+            QStringList emessage;
+            emessage << QString("Wrong file type of:");
+            emessage << path;
+            throw(configuration::FileManager::Exception(emessage.join(" ")));
+        }
+    }
+
+    file.get()->setFileName(path);
+    if(file.get()->exists())
+    {
+        logging::Logger::getInstance()->log(QString("File selected: ") + file.get()->fileName());
+    }
     else
     {
+        file.get()->setFileName(QString());
         QStringList emessage;
         emessage << QString("No");
         emessage << path;
@@ -81,11 +126,11 @@ void configuration::FileManager::setMeshFilePath(const QString& path)
     }
 }
 
-void configuration::FileManager::setWorkDirPath(const QString& path)
+void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const QString& path)
 {
-    workDir.get()->setPath(path);
-    if(workDir.get()->exists())
-        logging::Logger::getInstance()->log(QString("Workspace selected: ") + workDir.get()->path());
+    dir.get()->setPath(path);
+    if(dir.get()->exists())
+        logging::Logger::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
     else
     {
         QStringList emessage;

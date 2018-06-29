@@ -10,6 +10,8 @@ Ui::Menu::Menu(QWidget* parent) :
     QObject::connect(items[0]->getActions()[0], &QAction::triggered, this, &Ui::Menu::openWorkspace);
     items[0]->addAction(new QAction("&Mesh file",this));
     QObject::connect(items[0]->getActions()[1], &QAction::triggered, this, &Ui::Menu::openMeshFile);
+    items[0]->addAction(new QAction("&Project file",this));
+    QObject::connect(items[0]->getActions()[2], &QAction::triggered, this, &Ui::Menu::openProjectFile);
 }
 
 Ui::Menu::~Menu()
@@ -31,6 +33,12 @@ void Ui::Menu::openMeshFile()
 {
     logging::Logger::getInstance()->log(QString("Open -> Mesh file"));
     clientManager.get()->selectMeshFile();
+}
+
+void Ui::Menu::openProjectFile()
+{
+    logging::Logger::getInstance()->log(QString("Open -> Project file"));
+    clientManager.get()->selectProjectFile();
 }
 
 Ui::Menu::MenuItem::MenuItem()
