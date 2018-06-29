@@ -15,6 +15,7 @@ public:
     virtual ~ClientManager();
 
     void selectWorkspace();
+    void selectMeshFile();
 private:
     QFileDialog* selectDialog;
 };

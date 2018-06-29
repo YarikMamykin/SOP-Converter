@@ -1,5 +1,7 @@
 #include "ClientManager.h"
 #include "../../logging/Logger/Logger.h"
+#include "../../configuration/FileManager/FileManager.h"
+
 using LogManager = logging::Logger;
 
 configuration::ClientManager::ClientManager() :
@@ -16,14 +18,39 @@ configuration::ClientManager::~ClientManager()
 
 void configuration::ClientManager::selectWorkspace()
 {
-    selectDialog->setFileMode(QFileDialog::Directory);
-    selectDialog->setNameFilter(tr("Any (*)"));
+    selectDialog->setFileMode(QFileDialog::DirectoryOnly);
+    selectDialog->setNameFilter(QString("Select workspace directory"));
     selectDialog->setViewMode(QFileDialog::Detail);
+    selectDialog->setOption(QFileDialog::ReadOnly);
 
-    QStringList selectionList;
     if(selectDialog->exec())
     {
-        selectionList = selectDialog->selectedFiles();
+        try
+        {
+            configuration::FileManager::getInstance()->setWorkDirPath(selectDialog->selectedFiles()[0]);
+        }
+        catch(configuration::FileManager::Exception& e)
+        {
+            LogManager::getInstance()->log(e.what());
+        }
     }
-    LogManager::getInstance()->log(QString("Workspace selected -> ") + selectionList.join(" "));
+}
+
+void configuration::ClientManager::selectMeshFile()
+{
+    selectDialog->setFileMode(QFileDialog::AnyFile);
+    selectDialog->setNameFilter(tr("Mesh file (*.unv)"));
+    selectDialog->setViewMode(QFileDialog::Detail);
+
+    if(selectDialog->exec())
+    {
+        try
+        {
+            configuration::FileManager::getInstance()->setMeshFilePath(selectDialog->selectedFiles()[0]);
+        }
+        catch(configuration::FileManager::Exception& e)
+        {
+            LogManager::getInstance()->log(e.what());
+        }
+    }
 }

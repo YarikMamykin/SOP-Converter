@@ -66,7 +66,35 @@ void configuration::FileManager::createLogFile()
     logFile->close();
 }
 
-void configuration::FileManager::setMeshFilePath(const QString& path) {meshFile.get()->setFileName(path);}
+void configuration::FileManager::setMeshFilePath(const QString& path)
+{
+    meshFile.get()->setFileName(path);
+    if(meshFile.get()->exists())
+        logging::Logger::getInstance()->log(QString("Mesh file selected: ") + meshFile.get()->fileName());
+    else
+    {
+        QStringList emessage;
+        emessage << QString("No");
+        emessage << path;
+        emessage << QString("file found");
+        throw(configuration::FileManager::Exception(emessage.join(" ")));
+    }
+}
+
+void configuration::FileManager::setWorkDirPath(const QString& path)
+{
+    workDir.get()->setPath(path);
+    if(workDir.get()->exists())
+        logging::Logger::getInstance()->log(QString("Workspace selected: ") + workDir.get()->path());
+    else
+    {
+        QStringList emessage;
+        emessage << QString("No");
+        emessage << path;
+        emessage << QString("directory found");
+        throw(configuration::FileManager::Exception(emessage.join(" ")));
+    }
+}
 
 std::shared_ptr<QFile> configuration::FileManager::getProjectFile() {return projectFile;}
 std::shared_ptr<QFile> configuration::FileManager::getMeshFile() {return meshFile;}
@@ -90,4 +118,17 @@ void configuration::FileManager::saveProjectFile(const configuration::ProjectFil
         QTextStream(projectFile.get()) << pfile.toString();
         projectFile.get()->close();
     }
+}
+
+void configuration::FileManager::validatePaths()
+{
+    //        QStringList workDirFiles = workDir.get()->entryList(QDir::Files);
+    //        for(auto e : workDirFiles)
+    //        {
+    //            if
+    //        }
+
+    //        logging::Logger::getInstance()->log(QString("Workspace dirs: ") + workDirConsistance.join("\n"));
+    //        workDirConsistance = workDir.get()->entryList(QDir::Dirs);
+    //        logging::Logger::getInstance()->log(QString("Workspace dirs: ") + workDirConsistance.join("\n"));
 }

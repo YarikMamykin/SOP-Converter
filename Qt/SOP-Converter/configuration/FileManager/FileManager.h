@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QDir>
 #include <QStringList>
+#include <exception>
 #include <memory>
 #include <map>
 #include "../../logging/Messanger/Messanger.h"
@@ -22,16 +23,20 @@ private:
     virtual ~FileManager();
 
     void createLogFile();
+
 public:
     static configuration::FileManager* getInstance();
     void setMeshFilePath(const QString& path);
+    void setWorkDirPath(const QString& path);
+    void validatePaths();
+
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
     std::shared_ptr<QFile> getSettingFile(std::string& filename);
     QStringList& getListOfSettingFiles();
 
-
+    class Exception;
 public slots:
     void logToFile(const QString& log);
     void saveProjectFile(const configuration::ProjectFile& pfile);
@@ -44,5 +49,14 @@ private:
     std::map<std::string, std::shared_ptr<QFile>> settingFiles; // p, U, (T), boundary, controlDict ...
 };
 
+class FileManager::Exception : public std::exception
+{
+public:
+    explicit Exception(const QString& _message) {message = _message;}
+    virtual ~Exception() {}
+    virtual const char* what() const throw() {return message.toStdString().c_str();}
+private:
+    QString message;
+};
 }
 #endif // FILEMANAGER_H
