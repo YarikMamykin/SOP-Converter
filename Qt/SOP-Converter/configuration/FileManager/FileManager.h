@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QFile>
+#include <QFileInfo>
 #include <QDir>
 #include <QStringList>
 #include <exception>
@@ -28,9 +29,7 @@ public:
     static configuration::FileManager* getInstance();
     void setPathToFile(std::shared_ptr<QFile> file, const QString& path);
     void setPathToDir(std::shared_ptr<QDir> dir, const QString& path);
-//    void setMeshFilePath(const QString& path);
-//    void setWorkDirPath(const QString& path);
-//    void setProjectFilePath(const QString& path);
+
     void validatePaths();
 
     std::shared_ptr<QFile> getProjectFile();
@@ -58,9 +57,10 @@ class FileManager::Exception : public std::exception
 public:
     explicit Exception(const QString& _message) {message = _message;}
     virtual ~Exception() {}
-    virtual const char* what() const throw() {return message.toStdString().c_str();}
+    virtual const char* what() const throw()
+    { return message.toStdString().c_str(); }
 private:
-    QString message;
+    QString message;    
 };
 }
 #endif // FILEMANAGER_H

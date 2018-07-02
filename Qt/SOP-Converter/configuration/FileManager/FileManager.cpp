@@ -48,25 +48,6 @@ void configuration::FileManager::logToFile(const QString &log)
 
 void configuration::FileManager::createLogFile()
 {
-    int fileNumber = 0;
-    QString filePath("/tmp/LOG");
-    do
-    {
-        logFile->setFileName
-                (
-                    QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
-                );
-        fileNumber++;
-    }while(logFile->exists());
-
-    // create file
-    if(!logFile->open(QIODevice::Append|QIODevice::Text))
-    {
-        logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
-    }
-    logFile->close();
-
-
     QDir logDir("/tmp");
     QStringList logList = logDir.entryList(QDir::Files);
 //    logging::Messanger::getInstance()->showMessage(logList.join("\n"));
@@ -84,6 +65,24 @@ void configuration::FileManager::createLogFile()
             logFiles.clear();
         }
     }
+
+    int fileNumber = 0;
+    QString filePath("/tmp/LOG");
+    do
+    {
+        logFile->setFileName
+                (
+                    QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
+                );
+        fileNumber++;
+    }while(logFile->exists());
+
+    // create file
+    if(!logFile->open(QIODevice::Append|QIODevice::Text))
+    {
+        logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
+    }
+    logFile->close();
 }
 
 void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
@@ -114,6 +113,7 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
     if(file.get()->exists())
     {
         logging::Logger::getInstance()->log(QString("File selected: ") + file.get()->fileName());
+        validatePaths();
     }
     else
     {
@@ -130,7 +130,10 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
 {
     dir.get()->setPath(path);
     if(dir.get()->exists())
+    {
         logging::Logger::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
+        validatePaths();
+    }
     else
     {
         QStringList emessage;
@@ -167,13 +170,18 @@ void configuration::FileManager::saveProjectFile(const configuration::ProjectFil
 
 void configuration::FileManager::validatePaths()
 {
-    //        QStringList workDirFiles = workDir.get()->entryList(QDir::Files);
-    //        for(auto e : workDirFiles)
-    //        {
-    //            if
-    //        }
+    logging::Logger::getInstance()->log(QString("validating paths..."));
+    if(workDir.get()->path().size() != 1) // by default QDir path is set to "."
+    {
 
-    //        logging::Logger::getInstance()->log(QString("Workspace dirs: ") + workDirConsistance.join("\n"));
-    //        workDirConsistance = workDir.get()->entryList(QDir::Dirs);
-    //        logging::Logger::getInstance()->log(QString("Workspace dirs: ") + workDirConsistance.join("\n"));
+        QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
+        QStringList workDirEntryF = workDir.get()->entryList(QDir::Files);
+        logging::Logger::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
+    }
+    if(!meshFile.get()->fileName().isEmpty())
+    {
+        QString rootDir = QFileInfo(meshFile.get()->fileName()).absoluteDir().path();
+        logging::Logger::getInstance()->log(meshFile.get()->fileName(), logging::LogDirection::console);
+        logging::Logger::getInstance()->log(QString("root dir = ") + rootDir, logging::LogDirection::console);
+    }
 }
