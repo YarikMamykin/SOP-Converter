@@ -1,11 +1,16 @@
 #include "FileManager.h"
 #include <QTextStream>
+#include "../../general/general.h"
 
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
     logFile(new QFile),
     backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
+    zeroFolderEntryValid(new QStringList),
+    constantFolderEntryValid(new QStringList),
+    polyMeshFolderEntryValid(new QStringList),
+    systemFolderEntryValid(new QStringList),
     projectFile(std::make_shared<QFile>("/tmp/Test.xml")),
     meshFile(std::make_shared<QFile>()),
     workDir(std::make_shared<QDir>())
@@ -17,6 +22,19 @@ configuration::FileManager::FileManager(QWidget* parent) :
     settingFiles.insert(std::pair<std::string, std::shared_ptr<QFile>>(std::string("boundary"), std::make_shared<QFile>()));
     settingFiles.insert(std::pair<std::string, std::shared_ptr<QFile>>(std::string("controlDict"), std::make_shared<QFile>()));
 
+    *zeroFolderEntryValid     << "." << ".." << "p" << "U";
+    *constantFolderEntryValid << "." << ".." << "transportProperties" << "polyMesh";
+    *polyMeshFolderEntryValid << "." << ".."
+                              << "blockMeshDict"
+                              << "boundary"
+                              << "faces"
+                              << "neighbour"
+                              << "owner"
+                              << "points";
+    *systemFolderEntryValid   << "controlDict"
+                              << "fvSchemes"
+                              << "fvSolution";
+
     logToFile("FileManager constructed");
 }
 
@@ -25,6 +43,10 @@ configuration::FileManager::~FileManager()
     delete backupDir;
     settingFiles.clear();
     QObject::disconnect(getInstance(),0,0,0);
+    zeroFolderEntryValid->clear();     delete zeroFolderEntryValid;
+    constantFolderEntryValid->clear(); delete constantFolderEntryValid;
+    polyMeshFolderEntryValid->clear(); delete polyMeshFolderEntryValid;
+    systemFolderEntryValid->clear();   delete systemFolderEntryValid;
     logToFile("FileManager destructed");
     logFile->close();
     delete logFile;
@@ -173,10 +195,12 @@ void configuration::FileManager::validatePaths()
     logging::Logger::getInstance()->log(QString("validating paths..."));
     if(workDir.get()->path().size() != 1) // by default QDir path is set to "."
     {
-
         QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
         QStringList workDirEntryF = workDir.get()->entryList(QDir::Files);
         logging::Logger::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
+
+
+        logging::Logger::getInstance()->log(QString("Validating zero folder --> ") + boolToString(validateZeroFolder()));
     }
     if(!meshFile.get()->fileName().isEmpty())
     {
@@ -184,4 +208,26 @@ void configuration::FileManager::validatePaths()
         logging::Logger::getInstance()->log(meshFile.get()->fileName(), logging::LogDirection::console);
         logging::Logger::getInstance()->log(QString("root dir = ") + rootDir, logging::LogDirection::console);
     }
+}
+
+bool configuration::FileManager::validateZeroFolder()
+{
+    QDir zeroFolder(workDir.get()->path() + QString("/0"));
+
+    settingFiles.find("p")->second.get()->setFileName(zeroFolder.path() + QString("/p"));
+    settingFiles.find("U")->second.get()->setFileName(zeroFolder.path() + QString("/U"));
+
+    return zeroFolder.exists() &&
+           settingFiles.find("p")->second.get()->exists() &&
+           settingFiles.find("U")->second.get()->exists() ? true : false;
+}
+
+bool configuration::FileManager::validateConstantFolder()
+{
+    return true;
+}
+
+bool configuration::FileManager::validateSystemsFolder()
+{
+    return true;
 }

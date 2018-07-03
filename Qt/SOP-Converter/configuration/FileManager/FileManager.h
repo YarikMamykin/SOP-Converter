@@ -31,6 +31,9 @@ public:
     void setPathToDir(std::shared_ptr<QDir> dir, const QString& path);
 
     void validatePaths();
+    bool validateZeroFolder();
+    bool validateConstantFolder();
+    bool validateSystemsFolder();
 
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
@@ -46,6 +49,10 @@ private:
     unsigned int maxLogFilesCount;
     QFile* logFile;
     QDir* backupDir;
+    QStringList* zeroFolderEntryValid;
+    QStringList* constantFolderEntryValid;
+    QStringList* polyMeshFolderEntryValid;
+    QStringList* systemFolderEntryValid;
     std::shared_ptr<QFile> projectFile; // XML file for saving project settings
     std::shared_ptr<QFile> meshFile;
     std::shared_ptr<QDir> workDir; // where mesh file is placed

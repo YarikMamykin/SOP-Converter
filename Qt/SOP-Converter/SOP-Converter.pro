@@ -42,7 +42,8 @@ HEADERS  += MainWindow.h \
     Ui/Tables/TableAndEtcGroup.h \
     configuration/FileManager/FileManager.h \
     configuration/ProjectFile/ProjectFile.h \
-    configuration/ClientManager/ClientManager.h
+    configuration/ClientManager/ClientManager.h \
+    general/general.h
 
 FORMS    += mainwindow.ui
 
