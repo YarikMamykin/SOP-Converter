@@ -111,6 +111,9 @@ void configuration::FileManager::createLogFile()
 
 void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
 {
+    if(file.get()->fileName() == path)
+    { LogManager::getInstance()->log(QString("File %1 is already selected!").arg(path)); return; }
+
     if (file == meshFile)
     {
         if(!path.contains(".unv", Qt::CaseSensitive))
@@ -152,7 +155,9 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
 
 void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const QString& path)
 {
-    dir.get()->setPath(path);
+    if(dir.get()->path() != path) dir.get()->setPath(path);
+    else { LogManager::getInstance()->log(QString("Dir %1 is already selected!").arg(path)); return;}
+
     if(dir.get()->exists())
     {
         LogManager::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
@@ -201,7 +206,6 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
         case configuration::FileManager::ValidatePathsPoint::workDir:
         {
             QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
-//            QStringList workDirEntryF = workDir.get()->entryList(QDir::Files);
             QStringList workDirEntryF = workDir.get()->entryList(QStringList("*.unv"));
             LogManager::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
 
@@ -212,10 +216,9 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             LogManager::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
             LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));
 
-            if(meshFile.get()->fileName().isEmpty())
-            {
-                meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
-            }
+            meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
+            LogManager::getInstance()->log(QString("Mesh file is - > ") + meshFile.get()->fileName());
+
         }break;
 
         case configuration::FileManager::ValidatePathsPoint::meshFile:
