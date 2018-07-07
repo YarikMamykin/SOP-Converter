@@ -1,8 +1,9 @@
 #include "FileManager.h"
 #include <QTextStream>
-#include "../../general/general.h"
+
 
 using LogManager = logging::Logger;
+using Message = logging::Messanger;
 
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
@@ -41,7 +42,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
 }
 
 configuration::FileManager::~FileManager()
-{    
+{
     delete backupDir;
     settingFiles.clear();
     QObject::disconnect(getInstance(),0,0,0);
@@ -107,6 +108,12 @@ void configuration::FileManager::createLogFile()
         logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
     }
     logFile->close();
+}
+
+bool configuration::FileManager::loadBackupFiles()
+{
+    LogManager::getInstance()->log("Loading backup files");
+    return true;
 }
 
 void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
@@ -216,9 +223,28 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             LogManager::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
             LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));
 
-            meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
-            LogManager::getInstance()->log(QString("Mesh file is - > ") + meshFile.get()->fileName());
+            if(workDirEntryF.size() == 0)
+            {
+                // No mesh file in workspace
+                meshFile.get()->setFileName("");
+                Message::getInstance()->showMessage("No mesh file in workspace is present. Add mesh file before convertion!");
+                return;
+            }
+            else if(workDirEntryF.size() > 0)
+            {
+                // if one or more mesh file --> select first-trapped in entry list
+                meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
+                LogManager::getInstance()->log(QString("Mesh file is - > ") + meshFile.get()->fileName());
+            }
 
+            if(zeroFolderValid && constantFolderValid && systemFolderValid && !meshFile.get()->fileName().isEmpty())
+            {
+                emit parseFiles();
+            }
+            else
+            {
+                loadBackupFiles();
+            }
         }break;
 
         case configuration::FileManager::ValidatePathsPoint::meshFile:
@@ -237,6 +263,8 @@ bool configuration::FileManager::validateZeroFolder()
 {
     QDir zeroFolder(workDir.get()->path() + QString("/0"));
     if(!zeroFolder.exists()) return false;
+
+    LogManager::getInstance()->log("Zero folder exists!");
 
     for(auto e : *zeroFolderEntryValid)
     {

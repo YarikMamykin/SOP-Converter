@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     Ui/Tables/TableAndEtcGroup.cpp \
     configuration/FileManager/FileManager.cpp \
     configuration/ProjectFile/ProjectFile.cpp \
-    configuration/ClientManager/ClientManager.cpp
+    configuration/ClientManager/ClientManager.cpp \
+    general/general.cpp
 
 HEADERS  += MainWindow.h \
     logging/Logger/Logger.h \
@@ -44,6 +45,7 @@ HEADERS  += MainWindow.h \
     configuration/ProjectFile/ProjectFile.h \
     configuration/ClientManager/ClientManager.h \
     general/general.h
+
 
 FORMS    += mainwindow.ui
 

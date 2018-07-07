@@ -4,5 +4,6 @@
 #include <QString>
 // declare here general purpose functions
 
-const QString boolToString(const bool& value) { return value ? "true" : "false"; }
+const QString boolToString(const bool& value);
+
 #endif // GENERAL_H

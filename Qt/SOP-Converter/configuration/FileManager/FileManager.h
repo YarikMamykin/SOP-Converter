@@ -12,6 +12,8 @@
 #include "../../logging/Messanger/Messanger.h"
 #include "../../logging/Logger/Logger.h"
 #include "../ProjectFile/ProjectFile.h"
+#include "../../general/general.h"
+#include "../../configuration/ClientManager/ClientManager.h"
 
 namespace configuration
 {
@@ -21,10 +23,14 @@ class FileManager : public QObject
     Q_OBJECT
 private:
     explicit FileManager(QWidget* parent = 0);
+    explicit FileManager(const FileManager&) = delete;
     virtual ~FileManager();
 
     void createLogFile();
+    bool loadBackupFiles();
 
+signals:
+    void parseFiles();
 public:
     enum class ValidatePathsPoint
     {
@@ -32,6 +38,7 @@ public:
     };
 
     static configuration::FileManager* getInstance();
+
     void setPathToFile(std::shared_ptr<QFile> file, const QString& path);
     void setPathToDir(std::shared_ptr<QDir> dir, const QString& path);
 
@@ -51,7 +58,7 @@ public:
 public slots:
     void logToFile(const QString& log);
     void saveProjectFile(const configuration::ProjectFile& pfile);
-private:
+private:    
     unsigned int maxLogFilesCount;
     QFile* logFile;
     QDir* backupDir;
