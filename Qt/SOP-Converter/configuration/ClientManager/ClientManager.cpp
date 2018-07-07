@@ -34,7 +34,7 @@ void configuration::ClientManager::selectWorkspace()
         {
             LogManager::getInstance()->log(e.what());
         }
-    }
+    } else LogManager::getInstance()->log(QString("Workspace is not selected!"));
 }
 
 void configuration::ClientManager::selectMeshFile()
@@ -53,7 +53,7 @@ void configuration::ClientManager::selectMeshFile()
         {
             LogManager::getInstance()->log(e.what());
         }
-    }
+    }else LogManager::getInstance()->log(QString("Mesh file is not selected!"));
 }
 
 void configuration::ClientManager::selectProjectFile()
@@ -72,5 +72,5 @@ void configuration::ClientManager::selectProjectFile()
         {
             LogManager::getInstance()->log(e.what());
         }
-    }
+    }else LogManager::getInstance()->log(QString("Project file is not selected!"));
 }

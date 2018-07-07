@@ -2,6 +2,8 @@
 #include <QTextStream>
 #include "../../general/general.h"
 
+using LogManager = logging::Logger;
+
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
@@ -134,7 +136,7 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
     file.get()->setFileName(path);
     if(file.get()->exists())
     {
-        logging::Logger::getInstance()->log(QString("File selected: ") + file.get()->fileName());
+        LogManager::getInstance()->log(QString("File selected: ") + file.get()->fileName());
         validatePaths(configuration::FileManager::ValidatePathsPoint::meshFile);
     }
     else
@@ -153,7 +155,7 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
     dir.get()->setPath(path);
     if(dir.get()->exists())
     {
-        logging::Logger::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
+        LogManager::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
         validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
     }
     else
@@ -192,29 +194,38 @@ void configuration::FileManager::saveProjectFile(const configuration::ProjectFil
 
 void configuration::FileManager::validatePaths(configuration::FileManager::ValidatePathsPoint point)
 {
-    logging::Logger::getInstance()->log(QString("validating paths..."));
+    LogManager::getInstance()->log(QString("validating paths..."));
     switch(point)
     {
 //        if(workDir.get()->path() != QString(".")) // by default QDir path is set to "."
         case configuration::FileManager::ValidatePathsPoint::workDir:
         {
             QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
-            QStringList workDirEntryF = workDir.get()->entryList(QDir::Files);
-            logging::Logger::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
+//            QStringList workDirEntryF = workDir.get()->entryList(QDir::Files);
+            QStringList workDirEntryF = workDir.get()->entryList(QStringList("*.unv"));
+            LogManager::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
 
             zeroFolderValid = validateZeroFolder();
             constantFolderValid = validateConstantFolder();
             systemFolderValid = validateSystemFolder();
-            logging::Logger::getInstance()->log(QString("Validating zero folder --> ") + boolToString(zeroFolderValid));
-            logging::Logger::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
-            logging::Logger::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));
+            LogManager::getInstance()->log(QString("Validating zero folder --> ") + boolToString(zeroFolderValid));
+            LogManager::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
+            LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));
+
+            if(meshFile.get()->fileName().isEmpty())
+            {
+                meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
+            }
         }break;
 
         case configuration::FileManager::ValidatePathsPoint::meshFile:
         {
             QString rootDir = QFileInfo(meshFile.get()->fileName()).absoluteDir().path();
-            logging::Logger::getInstance()->log(meshFile.get()->fileName(), logging::LogDirection::console);
-            logging::Logger::getInstance()->log(QString("root dir = ") + rootDir, logging::LogDirection::console);
+            LogManager::getInstance()->log(meshFile.get()->fileName(), logging::LogDirection::console);
+            LogManager::getInstance()->log(QString("root dir = ") + rootDir, logging::LogDirection::console);
+
+            workDir.get()->setPath(rootDir);
+            validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
         }break;
     }
 }
@@ -227,7 +238,7 @@ bool configuration::FileManager::validateZeroFolder()
     for(auto e : *zeroFolderEntryValid)
     {
         settingFiles.find(e)->second.get()->setFileName(zeroFolder.path() + QString("/") + e);
-        logging::Logger::getInstance()->log(QString("checking file") + settingFiles.find(e)->second.get()->fileName());
+        LogManager::getInstance()->log(QString("checking file --> ") + settingFiles.find(e)->second.get()->fileName());
         if(!settingFiles.find(e)->second.get()->exists()) return false;
     }
 
@@ -239,22 +250,22 @@ bool configuration::FileManager::validateConstantFolder()
     QDir constantFolder(workDir.get()->path() + QString("/constant"));
     if(!constantFolder.exists()) return false;
 
-    logging::Logger::getInstance()->log("Constant folder exists!");
+    LogManager::getInstance()->log("Constant folder exists!");
 
     settingFiles.find("transportProperties")->second.get()->setFileName(constantFolder.path() + QString("/transportProperties"));
     if(!settingFiles.find("transportProperties")->second.get()->exists()) return false;
 
-    logging::Logger::getInstance()->log("transportProperties file exists!");
+    LogManager::getInstance()->log("transportProperties file exists!");
 
     QDir polyMeshFolder(constantFolder.path() + QString("/polyMesh"));
     if(!polyMeshFolder.exists()) return false;
 
-    logging::Logger::getInstance()->log("polyMesh folder exists!");
+    LogManager::getInstance()->log("polyMesh folder exists!");
 
     for(auto e : *polyMeshFolderEntryValid)
     {
         if(!QFile::exists(polyMeshFolder.path() + QString("/") + e)) return false;
-        logging::Logger::getInstance()->log((polyMeshFolder.path() + QString("/") + e) + QString(" exists!"));
+        LogManager::getInstance()->log((polyMeshFolder.path() + QString("/") + e) + QString(" exists!"));
     }
 
     settingFiles.find("boundary")->second.get()->setFileName(polyMeshFolder.path() + QString("/boundary"));
@@ -267,12 +278,12 @@ bool configuration::FileManager::validateSystemFolder()
     QDir systemFolder(workDir.get()->path() + QString("/system"));
     if(!systemFolder.exists()) return false;
 
-    logging::Logger::getInstance()->log("system folder exists!");
+    LogManager::getInstance()->log("system folder exists!");
 
     for(auto e : *systemFolderEntryValid)
     {
         if(!QFile::exists(systemFolder.path() + QString("/") + e)) return false;
-        logging::Logger::getInstance()->log((systemFolder.path() + QString("/") + e) + QString(" exists!"));
+        LogManager::getInstance()->log((systemFolder.path() + QString("/") + e) + QString(" exists!"));
     }
 
     settingFiles.find("controlDict")->second.get()->setFileName(systemFolder.path() + QString("/controlDict"));
