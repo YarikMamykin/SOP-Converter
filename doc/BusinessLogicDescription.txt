@@ -15,6 +15,10 @@ Parses setting files, project files
 Handles structure of project file.
 Project file structure represented via XML
 
+// ClientManager
+Handles messages between: Ui and logging & configuration
+                          Client and logging & configuration
+
 /* logging */
 
 // Logger (Singleton)
