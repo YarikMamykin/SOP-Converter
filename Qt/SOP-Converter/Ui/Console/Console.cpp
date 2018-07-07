@@ -6,6 +6,7 @@ Ui::Console::Console() :
     QTextEdit()
 {
     QObject::connect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)));
+    this->setReadOnly(true);
 }
 Ui::Console::~Console()
 {
