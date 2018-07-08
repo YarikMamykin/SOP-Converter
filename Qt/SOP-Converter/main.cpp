@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <QApplication>
 #include <QFileDialog>
+#include <QDir>
+#include "general/general.h"
 #include "logging/Logger/Logger.h"
 #include "logging/Messanger/Messanger.h"
 #include "configuration/FileManager/FileManager.h"
@@ -28,6 +30,10 @@ int main(int argc, char *argv[])
     configuration::ProjectFile pf;
     pf.setFileStructure();
     configuration::FileManager::getInstance()->saveProjectFile(pf);
+    QDir from("/home/yarik/Documents/diploma/src");
+    QDir to("/home/yarik/Documents/diploma/src_copied");
+//    copyDir(from, to);
+    copyDirRecursively(from, to);
 //    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("Image Files (*.png *.jpg *.bmp)"));
 //    QFileDialog::getOpenFileName(0,QString("Open Image"), "./", QString("All Files (*)"));
     return a.exec();

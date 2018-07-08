@@ -11,7 +11,6 @@ configuration::FileManager::FileManager(QWidget* parent) :
     logFile(new QFile),
     backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
-//    constantFolderEntryValid(new QStringList),
     polyMeshFolderEntryValid(new QStringList),
     systemFolderEntryValid(new QStringList),
     projectFile(std::make_shared<QFile>("/tmp/Test.xml")),
@@ -123,10 +122,14 @@ bool configuration::FileManager::loadBackupFiles()
         tmp.setPath(workDir.get()->path() + e);
         LogManager::getInstance()->log(QString("removing ") + tmp.path());
         tmp.removeRecursively();
-
-        // need to make implementation of directory copy!!!!
     }
-    return true;
+
+    copyDirRecursively(*backupDir, *workDir.get());
+
+    if(validateZeroFolder() && validateConstantBackedUpFolder() && validateSystemFolder())
+        return true;
+    else
+        return false;
 }
 
 void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
@@ -256,7 +259,7 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             }
             else
             {
-                loadBackupFiles();
+                LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));
             }
         }break;
 
@@ -313,6 +316,34 @@ bool configuration::FileManager::validateConstantFolder()
     }
 
     settingFiles.find("boundary")->second.get()->setFileName(polyMeshFolder.path() + QString("/boundary"));
+
+    return true;
+}
+
+bool configuration::FileManager::validateConstantBackedUpFolder()
+{
+    QDir constantFolder(workDir.get()->path() + QString("/constant"));
+    if(!constantFolder.exists()) return false;
+
+    LogManager::getInstance()->log("Constant folder exists!");
+
+    settingFiles.find("transportProperties")->second.get()->setFileName(constantFolder.path() + QString("/transportProperties"));
+    if(!settingFiles.find("transportProperties")->second.get()->exists()) return false;
+
+    LogManager::getInstance()->log("transportProperties file exists!");
+
+    QDir polyMeshFolder(constantFolder.path() + QString("/polyMesh"));
+    if(!polyMeshFolder.exists()) return false;
+
+    LogManager::getInstance()->log("polyMesh folder exists!");
+
+    QStringList validEntry; validEntry << "blockMeshDict" << "boundary";
+
+    for(auto e : validEntry)
+    {
+        if(!QFile::exists(polyMeshFolder.path() + QString("/") + e)) return false;
+        LogManager::getInstance()->log((polyMeshFolder.path() + QString("/") + e) + QString(" exists!"));
+    }
 
     return true;
 }

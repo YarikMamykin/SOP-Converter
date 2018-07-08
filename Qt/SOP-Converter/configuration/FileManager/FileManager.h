@@ -45,6 +45,7 @@ public:
     void validatePaths(configuration::FileManager::ValidatePathsPoint point);
     bool validateZeroFolder();
     bool validateConstantFolder();
+    bool validateConstantBackedUpFolder();
     bool validateSystemFolder();
 
     std::shared_ptr<QFile> getProjectFile();
