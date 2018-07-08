@@ -33,3 +33,11 @@ Provides messages via message box
 
 /* Ui */
 // Need Ui description !!!
+
+
+##################################################################
+
+/* OpenFOAM commands */
+1. ideasUnvToFoam <Mesh file>: must be executed from dir where <Mesh file> lies.
+2. transformPoints -scale '(1 1 1)': -//-
+3. icoFoam: -//-
