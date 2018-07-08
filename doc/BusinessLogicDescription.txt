@@ -1,0 +1,35 @@
+/* configuration */
+
+// FileManager (Singleton)
+Handles all operations connected to files
+Used by:
+        ClientManager
+        Parser
+        ProjectFile
+        Logger
+
+// Parser
+Parses setting files, project files
+
+// ProjectFile
+Handles structure of project file.
+Project file structure represented via XML
+
+// ClientManager
+Handles messages between: Ui and logging & configuration
+                          Client and logging & configuration
+
+/* logging */
+
+// Logger (Singleton)
+Manages logging in specific direction.
+Logging direction can be:
+                            file
+                            console
+                            fileAndConsole
+
+// Messanger (Singleton)
+Provides messages via message box
+
+/* Ui */
+// Need Ui description !!!
