@@ -113,6 +113,19 @@ void configuration::FileManager::createLogFile()
 bool configuration::FileManager::loadBackupFiles()
 {
     LogManager::getInstance()->log("Loading backup files");
+    QStringList setDirs;
+    setDirs << QString("/0")
+            << QString("/constant")
+            << QString("/system");
+    QDir tmp;
+    for(auto e : setDirs)
+    {
+        tmp.setPath(workDir.get()->path() + e);
+        LogManager::getInstance()->log(QString("removing ") + tmp.path());
+        tmp.removeRecursively();
+
+        // need to make implementation of directory copy!!!!
+    }
     return true;
 }
 
