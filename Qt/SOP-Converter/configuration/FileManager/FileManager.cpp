@@ -3,7 +3,8 @@
 
 
 using LogManager = logging::Logger;
-using Message = logging::Messanger;
+using Message    = logging::Messanger;
+using Parser     = configuration::Parser;
 
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
@@ -15,7 +16,9 @@ configuration::FileManager::FileManager(QWidget* parent) :
     systemFolderEntryValid(new QStringList),
     projectFile(std::make_shared<QFile>("/tmp/Test.xml")),
     meshFile(std::make_shared<QFile>()),
-    workDir(std::make_shared<QDir>())
+    workDir(std::make_shared<QDir>()),
+    iufLog(std::make_shared<QFile>()),
+    tplLog(std::make_shared<QFile>())
 {
     createLogFile();
     // init vector of files
@@ -257,9 +260,34 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             {
                 emit parseFiles();
             }
-            else
+            else if(!meshFile.get()->fileName().isEmpty())
             {
                 LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));
+
+                iufLog.get()->setFileName(workDir.get()->path() + "/ideasUnvToFoam.log");
+                tplLog.get()->setFileName(workDir.get()->path() + "/transformPoints.log");
+
+                QStringList command;
+                command << "cd"
+                        << workDir.get()->path()
+                        << "; ideasUnvToFoam " << QString(QFileInfo(*meshFile.get()).fileName())
+                        << "> ideasUnvToFoam.log";
+                LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
+
+                std::system(command.join(" ").toStdString().c_str()); // IT DOES NOT!!!! WORK!!!!!!!
+
+                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log exists -> %1").arg(boolToString(iufLog.get()->exists())));
+                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseIdeasUnvToFoamLog(iufLog))));
+
+                command.clear();
+                command << "cd"
+                        << workDir.get()->path()
+                        << "; transformPoints -scale '(1 1 1)'"
+                        << "> transformPoints.log";
+                LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
+                std::system(command.join(" ").toStdString().c_str());
+                LogManager::getInstance()->log(QString("Log file transformPoints.log exists -> %1").arg(boolToString(tplLog.get()->exists())));
+                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseTransformPointsLog(tplLog))));
             }
         }break;
 

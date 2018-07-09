@@ -9,11 +9,13 @@
 #include <exception>
 #include <memory>
 #include <map>
+#include <cstdlib>
 #include "../../logging/Messanger/Messanger.h"
 #include "../../logging/Logger/Logger.h"
 #include "../ProjectFile/ProjectFile.h"
 #include "../../general/general.h"
 #include "../../configuration/ClientManager/ClientManager.h"
+#include "../../configuration/Parser/Parser.h"
 
 namespace configuration
 {
@@ -70,6 +72,8 @@ private:
     std::shared_ptr<QFile> meshFile;
     std::shared_ptr<QDir> workDir; // where mesh file is placed
     std::map<QString, std::shared_ptr<QFile>> settingFiles; // p, U, (T), boundary, controlDict, transportProperties ...
+    std::shared_ptr<QFile> iufLog;
+    std::shared_ptr<QFile> tplLog;
     bool zeroFolderValid;
     bool constantFolderValid;
     bool systemFolderValid;

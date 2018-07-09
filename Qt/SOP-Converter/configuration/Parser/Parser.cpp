@@ -63,3 +63,13 @@ bool configuration::Parser::parseTransportProperties(std::shared_ptr<QFile> tpFi
 {
     return true;
 }
+
+bool configuration::Parser::parseIdeasUnvToFoamLog(std::shared_ptr<QFile> log)
+{
+    return true;
+}
+
+bool configuration::Parser::parseTransformPointsLog(std::shared_ptr<QFile> log)
+{
+    return true;
+}
