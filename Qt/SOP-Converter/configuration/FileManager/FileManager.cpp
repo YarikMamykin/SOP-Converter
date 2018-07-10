@@ -1,7 +1,6 @@
 #include "FileManager.h"
 #include <QTextStream>
 
-
 using LogManager = logging::Logger;
 using Message    = logging::Messanger;
 using Parser     = configuration::Parser;
@@ -9,6 +8,7 @@ using Parser     = configuration::Parser;
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
+    procExecutor(new QProcess),
     logFile(new QFile),
     backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
@@ -45,6 +45,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
 
 configuration::FileManager::~FileManager()
 {
+    delete procExecutor;
     delete backupDir;
     settingFiles.clear();
     QObject::disconnect(getInstance(),0,0,0);
@@ -264,30 +265,38 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             {
                 LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));
 
-                iufLog.get()->setFileName(workDir.get()->path() + "/ideasUnvToFoam.log");
-                tplLog.get()->setFileName(workDir.get()->path() + "/transformPoints.log");
-
+                /* Execute and check ideasUnvToFoam conversion */
                 QStringList command;
-                command << "cd"
-                        << workDir.get()->path()
-                        << "; ideasUnvToFoam " << QString(QFileInfo(*meshFile.get()).fileName())
-                        << "> ideasUnvToFoam.log";
+                command << "ideasUnvToFoam" << QString(QFileInfo(*meshFile.get()).fileName());
                 LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
 
-                std::system(command.join(" ").toStdString().c_str()); // IT DOES NOT!!!! WORK!!!!!!!
+                procExecutor->setWorkingDirectory(workDir.get()->path());
+                procExecutor->start(command.join(" "));
+                procExecutor->waitForFinished();
 
-                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log exists -> %1").arg(boolToString(iufLog.get()->exists())));
-                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseIdeasUnvToFoamLog(iufLog))));
+                QString result(procExecutor->readAllStandardOutput());
+                LogManager::getInstance()->log(result);
+                procExecutor->reset();
+                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseIdeasUnvToFoamLog(result))));
 
+
+                /* Execute and check transformPoints operation */
                 command.clear();
-                command << "cd"
-                        << workDir.get()->path()
-                        << "; transformPoints -scale '(1 1 1)'"
-                        << "> transformPoints.log";
+                command << "-scale" << "(1 1 1)";
                 LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
-                std::system(command.join(" ").toStdString().c_str());
-                LogManager::getInstance()->log(QString("Log file transformPoints.log exists -> %1").arg(boolToString(tplLog.get()->exists())));
-                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseTransformPointsLog(tplLog))));
+
+                LogManager::getInstance()->log(procExecutor->workingDirectory());
+                procExecutor->start("transformPoints", command);
+                procExecutor->waitForFinished();
+
+                result.clear();
+                result = procExecutor->readAllStandardOutput();
+                LogManager::getInstance()->log(result);
+                procExecutor->reset();
+
+                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseTransformPointsLog(result))));
+                command.clear();
+                result.clear();
             }
         }break;
 

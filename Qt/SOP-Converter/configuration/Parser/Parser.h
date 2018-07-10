@@ -18,8 +18,8 @@ private:
     virtual ~Parser();
 public:
     static configuration::Parser* getInstance();
-    static bool parseIdeasUnvToFoamLog(std::shared_ptr<QFile> log);
-    static bool parseTransformPointsLog(std::shared_ptr<QFile> log);
+    static bool parseIdeasUnvToFoamLog(const QString& result);
+    static bool parseTransformPointsLog(const QString& result);
 public slots:
     void startParsing();    
 private slots:

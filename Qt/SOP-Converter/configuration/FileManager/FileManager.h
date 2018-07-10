@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QStringList>
+#include <QProcess>
 #include <exception>
 #include <memory>
 #include <map>
@@ -63,6 +64,7 @@ public slots:
     void saveProjectFile(const configuration::ProjectFile& pfile);
 private:    
     unsigned int maxLogFilesCount;
+    QProcess* procExecutor;
     QFile* logFile;
     QDir* backupDir;
     QStringList* zeroFolderEntryValid;
