@@ -66,10 +66,20 @@ bool configuration::Parser::parseTransportProperties(std::shared_ptr<QFile> tpFi
 
 bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
 {
-    return true;
+    QStringList iufres = result.split("\n");
+    iufres.removeAll(QString(""));
+    if(iufres[iufres.size() - 1] != QString("End"))
+        return false;
+    else
+        return true;
 }
 
 bool configuration::Parser::parseTransformPointsLog(const QString& result)
 {
-    return true;
+    QStringList tplres = result.split("\n");
+    tplres.removeAll(QString(""));
+    if(tplres[tplres.size() - 1] != QString("Writing points into directory \"%1\"").arg(FileManager::getInstance()->getWorkDir().get()->path()+QString("/constant/polyMesh")))
+        return false;
+    else
+        return true;
 }

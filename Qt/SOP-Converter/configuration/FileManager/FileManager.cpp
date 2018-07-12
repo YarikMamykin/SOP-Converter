@@ -45,6 +45,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
 
 configuration::FileManager::~FileManager()
 {
+    procExecutor->close();
     delete procExecutor;
     delete backupDir;
     settingFiles.clear();
@@ -275,26 +276,51 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
                 procExecutor->waitForFinished();
 
                 QString result(procExecutor->readAllStandardOutput());
-                LogManager::getInstance()->log(result);
-                procExecutor->reset();
-                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseIdeasUnvToFoamLog(result))));
 
+                // MOVE FILE WRITE INTO SEPARATE THREAD!!!!
+                iufLog.get()->setFileName(workDir.get()->path()+QString("/ideasUnvToFoam.log"));
+                if(iufLog.get()->open(QIODevice::WriteOnly|QIODevice::Text))
+                {
+                    iufLog.get()->write(result.toStdString().c_str()) > 0 ?
+                                LogManager::getInstance()->log(iufLog.get()->fileName()+QString(" generated")) :
+                                LogManager::getInstance()->log(iufLog.get()->fileName()+QString(" is NOT generated"));
+                }
+                else
+                {
+                    LogManager::getInstance()->log(QString("Could not open %1. Log will be redirected to console:\n%2").
+                                                   arg(iufLog.get()->fileName()).arg(result));
+                }
+                iufLog.get()->close();
+                LogManager::getInstance()->log(QString("Parsing ideasUnvToFoamLog --> ") + boolToString(Parser::parseIdeasUnvToFoamLog(result)));
 
                 /* Execute and check transformPoints operation */
                 command.clear();
+                result.clear();
                 command << "-scale" << "(1 1 1)";
                 LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
 
-                LogManager::getInstance()->log(procExecutor->workingDirectory());
+                procExecutor->reset();
+                procExecutor->setWorkingDirectory(workDir.get()->path());
                 procExecutor->start("transformPoints", command);
                 procExecutor->waitForFinished();
 
-                result.clear();
                 result = procExecutor->readAllStandardOutput();
-                LogManager::getInstance()->log(result);
-                procExecutor->reset();
+                tplLog.get()->setFileName(workDir.get()->path()+QString("/transformPoints.log"));
+                if(tplLog.get()->open(QIODevice::WriteOnly|QIODevice::Text))
+                {
+                    tplLog.get()->write(result.toStdString().c_str()) > 0 ?
+                                LogManager::getInstance()->log(tplLog.get()->fileName()+QString(" generated")) :
+                                LogManager::getInstance()->log(tplLog.get()->fileName()+QString(" is NOT generated"));
+                }
+                else
+                {
+                    LogManager::getInstance()->log(QString("Could not open %1. Log will be redirected to console:\n%2").
+                                                   arg(tplLog.get()->fileName()).arg(result));
+                }
+                tplLog.get()->close();
+                LogManager::getInstance()->log(QString("Parsing transformPoints.log --> ") + boolToString(Parser::parseTransformPointsLog(result)));
 
-                LogManager::getInstance()->log(QString("Log file ideasUnvToFoam.log parsing -> %1").arg(boolToString(Parser::parseTransformPointsLog(result))));
+                procExecutor->reset();
                 command.clear();
                 result.clear();
             }
