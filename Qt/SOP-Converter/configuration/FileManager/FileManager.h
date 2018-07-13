@@ -40,6 +40,8 @@ public:
         meshFile, workDir
     };
 
+    class Exception;
+
     static configuration::FileManager* getInstance();
 
     void setPathToFile(std::shared_ptr<QFile> file, const QString& path);
@@ -57,7 +59,7 @@ public:
     std::shared_ptr<QFile> getSettingFile(const QString& filename);
     QStringList getListOfSettingFiles();
 
-    class Exception;    
+
 
 public slots:
     void logToFile(const QString& log);
@@ -74,8 +76,7 @@ private:
     std::shared_ptr<QFile> meshFile;
     std::shared_ptr<QDir> workDir; // where mesh file is placed
     std::map<QString, std::shared_ptr<QFile>> settingFiles; // p, U, (T), boundary, controlDict, transportProperties ...
-    std::shared_ptr<QFile> iufLog;
-    std::shared_ptr<QFile> tplLog;
+
     bool zeroFolderValid;
     bool constantFolderValid;
     bool systemFolderValid;
@@ -92,4 +93,5 @@ private:
     QString message;    
 };
 }
+
 #endif // FILEMANAGER_H

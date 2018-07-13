@@ -35,8 +35,6 @@ private:
     bool bParsed;
     bool cdParsed;
     bool tpParsed;
-    bool iufParsed; // ideasUnvToFoam  log file parsed
-    bool tplParsed; // transformPoints log file parsed
 };
 
 }
