@@ -9,7 +9,6 @@
 #include "../SOP-Converter/configuration/Parser/Parser.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
-#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'Parser.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -20,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__Parser_t {
-    QByteArrayData data[18];
-    char stringdata[258];
+    QByteArrayData data[17];
+    char stringdata[248];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,23 +38,22 @@ QT_MOC_LITERAL(5, 60, 18),
 QT_MOC_LITERAL(6, 79, 21),
 QT_MOC_LITERAL(7, 101, 29),
 QT_MOC_LITERAL(8, 131, 10),
-QT_MOC_LITERAL(9, 142, 12),
-QT_MOC_LITERAL(10, 155, 7),
-QT_MOC_LITERAL(11, 163, 8),
-QT_MOC_LITERAL(12, 172, 6),
-QT_MOC_LITERAL(13, 179, 6),
-QT_MOC_LITERAL(14, 186, 13),
-QT_MOC_LITERAL(15, 200, 16),
-QT_MOC_LITERAL(16, 217, 24),
-QT_MOC_LITERAL(17, 242, 14)
+QT_MOC_LITERAL(9, 142, 8),
+QT_MOC_LITERAL(10, 151, 6),
+QT_MOC_LITERAL(11, 158, 6),
+QT_MOC_LITERAL(12, 165, 13),
+QT_MOC_LITERAL(13, 179, 16),
+QT_MOC_LITERAL(14, 196, 24),
+QT_MOC_LITERAL(15, 221, 14),
+QT_MOC_LITERAL(16, 236, 10)
     },
     "configuration::Parser\0startParsing\0\0"
     "startParseP\0startParseU\0startParseBoundary\0"
     "startParseControlDict\0"
     "startParseTransportProperties\0endParsing\0"
-    "QList<bool>&\0results\0ParseAll\0parseP\0"
-    "parseU\0parseBoundary\0parseControlDict\0"
-    "parseTransportProperties\0collectResults\0"
+    "ParseAll\0parseP\0parseU\0parseBoundary\0"
+    "parseControlDict\0parseTransportProperties\0"
+    "collectResults\0resetFlags\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -65,7 +63,7 @@ static const uint qt_meta_data_configuration__Parser[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -73,22 +71,23 @@ static const uint qt_meta_data_configuration__Parser[] = {
        7,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   84,    2, 0x05,
-       3,    0,   85,    2, 0x05,
-       4,    0,   86,    2, 0x05,
-       5,    0,   87,    2, 0x05,
-       6,    0,   88,    2, 0x05,
-       7,    0,   89,    2, 0x05,
-       8,    1,   90,    2, 0x05,
+       1,    0,   89,    2, 0x05,
+       3,    0,   90,    2, 0x05,
+       4,    0,   91,    2, 0x05,
+       5,    0,   92,    2, 0x05,
+       6,    0,   93,    2, 0x05,
+       7,    0,   94,    2, 0x05,
+       8,    0,   95,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-      11,    0,   93,    2, 0x08,
-      12,    0,   94,    2, 0x08,
-      13,    0,   95,    2, 0x08,
-      14,    0,   96,    2, 0x08,
-      15,    0,   97,    2, 0x08,
-      16,    0,   98,    2, 0x08,
-      17,    0,   99,    2, 0x08,
+       9,    0,   96,    2, 0x08,
+      10,    0,   97,    2, 0x08,
+      11,    0,   98,    2, 0x08,
+      12,    0,   99,    2, 0x08,
+      13,    0,  100,    2, 0x08,
+      14,    0,  101,    2, 0x08,
+      15,    0,  102,    2, 0x08,
+      16,    0,  103,    2, 0x08,
 
  // signals: parameters
     QMetaType::Void,
@@ -97,9 +96,10 @@ static const uint qt_meta_data_configuration__Parser[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 9,   10,
+    QMetaType::Void,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -122,7 +122,7 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         case 3: _t->startParseBoundary(); break;
         case 4: _t->startParseControlDict(); break;
         case 5: _t->startParseTransportProperties(); break;
-        case 6: _t->endParsing((*reinterpret_cast< QList<bool>(*)>(_a[1]))); break;
+        case 6: _t->endParsing(); break;
         case 7: _t->ParseAll(); break;
         case 8: _t->parseP(); break;
         case 9: _t->parseU(); break;
@@ -130,6 +130,7 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         case 11: _t->parseControlDict(); break;
         case 12: _t->parseTransportProperties(); break;
         case 13: _t->collectResults(); break;
+        case 14: _t->resetFlags(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -172,12 +173,13 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
             }
         }
         {
-            typedef void (Parser::*_t)(QList<bool> & );
+            typedef void (Parser::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::endParsing)) {
                 *result = 6;
             }
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject configuration::Parser::staticMetaObject = {
@@ -205,13 +207,13 @@ int configuration::Parser::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 14)
+        if (_id < 15)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 14;
+        _id -= 15;
     }
     return _id;
 }
@@ -253,10 +255,9 @@ void configuration::Parser::startParseTransportProperties()
 }
 
 // SIGNAL 6
-void configuration::Parser::endParsing(QList<bool> & _t1)
+void configuration::Parser::endParsing()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 6, _a);
+    QMetaObject::activate(this, &staticMetaObject, 6, 0);
 }
 struct qt_meta_stringdata_configuration__ParserThread_t {
     QByteArrayData data[1];

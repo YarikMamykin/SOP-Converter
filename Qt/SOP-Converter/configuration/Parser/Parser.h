@@ -3,9 +3,12 @@
 
 #include <QObject>
 #include <memory>
+#include <map>
+#include <vector>
 #include <QFile>
 #include <QThread>
 #include <QList>
+#include <QTextStream>
 
 
 namespace configuration
@@ -23,7 +26,7 @@ public:
     static bool parseIdeasUnvToFoamLog(const QString& result);
     static bool parseTransformPointsLog(const QString& result);
 
-    enum class ParserId
+    enum class ParserId : unsigned char
     {
         p, U, boundary, controlDict, transportProperties
     };
@@ -35,7 +38,7 @@ signals:
     void startParseBoundary();
     void startParseControlDict();
     void startParseTransportProperties();
-    void endParsing(QList<bool> &results);
+    void endParsing();
 private slots:
     void ParseAll();
     void parseP();
@@ -44,14 +47,12 @@ private slots:
     void parseControlDict();
     void parseTransportProperties();
     void collectResults();
+
+    void resetFlags();
 private:
-    // indicate only that parsing has been completed!
-    static bool pParsed;
-    static bool uParsed;
-    static bool bParsed;
-    static bool cdParsed;
-    static bool tpParsed;
+    static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
+    std::shared_ptr<std::map<std::string, std::string>> boundaryMap; // map of boundary properties --> will be shared with
 };
 
 class ParserThread : public QThread
