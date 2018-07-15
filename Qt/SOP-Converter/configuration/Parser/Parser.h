@@ -4,6 +4,8 @@
 #include <QObject>
 #include <memory>
 #include <QFile>
+#include <QThread>
+#include <QList>
 
 
 namespace configuration
@@ -20,21 +22,49 @@ public:
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);
     static bool parseTransformPointsLog(const QString& result);
-public slots:
-    void startParsing();    
+
+    enum class ParserId
+    {
+        p, U, boundary, controlDict, transportProperties
+    };
+
+signals:
+    void startParsing(); // parses all
+    void startParseP();
+    void startParseU();
+    void startParseBoundary();
+    void startParseControlDict();
+    void startParseTransportProperties();
+    void endParsing(QList<bool> &results);
 private slots:
-    bool parseP(std::shared_ptr<QFile> pFile);
-    bool parseU(std::shared_ptr<QFile> uFile);
-    bool parseBoundary(std::shared_ptr<QFile> bFile);
-    bool parseControlDict(std::shared_ptr<QFile> cdFile);
-    bool parseTransportProperties(std::shared_ptr<QFile> tpFile);
+    void ParseAll();
+    void parseP();
+    void parseU();
+    void parseBoundary();
+    void parseControlDict();
+    void parseTransportProperties();
+    void collectResults();
+private:
+    // indicate only that parsing has been completed!
+    static bool pParsed;
+    static bool uParsed;
+    static bool bParsed;
+    static bool cdParsed;
+    static bool tpParsed;
+    static unsigned char counter; // counts parsing operations
+};
+
+class ParserThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit ParserThread(Parser::ParserId _id) : QThread(), id(_id) {}
+private:
+
+    void run() override;
 
 private:
-    bool pParsed;
-    bool uParsed;
-    bool bParsed;
-    bool cdParsed;
-    bool tpParsed;
+    Parser::ParserId id;
 };
 
 }

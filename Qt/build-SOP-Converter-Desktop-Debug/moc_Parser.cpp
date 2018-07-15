@@ -9,6 +9,7 @@
 #include "../SOP-Converter/configuration/Parser/Parser.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+#include <QtCore/QList>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'Parser.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -19,8 +20,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__Parser_t {
-    QByteArrayData data[14];
-    char stringdata[162];
+    QByteArrayData data[18];
+    char stringdata[258];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,23 +33,29 @@ static const qt_meta_stringdata_configuration__Parser_t qt_meta_stringdata_confi
 QT_MOC_LITERAL(0, 0, 21),
 QT_MOC_LITERAL(1, 22, 12),
 QT_MOC_LITERAL(2, 35, 0),
-QT_MOC_LITERAL(3, 36, 6),
-QT_MOC_LITERAL(4, 43, 22),
-QT_MOC_LITERAL(5, 66, 5),
-QT_MOC_LITERAL(6, 72, 6),
-QT_MOC_LITERAL(7, 79, 5),
-QT_MOC_LITERAL(8, 85, 13),
-QT_MOC_LITERAL(9, 99, 5),
-QT_MOC_LITERAL(10, 105, 16),
-QT_MOC_LITERAL(11, 122, 6),
-QT_MOC_LITERAL(12, 129, 24),
-QT_MOC_LITERAL(13, 154, 6)
+QT_MOC_LITERAL(3, 36, 11),
+QT_MOC_LITERAL(4, 48, 11),
+QT_MOC_LITERAL(5, 60, 18),
+QT_MOC_LITERAL(6, 79, 21),
+QT_MOC_LITERAL(7, 101, 29),
+QT_MOC_LITERAL(8, 131, 10),
+QT_MOC_LITERAL(9, 142, 12),
+QT_MOC_LITERAL(10, 155, 7),
+QT_MOC_LITERAL(11, 163, 8),
+QT_MOC_LITERAL(12, 172, 6),
+QT_MOC_LITERAL(13, 179, 6),
+QT_MOC_LITERAL(14, 186, 13),
+QT_MOC_LITERAL(15, 200, 16),
+QT_MOC_LITERAL(16, 217, 24),
+QT_MOC_LITERAL(17, 242, 14)
     },
     "configuration::Parser\0startParsing\0\0"
-    "parseP\0std::shared_ptr<QFile>\0pFile\0"
-    "parseU\0uFile\0parseBoundary\0bFile\0"
-    "parseControlDict\0cdFile\0"
-    "parseTransportProperties\0tpFile\0"
+    "startParseP\0startParseU\0startParseBoundary\0"
+    "startParseControlDict\0"
+    "startParseTransportProperties\0endParsing\0"
+    "QList<bool>&\0results\0ParseAll\0parseP\0"
+    "parseU\0parseBoundary\0parseControlDict\0"
+    "parseTransportProperties\0collectResults\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -58,28 +65,48 @@ static const uint qt_meta_data_configuration__Parser[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       7,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags
+       1,    0,   84,    2, 0x05,
+       3,    0,   85,    2, 0x05,
+       4,    0,   86,    2, 0x05,
+       5,    0,   87,    2, 0x05,
+       6,    0,   88,    2, 0x05,
+       7,    0,   89,    2, 0x05,
+       8,    1,   90,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x0a,
-       3,    1,   45,    2, 0x08,
-       6,    1,   48,    2, 0x08,
-       8,    1,   51,    2, 0x08,
-      10,    1,   54,    2, 0x08,
-      12,    1,   57,    2, 0x08,
+      11,    0,   93,    2, 0x08,
+      12,    0,   94,    2, 0x08,
+      13,    0,   95,    2, 0x08,
+      14,    0,   96,    2, 0x08,
+      15,    0,   97,    2, 0x08,
+      16,    0,   98,    2, 0x08,
+      17,    0,   99,    2, 0x08,
+
+ // signals: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 9,   10,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Bool, 0x80000000 | 4,    5,
-    QMetaType::Bool, 0x80000000 | 4,    7,
-    QMetaType::Bool, 0x80000000 | 4,    9,
-    QMetaType::Bool, 0x80000000 | 4,   11,
-    QMetaType::Bool, 0x80000000 | 4,   13,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -90,17 +117,65 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         Parser *_t = static_cast<Parser *>(_o);
         switch (_id) {
         case 0: _t->startParsing(); break;
-        case 1: { bool _r = _t->parseP((*reinterpret_cast< std::shared_ptr<QFile>(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 2: { bool _r = _t->parseU((*reinterpret_cast< std::shared_ptr<QFile>(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: { bool _r = _t->parseBoundary((*reinterpret_cast< std::shared_ptr<QFile>(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: { bool _r = _t->parseControlDict((*reinterpret_cast< std::shared_ptr<QFile>(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 5: { bool _r = _t->parseTransportProperties((*reinterpret_cast< std::shared_ptr<QFile>(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 1: _t->startParseP(); break;
+        case 2: _t->startParseU(); break;
+        case 3: _t->startParseBoundary(); break;
+        case 4: _t->startParseControlDict(); break;
+        case 5: _t->startParseTransportProperties(); break;
+        case 6: _t->endParsing((*reinterpret_cast< QList<bool>(*)>(_a[1]))); break;
+        case 7: _t->ParseAll(); break;
+        case 8: _t->parseP(); break;
+        case 9: _t->parseU(); break;
+        case 10: _t->parseBoundary(); break;
+        case 11: _t->parseControlDict(); break;
+        case 12: _t->parseTransportProperties(); break;
+        case 13: _t->collectResults(); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        void **func = reinterpret_cast<void **>(_a[1]);
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParsing)) {
+                *result = 0;
+            }
+        }
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParseP)) {
+                *result = 1;
+            }
+        }
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParseU)) {
+                *result = 2;
+            }
+        }
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParseBoundary)) {
+                *result = 3;
+            }
+        }
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParseControlDict)) {
+                *result = 4;
+            }
+        }
+        {
+            typedef void (Parser::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::startParseTransportProperties)) {
+                *result = 5;
+            }
+        }
+        {
+            typedef void (Parser::*_t)(QList<bool> & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::endParsing)) {
+                *result = 6;
+            }
         }
     }
 }
@@ -130,14 +205,124 @@ int configuration::Parser::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 14)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 14;
     }
+    return _id;
+}
+
+// SIGNAL 0
+void configuration::Parser::startParsing()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, 0);
+}
+
+// SIGNAL 1
+void configuration::Parser::startParseP()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, 0);
+}
+
+// SIGNAL 2
+void configuration::Parser::startParseU()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, 0);
+}
+
+// SIGNAL 3
+void configuration::Parser::startParseBoundary()
+{
+    QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void configuration::Parser::startParseControlDict()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, 0);
+}
+
+// SIGNAL 5
+void configuration::Parser::startParseTransportProperties()
+{
+    QMetaObject::activate(this, &staticMetaObject, 5, 0);
+}
+
+// SIGNAL 6
+void configuration::Parser::endParsing(QList<bool> & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 6, _a);
+}
+struct qt_meta_stringdata_configuration__ParserThread_t {
+    QByteArrayData data[1];
+    char stringdata[29];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    offsetof(qt_meta_stringdata_configuration__ParserThread_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData) \
+    )
+static const qt_meta_stringdata_configuration__ParserThread_t qt_meta_stringdata_configuration__ParserThread = {
+    {
+QT_MOC_LITERAL(0, 0, 27)
+    },
+    "configuration::ParserThread\0"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_configuration__ParserThread[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void configuration::ParserThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject configuration::ParserThread::staticMetaObject = {
+    { &QThread::staticMetaObject, qt_meta_stringdata_configuration__ParserThread.data,
+      qt_meta_data_configuration__ParserThread,  qt_static_metacall, 0, 0}
+};
+
+
+const QMetaObject *configuration::ParserThread::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *configuration::ParserThread::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_configuration__ParserThread.stringdata))
+        return static_cast<void*>(const_cast< ParserThread*>(this));
+    return QThread::qt_metacast(_clname);
+}
+
+int configuration::ParserThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QThread::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
     return _id;
 }
 QT_END_MOC_NAMESPACE

@@ -15,13 +15,7 @@ int main(int argc, char *argv[])
     QObject::connect(logging::Logger::getInstance(),
                      SIGNAL(logToFile(const QString&)),
                      configuration::FileManager::getInstance(),
-                     SLOT(logToFile(const QString&)));
-
-    QObject::connect(configuration::FileManager::getInstance(),
-                     SIGNAL(parseFiles()),
-                     configuration::Parser::getInstance(),
-                     SLOT(startParsing()));
-
+                     SLOT(logToFile(const QString&)), Qt::QueuedConnection);
 
     logging::Logger::getInstance()->log(QString("App start"), logging::LogDirection::file);
     MainWindow w;

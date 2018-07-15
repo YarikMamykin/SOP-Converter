@@ -6,9 +6,24 @@
 using LogManager = logging::Logger;
 using FileManager = configuration::FileManager;
 
+// static parsing flags
+bool configuration::Parser::pParsed = false;
+bool configuration::Parser::uParsed = false;
+bool configuration::Parser::bParsed = false;
+bool configuration::Parser::cdParsed = false;
+bool configuration::Parser::tpParsed = false;
+unsigned char configuration::Parser::counter = 0;
+
 configuration::Parser::Parser() :
     QObject()
 {    
+    QObject::connect(this, SIGNAL(startParsing()), SLOT(ParseAll()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startParseP()), SLOT(parseP()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startParseU()), SLOT(parseU()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startParseBoundary()), SLOT(parseBoundary()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startParseControlDict()), SLOT(parseControlDict()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startParseTransportProperties()), SLOT(parseTransportProperties()), Qt::QueuedConnection);
+
     LogManager::getInstance()->log("Parser constructed", logging::LogDirection::file);
 }
 
@@ -23,45 +38,83 @@ configuration::Parser* configuration::Parser::getInstance()
     return &instance;
 }
 
-void configuration::Parser::startParsing()
+void configuration::Parser::ParseAll()
 {
+    LogManager::getInstance()->log("Parse all");
     LogManager::getInstance()->log("Parsing START");
-    bParsed = parseBoundary(FileManager::getInstance()->getSettingFile("boundary"));
-    pParsed = parseBoundary(FileManager::getInstance()->getSettingFile("p"));
-    uParsed = parseBoundary(FileManager::getInstance()->getSettingFile("U"));
-    cdParsed = parseBoundary(FileManager::getInstance()->getSettingFile("controlDict"));
-    tpParsed = parseBoundary(FileManager::getInstance()->getSettingFile("transportProperties"));
-    LogManager::getInstance()->log(QString("Parsing boundary file --> ") + boolToString(bParsed));
-    LogManager::getInstance()->log(QString("Parsing p file --> ") + boolToString(pParsed));
-    LogManager::getInstance()->log(QString("Parsing U file --> ") + boolToString(uParsed));
-    LogManager::getInstance()->log(QString("Parsing controlDict file --> ") + boolToString(cdParsed));
-    LogManager::getInstance()->log(QString("Parsing transportProperties file --> ") + boolToString(tpParsed));
+    QList<configuration::ParserThread*> parserThreads;
+    parserThreads.append(new configuration::ParserThread(Parser::ParserId::boundary));
+    parserThreads.append(new configuration::ParserThread(Parser::ParserId::p));
+    parserThreads.append(new configuration::ParserThread(Parser::ParserId::U));
+    parserThreads.append(new configuration::ParserThread(Parser::ParserId::controlDict));
+    parserThreads.append(new configuration::ParserThread(Parser::ParserId::transportProperties));
+
+    for(auto e : parserThreads) { e->start(); }
+
+    LogManager::getInstance()->log("Threads started!");
+
+    for(auto e : parserThreads)
+    {
+        e->wait();
+        delete e;
+    }
+
+    parserThreads.clear();
+
+    LogManager::getInstance()->log("Threads ended!");
     LogManager::getInstance()->log("Parsing END");
 }
 
-bool configuration::Parser::parseP(std::shared_ptr<QFile> pFile)
+void configuration::Parser::parseP()
 {
-    return true;
+    Parser::pParsed = true;
+    LogManager::getInstance()->log("parseP --> " + boolToString(pParsed));
+    collectResults();
 }
 
-bool configuration::Parser::parseU(std::shared_ptr<QFile> uFile)
-{
-    return true;
+void configuration::Parser::parseU()
+{    
+    Parser::uParsed = true;
+    LogManager::getInstance()->log("parseU --> " + boolToString(uParsed));
+    collectResults();
 }
 
-bool configuration::Parser::parseBoundary(std::shared_ptr<QFile> bFile)
-{
-    return true;
+void configuration::Parser::parseBoundary()
+{    
+    Parser::bParsed = true;
+    LogManager::getInstance()->log("parseBoundary --> " + boolToString(bParsed));
+    collectResults();
 }
 
-bool configuration::Parser::parseControlDict(std::shared_ptr<QFile> cdFile)
+void configuration::Parser::parseControlDict()
 {
-    return true;
+    Parser::cdParsed = true;
+    LogManager::getInstance()->log("parseControlDict --> " + boolToString(cdParsed));
+    collectResults();
 }
 
-bool configuration::Parser::parseTransportProperties(std::shared_ptr<QFile> tpFile)
+void configuration::Parser::parseTransportProperties()
 {
-    return true;
+    Parser::tpParsed = true;
+    LogManager::getInstance()->log("parseTransportProperties --> " + boolToString(tpParsed));
+    collectResults();
+}
+
+void configuration::Parser::collectResults()
+{
+    QList<bool> results;
+    results.append(Parser::pParsed);
+    results.append(Parser::uParsed);
+    results.append(Parser::bParsed);
+    results.append(Parser::cdParsed);
+    results.append(Parser::tpParsed);
+
+    LogManager::getInstance()->log("Results collected");
+    for(auto e : results)
+    {
+        LogManager::getInstance()->log(boolToString(e));
+    }
+    emit endParsing(results);
 }
 
 bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
@@ -82,4 +135,17 @@ bool configuration::Parser::parseTransformPointsLog(const QString& result)
         return false;
     else
         return true;
+}
+
+void configuration::ParserThread::run()
+{
+    LogManager::getInstance()->log("starting parser thread");
+    switch(id)
+    {
+        case Parser::ParserId::p:                   emit Parser::getInstance()->startParseP(); break;
+        case Parser::ParserId::U:                   emit Parser::getInstance()->startParseU(); break;
+        case Parser::ParserId::boundary:            emit Parser::getInstance()->startParseBoundary(); break;
+        case Parser::ParserId::controlDict:         emit Parser::getInstance()->startParseControlDict(); break;
+        case Parser::ParserId::transportProperties: emit Parser::getInstance()->startParseTransportProperties(); break;
+    }
 }

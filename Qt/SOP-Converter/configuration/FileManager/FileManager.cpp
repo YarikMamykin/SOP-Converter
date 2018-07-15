@@ -258,7 +258,7 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
 
             if(zeroFolderValid && constantFolderValid && systemFolderValid && !meshFile.get()->fileName().isEmpty())
             {
-                emit parseFiles();
+                emit Parser::getInstance()->startParsing();
             }
             else if(!meshFile.get()->fileName().isEmpty())
             {

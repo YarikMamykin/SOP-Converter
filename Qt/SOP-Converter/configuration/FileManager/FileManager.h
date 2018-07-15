@@ -31,9 +31,6 @@ private:
 
     void createLogFile();
     bool loadBackupFiles();
-
-signals:
-    void parseFiles();
 public:
     enum class ValidatePathsPoint
     {

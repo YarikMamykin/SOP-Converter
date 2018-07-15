@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__FileManager_t {
-    QByteArrayData data[8];
-    char stringdata[103];
+    QByteArrayData data[7];
+    char stringdata[92];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,17 +30,16 @@ struct qt_meta_stringdata_configuration__FileManager_t {
 static const qt_meta_stringdata_configuration__FileManager_t qt_meta_stringdata_configuration__FileManager = {
     {
 QT_MOC_LITERAL(0, 0, 26),
-QT_MOC_LITERAL(1, 27, 10),
-QT_MOC_LITERAL(2, 38, 0),
-QT_MOC_LITERAL(3, 39, 9),
-QT_MOC_LITERAL(4, 49, 3),
-QT_MOC_LITERAL(5, 53, 15),
-QT_MOC_LITERAL(6, 69, 26),
-QT_MOC_LITERAL(7, 96, 5)
+QT_MOC_LITERAL(1, 27, 9),
+QT_MOC_LITERAL(2, 37, 0),
+QT_MOC_LITERAL(3, 38, 3),
+QT_MOC_LITERAL(4, 42, 15),
+QT_MOC_LITERAL(5, 58, 26),
+QT_MOC_LITERAL(6, 85, 5)
     },
-    "configuration::FileManager\0parseFiles\0"
-    "\0logToFile\0log\0saveProjectFile\0"
-    "configuration::ProjectFile\0pfile\0"
+    "configuration::FileManager\0logToFile\0"
+    "\0log\0saveProjectFile\0configuration::ProjectFile\0"
+    "pfile\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -50,26 +49,20 @@ static const uint qt_meta_data_configuration__FileManager[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
-
- // signals: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x05,
+       0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   30,    2, 0x0a,
-       5,    1,   33,    2, 0x0a,
-
- // signals: parameters
-    QMetaType::Void,
+       1,    1,   24,    2, 0x0a,
+       4,    1,   27,    2, 0x0a,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString,    4,
-    QMetaType::Void, 0x80000000 | 6,    7,
+    QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void, 0x80000000 | 5,    6,
 
        0        // eod
 };
@@ -79,19 +72,9 @@ void configuration::FileManager::qt_static_metacall(QObject *_o, QMetaObject::Ca
     if (_c == QMetaObject::InvokeMetaMethod) {
         FileManager *_t = static_cast<FileManager *>(_o);
         switch (_id) {
-        case 0: _t->parseFiles(); break;
-        case 1: _t->logToFile((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 2: _t->saveProjectFile((*reinterpret_cast< const configuration::ProjectFile(*)>(_a[1]))); break;
+        case 0: _t->logToFile((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: _t->saveProjectFile((*reinterpret_cast< const configuration::ProjectFile(*)>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::IndexOfMethod) {
-        int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
-        {
-            typedef void (FileManager::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&FileManager::parseFiles)) {
-                *result = 0;
-            }
         }
     }
 }
@@ -121,20 +104,14 @@ int configuration::FileManager::qt_metacall(QMetaObject::Call _c, int _id, void 
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 2;
     }
     return _id;
-}
-
-// SIGNAL 0
-void configuration::FileManager::parseFiles()
-{
-    QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 QT_END_MOC_NAMESPACE
