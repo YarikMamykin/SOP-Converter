@@ -1,0 +1,11 @@
+## TODO LIST FILE ##
+# Created for managing tasks todo 
+
+1. Need to rework parsing logic of files.
+Let the '{' and '}' be main stickers for parsing boundary parts;
+When parsing file the string above '{' must be readed as plane name and context between '{' and '}'
+must be interpreted as appropriate values.
+
+2. Need to rework after-parsing logic when backup files are loaded.
+Boundary file must be parsed first to retreive plane names and their types.
+Files 'p' and 'U' must be rewritten accordingly to data stored in boundary file.
