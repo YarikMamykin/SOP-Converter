@@ -53,6 +53,7 @@ private:
     static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
     std::shared_ptr<std::map<std::string, std::string>> boundaryMap; // map of boundary properties --> will be shared with
+    std::shared_ptr<std::map<std::string, std::string>> uMap; // map of u file
 };
 
 class ParserThread : public QThread

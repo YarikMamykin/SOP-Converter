@@ -12,7 +12,8 @@ unsigned char configuration::Parser::counter = 0;
 
 configuration::Parser::Parser() :
     QObject(),
-    boundaryMap(std::make_shared<std::map<std::string, std::string>>())
+    boundaryMap(std::make_shared<std::map<std::string, std::string>>()),
+    uMap(std::make_shared<std::map<std::string, std::string>>())
 {    
     QObject::connect(this, SIGNAL(startParsing()), SLOT(ParseAll()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseP()), SLOT(parseP()), Qt::QueuedConnection);
@@ -29,6 +30,7 @@ configuration::Parser::Parser() :
 configuration::Parser::~Parser()
 {    
     boundaryMap.get()->clear();
+    uMap.get()->clear();
     LogManager::getInstance()->log("Parser destroyed", logging::LogDirection::file);    
 }
 
@@ -75,10 +77,80 @@ void configuration::Parser::parseP()
 }
 
 void configuration::Parser::parseU()
-{    
+{
+    LogManager::getInstance()->log("Parsing U file");
+    std::shared_ptr<QFile> file = FileManager::getInstance()->getSettingFile("U");
+
+    if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        LogManager::getInstance()->log("Could not open U file for parsing!");
+        Parser::parserFlags[static_cast<int>(ParserId::U)] = false;
+        return;
+    }
+
+    QTextStream* data = new QTextStream(file.get());
+    QString buffer("");
+    QString prevLine("");
+    QStringList splittedBuffer;
+    std::string key;
+    std::string type_value;
+
+    bool read_patch_type = false;
+    bool read_patch_value = false;
+
+    while(!data->readLine().contains("boundaryField")); data->readLine(); // shift to patches
+    uMap.get()->clear(); // clear current boundary data
+
+    while(!data->atEnd())
+    {
+        prevLine = buffer;
+        buffer = data->readLine();
+
+        if(buffer.contains(")")) break;
+        if(buffer.isEmpty()) continue;
+        if(read_patch_type)
+        {
+            splittedBuffer.clear();
+            splittedBuffer = (buffer.trimmed().split(" "));
+            splittedBuffer.removeAll(QString(""));
+            buffer = splittedBuffer[1];
+
+            type_value.empty() ? type_value = buffer.toStdString() :
+                                 type_value = buffer.toStdString() + std::string(" ") + type_value ; // in case of reverse order of value and type
+            type_value = buffer.toStdString();
+
+
+            read_patch_type = false; continue;
+        }
+        if(read_patch_value)
+        {
+            // SEE TODO_LIST.TXT on doc branch about value parsing implementation
+            type_value.empty() ? type_value = buffer.toStdString() : // in case of reverse order of value and type
+                                 type_value = type_value + std::string(" ") + buffer.toStdString() ;
+            read_patch_value = false; continue;
+        }
+        if(buffer.contains("{"))
+        {
+            key = prevLine.trimmed().toStdString();
+            read_patch_type = true; continue;
+        }
+        if(buffer.contains("value")) { read_patch_value = true; continue; }
+        if(buffer.contains("}")) {uMap.get()->insert(std::pair<std::string, std::string>(key,type_value));}
+    }
+
     Parser::parserFlags[static_cast<int>(ParserId::U)] = true;
     LogManager::getInstance()->log("parseU --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::U)]));
     collectResults();
+
+    LogManager::getInstance()->log(QString("Printing uMap (%1)").arg(uMap.get()->size()));
+    for(auto e : *uMap.get())
+    {
+        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e.first.c_str()));
+        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e.second.c_str()));
+    }
+
+    file.get()->close();
+    delete data;
 }
 
 void configuration::Parser::parseBoundary()
@@ -88,7 +160,7 @@ void configuration::Parser::parseBoundary()
     if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
         LogManager::getInstance()->log("Could not open boundary file for parsing!");
-        Parser::parserFlags[static_cast<int>(ParserId::boundary)] = false;\
+        Parser::parserFlags[static_cast<int>(ParserId::boundary)] = false;
         return;
     }
 
@@ -122,6 +194,7 @@ void configuration::Parser::parseBoundary()
             splittedBuffer.removeAll(QString(""));
             buffer = splittedBuffer[1];
             value = buffer.toStdString();
+
             boundaryMap.get()->insert(std::pair<std::string, std::string>(key,value));
             read_patch_type = false;
         }
@@ -145,6 +218,8 @@ void configuration::Parser::parseBoundary()
 
 void configuration::Parser::parseControlDict()
 {
+
+
     Parser::parserFlags[static_cast<int>(ParserId::controlDict)] = true;
     LogManager::getInstance()->log("parseControlDict --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::controlDict)]));
     collectResults();
