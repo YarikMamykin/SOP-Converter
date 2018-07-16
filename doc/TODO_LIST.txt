@@ -9,3 +9,8 @@ must be interpreted as appropriate values.
 2. Need to rework after-parsing logic when backup files are loaded.
 Boundary file must be parsed first to retreive plane names and their types.
 Files 'p' and 'U' must be rewritten accordingly to data stored in boundary file.
+
+3. Need to implement logic of reading value of boundary in 'p' and 'U' files.
+Suggested next === 3.1. Capture buffer;
+                   3.2.1. Cut buffer string from '(' to ')' # only for U file !!!!
+		   3.2.2. Cut buffer after wor 'uniform'    # only for p file !!!!
