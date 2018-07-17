@@ -96,7 +96,6 @@ void configuration::Parser::parseU()
     std::string type_value;
 
     bool read_patch_type = false;
-    bool read_patch_value = false;
 
     while(!data->readLine().contains("boundaryField")); data->readLine(); // shift to patches
     uMap.get()->clear(); // clear current boundary data
@@ -105,36 +104,28 @@ void configuration::Parser::parseU()
     {
         prevLine = buffer;
         buffer = data->readLine();
-
-        if(buffer.contains(")")) break;
+        if(buffer.contains("}") && buffer.size() == 1) break;
         if(buffer.isEmpty()) continue;
-        if(read_patch_type)
-        {
-            splittedBuffer.clear();
-            splittedBuffer = (buffer.trimmed().split(" "));
-            splittedBuffer.removeAll(QString(""));
-            buffer = splittedBuffer[1];
-
-            type_value.empty() ? type_value = buffer.toStdString() :
-                                 type_value = buffer.toStdString() + std::string(" ") + type_value ; // in case of reverse order of value and type
-            type_value = buffer.toStdString();
-
-
-            read_patch_type = false; continue;
-        }
-        if(read_patch_value)
-        {
-            // SEE TODO_LIST.TXT on doc branch about value parsing implementation
-            type_value.empty() ? type_value = buffer.toStdString() : // in case of reverse order of value and type
-                                 type_value = type_value + std::string(" ") + buffer.toStdString() ;
-            read_patch_value = false; continue;
-        }
         if(buffer.contains("{"))
         {
             key = prevLine.trimmed().toStdString();
             read_patch_type = true; continue;
         }
-        if(buffer.contains("value")) { read_patch_value = true; continue; }
+        if(read_patch_type)
+        {
+            splittedBuffer.clear();
+            splittedBuffer = (buffer.trimmed().split(" "));
+            splittedBuffer.removeAll(QString(""));
+            buffer = splittedBuffer[1].remove(splittedBuffer[1].size()-1, 1); // remove ';' char
+            type_value = buffer.toStdString();
+            read_patch_type = false; continue;
+        }
+        if(buffer.contains("value"))
+        {
+            buffer = buffer.trimmed();
+            type_value.append(std::string(" ") +
+                              buffer.toStdString().substr(buffer.indexOf('('), buffer.indexOf(')') - buffer.indexOf('(') + 1));
+        }
         if(buffer.contains("}")) {uMap.get()->insert(std::pair<std::string, std::string>(key,type_value));}
     }
 
@@ -165,12 +156,12 @@ void configuration::Parser::parseBoundary()
     }
 
     QTextStream* data = new QTextStream(file.get());
-    QString buffer;
+    QString buffer("");
+    QString prevLine("");
     QStringList splittedBuffer;
     std::string key;
     std::string value;
 
-    bool read_patch_name = false;
     bool read_patch_type = false;
 
     while(!data->readLine().contains("// *")); // shift to patches
@@ -178,15 +169,11 @@ void configuration::Parser::parseBoundary()
 
     while(!data->atEnd())
     {
+        prevLine = buffer;
         buffer = data->readLine();
 
         if(buffer.contains(")")) break;
         if(buffer.isEmpty()) continue;
-        if(read_patch_name)
-        {
-            key = buffer.trimmed().toStdString();
-            read_patch_name = false;
-        }
         if(read_patch_type)
         {
             splittedBuffer.clear();
@@ -196,10 +183,13 @@ void configuration::Parser::parseBoundary()
             value = buffer.toStdString();
 
             boundaryMap.get()->insert(std::pair<std::string, std::string>(key,value));
-            read_patch_type = false;
+            read_patch_type = false; continue;
         }
-        if(buffer.contains("{")) { read_patch_type = true; continue ; }
-        if(buffer.contains("(") || buffer.contains("}")) { read_patch_name = true; continue; }
+        if(buffer.contains("{"))
+        {
+            key = prevLine.trimmed().toStdString();
+            read_patch_type = true; continue;
+        }
     }
 
     Parser::parserFlags[static_cast<int>(ParserId::boundary)] = true;
