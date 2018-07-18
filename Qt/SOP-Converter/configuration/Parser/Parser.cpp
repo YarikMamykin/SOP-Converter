@@ -13,7 +13,10 @@ unsigned char configuration::Parser::counter = 0;
 configuration::Parser::Parser() :
     QObject(),
     boundaryMap(std::make_shared<std::map<std::string, std::string>>()),
-    uMap(std::make_shared<std::map<std::string, std::string>>())
+    uMap(std::make_shared<std::map<std::string, std::string>>()),
+    pMap(std::make_shared<std::map<std::string, std::string>>()),
+    controlDictMap(std::make_shared<std::map<std::string, std::string>>()),
+    transportPropertiesMap(std::make_shared<std::map<std::string, std::string>>())
 {    
     QObject::connect(this, SIGNAL(startParsing()), SLOT(ParseAll()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseP()), SLOT(parseP()), Qt::QueuedConnection);
@@ -31,6 +34,9 @@ configuration::Parser::~Parser()
 {    
     boundaryMap.get()->clear();
     uMap.get()->clear();
+    pMap.get()->clear();
+    controlDictMap.get()->clear();
+    transportPropertiesMap.get()->clear();
     LogManager::getInstance()->log("Parser destroyed", logging::LogDirection::file);    
 }
 
@@ -71,9 +77,74 @@ void configuration::Parser::ParseAll()
 
 void configuration::Parser::parseP()
 {
+    LogManager::getInstance()->log("Parsing p file");
+    std::shared_ptr<QFile> file = FileManager::getInstance()->getSettingFile("p");
+
+    if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        LogManager::getInstance()->log("Could not open p file for parsing!");
+        Parser::parserFlags[static_cast<int>(ParserId::p)] = false;
+        return;
+    }
+
+    QTextStream* data = new QTextStream(file.get());
+    QString buffer("");
+    QString prevLine("");
+    QStringList splittedBuffer;
+    std::string key;
+    std::string type_value;
+
+    bool read_patch_type = false;
+
+    while(!data->readLine().contains("boundaryField")); data->readLine(); // shift to patches
+    pMap.get()->clear(); // clear current boundary data
+
+    while(!data->atEnd())
+    {
+        prevLine = buffer;
+        buffer = data->readLine();
+        if(buffer.contains("}") && buffer.size() == 1) break;
+        if(buffer.isEmpty()) continue;
+        if(buffer.contains("{"))
+        {
+            key = prevLine.trimmed().toStdString();
+            read_patch_type = true; continue;
+        }
+        if(read_patch_type)
+        {
+            splittedBuffer.clear();
+            splittedBuffer = buffer.trimmed().split(" ");
+            splittedBuffer.removeAll(QString(""));
+            buffer = splittedBuffer[1].remove(splittedBuffer[1].size()-1, 1); // remove ';' char
+            type_value = buffer.toStdString();
+            read_patch_type = false; continue;
+        }
+        if(buffer.contains("value"))
+        {
+            splittedBuffer.clear();
+            splittedBuffer = buffer.trimmed().split(" ");
+            splittedBuffer.removeAll(QString(""));
+            buffer = splittedBuffer[splittedBuffer.size()-1].remove(splittedBuffer[splittedBuffer.size()-1].size()-1, 1);
+
+            type_value.append(std::string(" ") + buffer.toStdString());
+        }
+        if(buffer.contains("}")) {pMap.get()->insert(std::pair<std::string, std::string>(key,type_value));}
+    }
+
+
     Parser::parserFlags[static_cast<int>(ParserId::p)] = true;
-    LogManager::getInstance()->log("parseP --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::p)]));
+    LogManager::getInstance()->log("parseU --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::p)]));
     collectResults();
+
+    LogManager::getInstance()->log(QString("Printing pMap (%1)").arg(pMap.get()->size()));
+    for(auto e : *pMap.get())
+    {
+        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e.first.c_str()));
+        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e.second.c_str()));
+    }
+
+    file.get()->close();
+    delete data;
 }
 
 void configuration::Parser::parseU()
@@ -208,15 +279,52 @@ void configuration::Parser::parseBoundary()
 
 void configuration::Parser::parseControlDict()
 {
+    std::shared_ptr<QFile> file = FileManager::getInstance()->getSettingFile("controlDict");
 
+    if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        LogManager::getInstance()->log("Could not open controlDict file for parsing!");
+        Parser::parserFlags[static_cast<int>(ParserId::controlDict)] = false;
+        return;
+    }
+
+    QTextStream* data = new QTextStream(file.get());
+    QString buffer("");
+    QStringList splittedBuffer;
+
+    while(!data->readLine().contains("// *")); // shift to config
+    controlDictMap.get()->clear(); // clear current boundary data
+
+    while(!data->atEnd())
+    {
+        buffer = data->readLine();
+        if(buffer.contains("//") || buffer.contains("***") || buffer.isEmpty()) continue;
+        buffer = buffer.remove(buffer.size()-1, 1); // remove ';' char
+        splittedBuffer.clear();
+        splittedBuffer = buffer.trimmed().split(" ");
+        splittedBuffer.removeAll(QString(""));
+        controlDictMap.get()->insert(std::pair<std::string, std::string>(
+                                         splittedBuffer[0].toStdString(),
+                                         splittedBuffer[1].toStdString()));
+    }
 
     Parser::parserFlags[static_cast<int>(ParserId::controlDict)] = true;
     LogManager::getInstance()->log("parseControlDict --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::controlDict)]));
     collectResults();
+
+    for(auto e : *controlDictMap.get())
+    {
+        LogManager::getInstance()->log(QString("Having config --> ") + QString(e.first.c_str()));
+        LogManager::getInstance()->log(QString("Having config value --> ") + QString(e.second.c_str()));
+    }
+
+    file.get()->close();
+    delete data;
 }
 
 void configuration::Parser::parseTransportProperties()
 {
+    // need to acknowledge what is the meaning of nu string in transportProperties files
     Parser::parserFlags[static_cast<int>(ParserId::transportProperties)] = true;
     LogManager::getInstance()->log("parseTransportProperties --> " + boolToString(Parser::parserFlags[static_cast<int>(ParserId::transportProperties)]));
     collectResults();

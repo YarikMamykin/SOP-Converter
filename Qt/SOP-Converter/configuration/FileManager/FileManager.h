@@ -53,6 +53,7 @@ public:
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
+    std::shared_ptr<QDir> getBackupDir();
     std::shared_ptr<QFile> getSettingFile(const QString& filename);
     QStringList getListOfSettingFiles();
 
@@ -64,11 +65,12 @@ public slots:
 private:    
     unsigned int maxLogFilesCount;
     QProcess* procExecutor;
-    QFile* logFile;
-    QDir* backupDir;
+    QFile* logFile;    
+    std::shared_ptr<QDir> backupDir;
     QStringList* zeroFolderEntryValid;
     QStringList* polyMeshFolderEntryValid;
     QStringList* systemFolderEntryValid;
+
     std::shared_ptr<QFile> projectFile; // XML file for saving project settings
     std::shared_ptr<QFile> meshFile;
     std::shared_ptr<QDir> workDir; // where mesh file is placed

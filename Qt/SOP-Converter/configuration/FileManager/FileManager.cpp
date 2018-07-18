@@ -10,7 +10,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
     maxLogFilesCount(5),
     procExecutor(new QProcess),
     logFile(new QFile),
-    backupDir(new QDir("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
+    backupDir(std::make_shared<QDir>("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
     polyMeshFolderEntryValid(new QStringList),
     systemFolderEntryValid(new QStringList),
@@ -45,7 +45,6 @@ configuration::FileManager::~FileManager()
 {
     procExecutor->close();
     delete procExecutor;
-    delete backupDir;
     settingFiles.clear();
     QObject::disconnect(getInstance(),0,0,0);
     zeroFolderEntryValid->clear();     delete zeroFolderEntryValid;
@@ -127,7 +126,7 @@ bool configuration::FileManager::loadBackupFiles()
         tmp.removeRecursively();
     }
 
-    copyDirRecursively(*backupDir, *workDir.get());
+    copyDirRecursively(*backupDir.get(), *workDir.get());
 
     if(validateZeroFolder() && validateConstantBackedUpFolder() && validateSystemFolder())
         return true;
@@ -202,6 +201,7 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
 std::shared_ptr<QFile> configuration::FileManager::getProjectFile() {return projectFile;}
 std::shared_ptr<QFile> configuration::FileManager::getMeshFile() {return meshFile;}
 std::shared_ptr<QDir> configuration::FileManager::getWorkDir() {return workDir;}
+std::shared_ptr<QDir> configuration::FileManager::getBackupDir() {return backupDir;}
 std::shared_ptr<QFile> configuration::FileManager::getSettingFile(const QString& filename) {return settingFiles.find(filename)->second;}
 
 QStringList configuration::FileManager::getListOfSettingFiles()
