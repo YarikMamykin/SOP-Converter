@@ -7,6 +7,7 @@ Let the '{' and '}' be main stickers for parsing boundary parts;
 When parsing file the string above '{' must be readed as plane name and context between '{' and '}'
 must be interpreted as appropriate values.
 
+#! NOT DONE
 2. Need to rework after-parsing logic when backup files are loaded.
 Boundary file must be parsed first to retreive plane names and their types.
 Files 'p' and 'U' must be rewritten accordingly to data stored in boundary file.
@@ -17,6 +18,9 @@ Suggested next === 3.1. Capture buffer;
                    3.2.1. Cut buffer string from '(' to ')' # only for U file !!!!  
 		   3.2.2. Cut buffer after word 'uniform'   # only for p file !!!!
 
-
+#! DONE
 4. Investigate 'transportProperties' nu string meaning --> see UserGuide.pdf page 105 (paragraph 4.2.6)
 Implement appropriate map for parsing file 'transportProperties'.
+
+#! NOT DONE
+5. Implement OpenFoamManager logic for syncing files when backup is loaded and etc.
