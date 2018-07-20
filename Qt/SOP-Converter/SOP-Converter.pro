@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     configuration/FileManager/FileManager.cpp \
     configuration/ProjectFile/ProjectFile.cpp \
     configuration/ClientManager/ClientManager.cpp \
-    general/general.cpp
+    general/general.cpp \
+    configuration/OpenFoamManager/OpenFoamManager.cpp
 
 HEADERS  += MainWindow.h \
     logging/Logger/Logger.h \
@@ -44,7 +45,8 @@ HEADERS  += MainWindow.h \
     configuration/FileManager/FileManager.h \
     configuration/ProjectFile/ProjectFile.h \
     configuration/ClientManager/ClientManager.h \
-    general/general.h
+    general/general.h \
+    configuration/OpenFoamManager/OpenFoamManager.h
 
 
 FORMS    += mainwindow.ui

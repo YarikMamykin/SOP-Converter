@@ -22,15 +22,15 @@ private:
     explicit Parser(const configuration::Parser&) = delete;
     virtual ~Parser();
 public:
-    static configuration::Parser* getInstance();
-    static bool parseIdeasUnvToFoamLog(const QString& result);
-    static bool parseTransformPointsLog(const QString& result);
-
     enum class ParserId : unsigned char
     {
         p, U, boundary, controlDict, transportProperties
     };
 
+    static configuration::Parser* getInstance();
+    static bool parseIdeasUnvToFoamLog(const QString& result);
+    static bool parseTransformPointsLog(const QString& result);
+    std::shared_ptr<std::map<std::string, std::string>> getParserMap(const ParserId&);
 signals:
     void startParsing(); // parses all
     void startParseP();
@@ -52,11 +52,7 @@ private slots:
 private:
     static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
-    std::shared_ptr<std::map<std::string, std::string>> boundaryMap; // map of boundary properties --> will be shared with
-    std::shared_ptr<std::map<std::string, std::string>> uMap; // map of u file
-    std::shared_ptr<std::map<std::string, std::string>> pMap; // map of p file
-    std::shared_ptr<std::map<std::string, std::string>> controlDictMap; // map of controlDict file
-    std::shared_ptr<std::map<std::string, std::string>> transportPropertiesMap; // map of transportProperties file
+    std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;
 };
 
 class ParserThread : public QThread
