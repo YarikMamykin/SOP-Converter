@@ -23,4 +23,8 @@ Suggested next === 3.1. Capture buffer;
 Implement appropriate map for parsing file 'transportProperties'.
 
 #! NOT DONE
-5. Implement OpenFoamManager logic for syncing files when backup is loaded and etc.
+5. Implement Parser::syncFiles logic. Need to make it multithread (Qt signals with QueuedConnection).
+- syncFile slot must recieve file to sync via std::shared_ptr.
+- there we create temp file and input actual values of synced maps.
+- then remove original file context with temp file context.
+
