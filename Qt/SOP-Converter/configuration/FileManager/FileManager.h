@@ -21,7 +21,7 @@
 namespace configuration
 {
 
-class FileManager : public QObject
+class FileManager final : public QObject
 {
     Q_OBJECT
 private:

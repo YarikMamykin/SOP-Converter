@@ -7,7 +7,7 @@
 namespace configuration
 {
 
-class ClientManager : public QObject
+class ClientManager final : public QObject
 {
     Q_OBJECT
 public:

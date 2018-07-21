@@ -20,6 +20,7 @@ configuration::Parser::Parser() :
     QObject::connect(this, SIGNAL(startParseBoundary()), SLOT(parseBoundary()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseControlDict()), SLOT(parseControlDict()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseTransportProperties()), SLOT(parseTransportProperties()), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(syncFile(std::shared_ptr<QFile>)), SLOT(syncFile(std::shared_ptr<QFile>)), Qt::QueuedConnection);
 
     resetFlags();
 
@@ -398,6 +399,12 @@ void configuration::Parser::collectResults()
 {
     ++counter;
     if(counter == maps.size()) LogManager::getInstance()->log("Results collected"); else return;
+
+    try
+    {
+        syncFiles();
+    }catch(FileManager::Exception& e){LogManager::getInstance()->log(e.what());}
+
     emit endParsing();
 }
 
@@ -409,6 +416,52 @@ void configuration::Parser::resetFlags()
         e = false;
     }
     LogManager::getInstance()->log("Flags reseted");
+}
+
+void configuration::Parser::syncFiles()
+{
+    if( maps[static_cast<int>(ParserId::boundary)].get()->size() == maps[static_cast<int>(ParserId::p)].get()->size()
+            &&
+        maps[static_cast<int>(ParserId::boundary)].get()->size() == maps[static_cast<int>(ParserId::U)].get()->size())
+    { return; }
+
+    maps[static_cast<int>(ParserId::p)].get()->clear();
+    maps[static_cast<int>(ParserId::U)].get()->clear();
+
+    std::shared_ptr<QFile> pFile = FileManager::getInstance()->getSettingFile("p");
+    std::shared_ptr<QFile> pTemp = std::make_shared<QFile>(pFile.get()->fileName() + QString(".temp"));
+    std::shared_ptr<QFile> uFile = FileManager::getInstance()->getSettingFile("U");
+    std::shared_ptr<QFile> uTemp = std::make_shared<QFile>(uFile.get()->fileName() + QString(".temp"));
+
+    if(!pFile.get()->open(QIODevice::ReadOnly|QIODevice::Text)) throw FileManager::Exception(QString("Can't open file %1").arg(pFile.get()->fileName()));
+    if(!pTemp.get()->open(QIODevice::WriteOnly|QIODevice::Text)) throw FileManager::Exception(QString("Can't open file %1").arg(pTemp.get()->fileName()));
+    if(!uFile.get()->open(QIODevice::ReadOnly|QIODevice::Text)) throw FileManager::Exception(QString("Can't open file %1").arg(uFile.get()->fileName()));
+    if(!uTemp.get()->open(QIODevice::WriteOnly|QIODevice::Text)) throw FileManager::Exception(QString("Can't open file %1").arg(uTemp.get()->fileName()));
+
+    for(auto e : *maps[static_cast<int>(ParserId::boundary)].get())
+    {
+        maps[static_cast<int>(ParserId::p)].get()->insert(std::pair<std::string, std::string>(e.first, defaultNodeType));
+        maps[static_cast<int>(ParserId::U)].get()->insert(std::pair<std::string, std::string>(e.first, defaultNodeType));
+    }
+
+    for(auto e : *maps[static_cast<int>(ParserId::U)].get()) LogManager::getInstance()->log(QString("U pair %1=%2").arg(e.first.c_str()).arg(e.second.c_str()));
+    for(auto e : *maps[static_cast<int>(ParserId::p)].get()) LogManager::getInstance()->log(QString("p pair %1=%2").arg(e.first.c_str()).arg(e.second.c_str()));
+
+    // SEE TODO LIST ABOUT IMPLEMENTATION
+//    QTextStream pData(pFile.get());
+//    QTextStream uData(uFile.get());
+//    QTextStream pTempData(pTemp.get());
+//    QTextStream uTempData(uTemp.get());
+//    emit syncFile(pFile);
+//    emit syncFile(uFile);
+
+
+//    QString buffer;
+//    pTemp.get()->write()
+    pFile.get()->close();
+    pTemp.get()->close();
+    uFile.get()->close();
+    uTemp.get()->close();
 }
 
 bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
@@ -443,6 +496,14 @@ std::shared_ptr<std::map<std::string, std::string>> configuration::Parser::getPa
     }
 }
 
+
+configuration::ParserThread::ParserThread(Parser::ParserId _id) :
+    QThread(),
+    id(_id)
+{
+    LogManager::getInstance()->log("ParserThread constructed");
+}
+
 void configuration::ParserThread::run()
 {
     LogManager::getInstance()->log(QString("starting parser thread ") + parserIdToString(id));
@@ -455,3 +516,9 @@ void configuration::ParserThread::run()
         case Parser::ParserId::transportProperties: emit Parser::getInstance()->startParseTransportProperties(); break;
     }
 }
+
+configuration::ParserThread::~ParserThread()
+{
+    LogManager::getInstance()->log("ParserThread destroyed");
+}
+

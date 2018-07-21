@@ -20,7 +20,7 @@ enum class LogDirection
 };
 
 /* Puts log into console or log file or both */
-class Logger : public QObject
+class Logger final : public QObject
 {
     Q_OBJECT
 private:

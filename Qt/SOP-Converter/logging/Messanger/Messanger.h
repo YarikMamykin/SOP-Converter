@@ -9,7 +9,7 @@ namespace logging
 {
 
 /* Displays message via message box */
-class Messanger : public QObject
+class Messanger final : public QObject
 {
     Q_OBJECT
 private:

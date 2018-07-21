@@ -14,7 +14,7 @@
 namespace configuration
 {
 
-class Parser : public QObject
+class Parser final : public QObject
 {
     Q_OBJECT
 private:
@@ -26,6 +26,8 @@ public:
     {
         p, U, boundary, controlDict, transportProperties
     };
+
+    class BoundaryNode;
 
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);
@@ -39,6 +41,8 @@ signals:
     void startParseControlDict();
     void startParseTransportProperties();
     void endParsing();
+
+    void syncFile(std::shared_ptr<QFile> file);
 private slots:
     void ParseAll();
     void parseP();
@@ -46,9 +50,11 @@ private slots:
     void parseBoundary();
     void parseControlDict();
     void parseTransportProperties();
-    void collectResults();
 
+    void collectResults();
     void resetFlags();
+    void syncFiles();
+    void syncFile(std::shared_ptr<QFile> file);
 private:
     static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
@@ -59,13 +65,27 @@ class ParserThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ParserThread(Parser::ParserId _id) : QThread(), id(_id) {}
+    explicit ParserThread(Parser::ParserId _id);
+    virtual ~ParserThread();
 private:
-
     void run() override;
-
 private:
     Parser::ParserId id;
+};
+
+class Parser::BoundaryNode
+{
+private:
+    explicit BoundaryNode() = default;
+public:
+    explicit BoundaryNode(const QString& _name, const QString& _type, const QString& _value = QString("")) :
+        name(_name), type(_type), value(_value)
+    {  }
+    virtual ~BoundaryNode(){}
+private:
+    QString name;
+    QString type;
+    QString value;
 };
 
 }
