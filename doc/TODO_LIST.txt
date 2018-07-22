@@ -29,5 +29,10 @@ Implement appropriate map for parsing file 'transportProperties'.
 - then remove original file context with temp file context.
 
 #! NOT DONE
-6. Manage Parser::notifyAll signal usage to connect Ui.
+6. Implement file sync for boundary, controlDict and transportProperties files.
+Need to be done before next task!!!
+#!____________________________________________________________________________#!
+
+#! NOT DONE
+7. Manage Parser::notifyAll signal usage to connect Ui.
 
