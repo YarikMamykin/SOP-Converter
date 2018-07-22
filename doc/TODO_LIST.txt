@@ -7,7 +7,7 @@ Let the '{' and '}' be main stickers for parsing boundary parts;
 When parsing file the string above '{' must be readed as plane name and context between '{' and '}'
 must be interpreted as appropriate values.
 
-#! NOT DONE
+#! DONE
 2. Need to rework after-parsing logic when backup files are loaded.
 Boundary file must be parsed first to retreive plane names and their types.
 Files 'p' and 'U' must be rewritten accordingly to data stored in boundary file.
@@ -22,9 +22,12 @@ Suggested next === 3.1. Capture buffer;
 4. Investigate 'transportProperties' nu string meaning --> see UserGuide.pdf page 105 (paragraph 4.2.6)
 Implement appropriate map for parsing file 'transportProperties'.
 
-#! NOT DONE
-5. Implement Parser::syncFiles logic. Need to make it multithread (Qt signals with QueuedConnection).
+#! DONE
+5. Implement Parser::syncFiles logic. Need to make it multithread (if possible) or async.
 - syncFile slot must recieve file to sync via std::shared_ptr.
 - there we create temp file and input actual values of synced maps.
 - then remove original file context with temp file context.
+
+#! NOT DONE
+6. Manage Parser::notifyAll signal usage to connect Ui.
 
