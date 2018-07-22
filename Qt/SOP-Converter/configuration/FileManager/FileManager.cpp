@@ -256,6 +256,11 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
                 workDir.get()->setPath("");
                 return;
             }
+            else if(workDirEntryF.size() == 1)
+            {
+                meshFile.get()->setFileName(workDir.get()->path().append("/") + workDirEntryF[0]);
+                LogManager::getInstance()->log(QString("Mesh file in workspace --> ") + meshFile.get()->fileName());
+            }
 
             zeroFolderValid = validateZeroFolder();
             constantFolderValid = validateConstantFolder();
@@ -265,8 +270,8 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));            
 
             if(zeroFolderValid && constantFolderValid && systemFolderValid && !meshFile.get()->fileName().isEmpty())
-            {
-                emit Parser::getInstance()->startParsing();
+            {                
+                emit Parser::getInstance()->startParsing(); return;
             }
             else if(!meshFile.get()->fileName().isEmpty())
             {

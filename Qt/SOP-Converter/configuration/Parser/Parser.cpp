@@ -76,7 +76,7 @@ void configuration::Parser::ParseAll()
 
     parserThreads.clear();
 
-    LogManager::getInstance()->log("Threads ended!");    
+    LogManager::getInstance()->log("Threads ended!");
     emit endParsing(
                Parser::parserFlags[static_cast<int>(ParserId::p)]
             && Parser::parserFlags[static_cast<int>(ParserId::U)]
@@ -94,6 +94,12 @@ void configuration::Parser::parseP()
     if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
         LogManager::getInstance()->log("Could not open p file for parsing!");
+        Parser::parserFlags[static_cast<int>(ParserId::p)] = false;
+        return;
+    }
+    if(file.get()->size() == 0)
+    {
+        LogManager::getInstance()->log("p file is EMPTY! No parsing can be applied!");
         Parser::parserFlags[static_cast<int>(ParserId::p)] = false;
         return;
     }
@@ -171,6 +177,12 @@ void configuration::Parser::parseU()
         Parser::parserFlags[static_cast<int>(ParserId::U)] = false;
         return;
     }
+    if(file.get()->size() == 0)
+    {
+        LogManager::getInstance()->log("U file is EMPTY! No parsing can be applied!");
+        Parser::parserFlags[static_cast<int>(ParserId::U)] = false;
+        return;
+    }
 
     QTextStream* data = new QTextStream(file.get());
     QString buffer("");
@@ -239,6 +251,12 @@ void configuration::Parser::parseBoundary()
         LogManager::getInstance()->log("Could not open boundary file for parsing!");
         Parser::parserFlags[static_cast<int>(ParserId::boundary)] = false;
         return;
+    }    
+    if(file.get()->size() == 0)
+    {
+        LogManager::getInstance()->log("Boundary file is EMPTY! No parsing can be applied!");
+        Parser::parserFlags[static_cast<int>(ParserId::boundary)] = false;
+        return;
     }
 
     QTextStream* data = new QTextStream(file.get());
@@ -305,6 +323,12 @@ void configuration::Parser::parseControlDict()
         Parser::parserFlags[static_cast<int>(ParserId::controlDict)] = false;
         return;
     }
+    if(file.get()->size() == 0)
+    {
+        LogManager::getInstance()->log("controlDict file is EMPTY! No parsing can be applied!");
+        Parser::parserFlags[static_cast<int>(ParserId::controlDict)] = false;
+        return;
+    }
 
     QTextStream* data = new QTextStream(file.get());
     QString buffer("");
@@ -351,6 +375,12 @@ void configuration::Parser::parseTransportProperties()
     if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
         LogManager::getInstance()->log("Could not open transportProperties file for parsing!");
+        Parser::parserFlags[static_cast<int>(ParserId::transportProperties)] = false;
+        return;
+    }
+    if(file.get()->size() == 0)
+    {
+        LogManager::getInstance()->log("transportProperties file is EMPTY! No parsing can be applied!");
         Parser::parserFlags[static_cast<int>(ParserId::transportProperties)] = false;
         return;
     }
@@ -408,6 +438,11 @@ void configuration::Parser::parseTransportProperties()
 void configuration::Parser::parsingEnded(bool parsingResult)
 {
     LogManager::getInstance()->log(QString("PARSING ENDED --> ") + boolToString(parsingResult));
+    if(!parsingResult)
+    {
+        LogManager::getInstance()->log("Cannot perform syncing!"); return;
+    }
+
     bool syncResult = true;
     try
     {
@@ -498,9 +533,9 @@ void configuration::Parser::syncFile(std::shared_ptr<QFile> file)
             tempdata << std::string("}\n").c_str(); // closing bracket for boundaryField
         }break;
         /* All below parsing needs implementation */
-        case ParserId::boundary: break;
-        case ParserId::controlDict: break;
-        case ParserId::transportProperties: break;
+        case ParserId::boundary: return; break;
+        case ParserId::controlDict: return; break;
+        case ParserId::transportProperties: return; break;
     }
 
     file.get()->close();
@@ -621,7 +656,7 @@ std::shared_ptr<QFile> configuration::Parser::matchFileToParserId(ParserId id)
  */
 /*****************************************/
 configuration::ParserThread::ParserThread(Parser::ParserId _id) :
-    QThread(),
+    QThread(Parser::getInstance()),
     id(_id)
 {
     LogManager::getInstance()->log("ParserThread constructed");

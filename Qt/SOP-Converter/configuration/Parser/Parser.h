@@ -27,8 +27,6 @@ public:
         p, U, boundary, controlDict, transportProperties
     };
 
-    friend class ParserThread;
-
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);
     static bool parseTransformPointsLog(const QString& result);
@@ -65,6 +63,8 @@ private:
     static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
     std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;    
+
+    friend class ParserThread;
 };
 
 class ParserThread : public QThread
