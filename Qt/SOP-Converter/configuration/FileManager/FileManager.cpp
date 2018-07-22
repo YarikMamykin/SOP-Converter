@@ -230,31 +230,39 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
     {
 //        if(workDir.get()->path() != QString(".")) // by default QDir path is set to "."
         case configuration::FileManager::ValidatePathsPoint::workDir:
-        {
+        {            
+            if(workDir.get()->path().isEmpty()) return;
             QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
             QStringList workDirEntryF = workDir.get()->entryList(QStringList("*.unv"));
-            LogManager::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::console);
-
-            zeroFolderValid = validateZeroFolder();
-            constantFolderValid = validateConstantFolder();
-            systemFolderValid = validateSystemFolder();
-            LogManager::getInstance()->log(QString("Validating zero folder --> ") + boolToString(zeroFolderValid));
-            LogManager::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
-            LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));
+            LogManager::getInstance()->log((workDirEntryD + workDirEntryF).join(" | "), logging::LogDirection::fileAndConsole);
 
             if(workDirEntryF.size() == 0)
             {
                 // No mesh file in workspace
                 meshFile.get()->setFileName("");
                 Message::getInstance()->showMessage("No mesh file in workspace is present. Add mesh file before convertion!");
+                LogManager::getInstance()->log("Workspace is not selected!");
                 return;
             }
-            else if(workDirEntryF.size() > 0)
+            else if(workDirEntryF.size() > 1)
             {
                 // if one or more mesh file --> select first-trapped in entry list
-                meshFile.get()->setFileName(workDir.get()->path() + QString("/") + workDirEntryF[0]);
-                LogManager::getInstance()->log(QString("Mesh file is - > ") + meshFile.get()->fileName());
+                QStringList message;
+                message << QString("WARNING! Multiple mesh files are present in workspace --> %1 :").arg(workDir.get()->path());
+                message << workDirEntryF.join("\n");
+                message << QString("Leave only ONE mesh file in workspace or select another directory");
+                Message::getInstance()->showMessage(message.join("\n"));
+                LogManager::getInstance()->log("Workspace is not selected!");
+                workDir.get()->setPath("");
+                return;
             }
+
+            zeroFolderValid = validateZeroFolder();
+            constantFolderValid = validateConstantFolder();
+            systemFolderValid = validateSystemFolder();
+            LogManager::getInstance()->log(QString("Validating zero folder --> ") + boolToString(zeroFolderValid));
+            LogManager::getInstance()->log(QString("Validating constant folder --> ") + boolToString(constantFolderValid));
+            LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));            
 
             if(zeroFolderValid && constantFolderValid && systemFolderValid && !meshFile.get()->fileName().isEmpty())
             {

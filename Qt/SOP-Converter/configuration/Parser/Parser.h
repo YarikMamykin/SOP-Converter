@@ -9,7 +9,7 @@
 #include <QThread>
 #include <QList>
 #include <QTextStream>
-
+#include <QMutex>
 
 namespace configuration
 {
@@ -27,12 +27,16 @@ public:
         p, U, boundary, controlDict, transportProperties
     };
 
-    class BoundaryNode;
+    friend class ParserThread;
 
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);
     static bool parseTransformPointsLog(const QString& result);
     std::shared_ptr<std::map<std::string, std::string>> getParserMap(const ParserId&);
+    static QString parserIdToString(const ParserId& id);
+    static ParserId matchParserIdToFile(std::shared_ptr<QFile> file);
+    static std::shared_ptr<QFile> matchFileToParserId(ParserId id);
+    void syncFile(std::shared_ptr<QFile> file);
 signals:
     void startParsing(); // parses all
     void startParseP();
@@ -40,9 +44,10 @@ signals:
     void startParseBoundary();
     void startParseControlDict();
     void startParseTransportProperties();
-    void endParsing();
+    void endParsing(bool);
+    void notifyAll(bool,bool); // connect to any object that will recieve notify message
 
-    void syncFile(std::shared_ptr<QFile> file);
+    void startSyncFiles();
 private slots:
     void ParseAll();
     void parseP();
@@ -50,42 +55,28 @@ private slots:
     void parseBoundary();
     void parseControlDict();
     void parseTransportProperties();
+    void parsingEnded(bool result);
 
     void collectResults();
     void resetFlags();
     void syncFiles();
-    void syncFile(std::shared_ptr<QFile> file);
+    std::string formatNode(const std::string& name, const std::string& type_value);
 private:
     static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
     static unsigned char counter; // counts parsing operations
-    std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;
+    std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;    
 };
 
 class ParserThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ParserThread(Parser::ParserId _id);
+    explicit ParserThread(Parser::ParserId _id);    
     virtual ~ParserThread();
 private:
     void run() override;
 private:
-    Parser::ParserId id;
-};
-
-class Parser::BoundaryNode
-{
-private:
-    explicit BoundaryNode() = default;
-public:
-    explicit BoundaryNode(const QString& _name, const QString& _type, const QString& _value = QString("")) :
-        name(_name), type(_type), value(_value)
-    {  }
-    virtual ~BoundaryNode(){}
-private:
-    QString name;
-    QString type;
-    QString value;
+    Parser::ParserId id;    
 };
 
 }

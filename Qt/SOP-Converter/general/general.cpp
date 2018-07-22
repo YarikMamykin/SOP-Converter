@@ -31,14 +31,3 @@ void copyDirRecursively(const QDir& from, const QDir& to)
     }
 }
 
-const QString parserIdToString(const ParserId& id)
-{
-    switch(id)
-    {
-        case ParserId::p:                   return QString("p"); break;
-        case ParserId::U:                   return QString("U"); break;
-        case ParserId::boundary:            return QString("boundary"); break;
-        case ParserId::controlDict:         return QString("controlDict"); break;
-        case ParserId::transportProperties: return QString("transportProperties"); break;
-    }
-}
