@@ -33,6 +33,9 @@ Implement appropriate map for parsing file 'transportProperties'.
 Need to be done before next task!!!
 #!____________________________________________________________________________#!
 
+#! DONE
+7. Manage Parser::notifyAll signal usage for SetTable.
+
 #! NOT DONE
-7. Manage Parser::notifyAll signal usage to connect Ui.
+8. Implement cells logic for SetTable::Cells class. Don't forget about task 6!
 
