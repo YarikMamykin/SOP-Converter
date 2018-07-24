@@ -1,12 +1,19 @@
 #include "Tables.h"
+#include "../../logging/Logger/Logger.h"
+using LogManager = logging::Logger;
 using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
 
 Ui::SetTable::SetTable(QWidget* parent) :
     QTableWidget(parent),
+    newItem(new QTableWidgetItem("kek")),
     pMap(Parser::getInstance()->getParserMap(ParserId::p)),
+//    pCells(),
     uMap(Parser::getInstance()->getParserMap(ParserId::U)),
+//    uCells(),
     boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary))
+
+//    boundaryCells()
 {
     setDefaultProperties();
     QObject::connect(configuration::Parser::getInstance(),
@@ -22,6 +29,22 @@ Ui::SetTable::~SetTable()
                         SIGNAL(notifyAll()),
                         this,
                         SLOT(Ui::SetTable::loadMaps()));
+    delete newItem;
+//    for(auto e : pCells)
+//    {
+//        delete e;
+//    }
+//    pCells.clear();
+//    for(auto e : uCells)
+//    {
+//        delete e;
+//    }
+//    uCells.clear();
+//    for(auto e : boundaryCells)
+//    {
+//        delete e;
+//    }
+//    boundaryCells.clear();
 }
 
 void Ui::SetTable::setDefaultProperties()
@@ -54,8 +77,6 @@ void Ui::SetTable::loadMaps()
 
     // ------ //
 
-
-
     this->setVerticalHeaderLabels(labels);
 
     this->resizeColumnsToContents();
@@ -65,5 +86,6 @@ void Ui::SetTable::loadMaps()
     this->verticalScrollBar()->show();
 
     this->show();
-
+    newItem->setText(pMap.get()->find("back")->second.c_str());
+    this->setItem(0,0,newItem);
 }
