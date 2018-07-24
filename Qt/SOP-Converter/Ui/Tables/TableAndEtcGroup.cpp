@@ -6,6 +6,7 @@ Ui::TableAndEtcGroup::TableAndEtcGroup(QWidget *parent) :
     layout(new QHBoxLayout)
 {
     layout->addWidget(table);
+    layout->setAlignment(Qt::AlignLeft);
     this->setLayout(layout);
 }
 

@@ -18,6 +18,9 @@ public:
     void selectMeshFile();
     void selectProjectFile();
 private:
+    void notifyUi();
+    void notifyBe();
+private:
     QFileDialog* selectDialog;
 };
 

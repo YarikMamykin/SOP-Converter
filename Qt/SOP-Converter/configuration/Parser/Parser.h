@@ -43,7 +43,7 @@ signals:
     void startParseControlDict();
     void startParseTransportProperties();
     void endParsing(bool);
-    void notifyAll(bool,bool); // connect to any object that will recieve notify message
+    void notifyAll(); // connect to any object that will recieve notify message
 
     void startSyncFiles();
 private slots:

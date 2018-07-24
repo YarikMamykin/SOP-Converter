@@ -90,21 +90,21 @@ static const uint qt_meta_data_configuration__Parser[] = {
        6,    0,  118,    2, 0x05,
        7,    0,  119,    2, 0x05,
        8,    1,  120,    2, 0x05,
-       9,    2,  123,    2, 0x05,
-      10,    0,  128,    2, 0x05,
+       9,    0,  123,    2, 0x05,
+      10,    0,  124,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-      11,    0,  129,    2, 0x08,
-      12,    0,  130,    2, 0x08,
-      13,    0,  131,    2, 0x08,
-      14,    0,  132,    2, 0x08,
-      15,    0,  133,    2, 0x08,
-      16,    0,  134,    2, 0x08,
-      17,    1,  135,    2, 0x08,
-      19,    0,  138,    2, 0x08,
-      20,    0,  139,    2, 0x08,
-      21,    0,  140,    2, 0x08,
-      22,    2,  141,    2, 0x08,
+      11,    0,  125,    2, 0x08,
+      12,    0,  126,    2, 0x08,
+      13,    0,  127,    2, 0x08,
+      14,    0,  128,    2, 0x08,
+      15,    0,  129,    2, 0x08,
+      16,    0,  130,    2, 0x08,
+      17,    1,  131,    2, 0x08,
+      19,    0,  134,    2, 0x08,
+      20,    0,  135,    2, 0x08,
+      21,    0,  136,    2, 0x08,
+      22,    2,  137,    2, 0x08,
 
  // signals: parameters
     QMetaType::Void,
@@ -114,7 +114,7 @@ static const uint qt_meta_data_configuration__Parser[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,    2,
-    QMetaType::Void, QMetaType::Bool, QMetaType::Bool,    2,    2,
+    QMetaType::Void,
     QMetaType::Void,
 
  // slots: parameters
@@ -145,7 +145,7 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         case 4: _t->startParseControlDict(); break;
         case 5: _t->startParseTransportProperties(); break;
         case 6: _t->endParsing((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 7: _t->notifyAll((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 7: _t->notifyAll(); break;
         case 8: _t->startSyncFiles(); break;
         case 9: _t->ParseAll(); break;
         case 10: _t->parseP(); break;
@@ -207,7 +207,7 @@ void configuration::Parser::qt_static_metacall(QObject *_o, QMetaObject::Call _c
             }
         }
         {
-            typedef void (Parser::*_t)(bool , bool );
+            typedef void (Parser::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Parser::notifyAll)) {
                 *result = 7;
             }
@@ -301,10 +301,9 @@ void configuration::Parser::endParsing(bool _t1)
 }
 
 // SIGNAL 7
-void configuration::Parser::notifyAll(bool _t1, bool _t2)
+void configuration::Parser::notifyAll()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
-    QMetaObject::activate(this, &staticMetaObject, 7, _a);
+    QMetaObject::activate(this, &staticMetaObject, 7, 0);
 }
 
 // SIGNAL 8

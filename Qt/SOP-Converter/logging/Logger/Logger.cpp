@@ -38,12 +38,12 @@ bool logging::Logger::log(const QString& log, const logging::LogDirection& direc
     }
     else if(direction == logging::LogDirection::console)
     {
-        emit getInstance()->logToConsole(formatLog(log));
+        emit getInstance()->logToConsole(QString("-> ") + log);
     }
     else if(direction == logging::LogDirection::fileAndConsole)
     {
         emit getInstance()->logToFile(formatLog(log));
-        emit getInstance()->logToConsole(formatLog(log));
+        emit getInstance()->logToConsole(QString("-> ") + log);
     }
 
     return true;

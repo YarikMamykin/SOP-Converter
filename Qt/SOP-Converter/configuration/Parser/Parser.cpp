@@ -448,7 +448,11 @@ void configuration::Parser::parsingEnded(bool parsingResult)
     {
         syncFiles();
     }catch(FileManager::Exception& e){LogManager::getInstance()->log(e.what()); syncResult = false;}
-    emit notifyAll(parsingResult, syncResult);
+
+    if(syncResult)
+        emit notifyAll();
+    else
+        LogManager::getInstance()->log("Sync failed.");
 }
 
 void configuration::Parser::collectResults()
