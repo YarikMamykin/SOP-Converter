@@ -36,6 +36,11 @@ Need to be done before next task!!!
 #! DONE
 7. Manage Parser::notifyAll signal usage for SetTable.
 
-#! NOT DONE
-8. Implement cells logic for SetTable::Cells class. Don't forget about task 6!
+#! DONE
+8. Implement cells logic for SetTable::Cells class.
 
+#! NOT DONE
+9. Figure out what is wrong with Ui destroy.
+
+#! NOT DONE
+10. Implement update cells logic
