@@ -144,7 +144,7 @@ void configuration::Parser::parseP()
             buffer = splittedBuffer[splittedBuffer.size()-1].remove(splittedBuffer[splittedBuffer.size()-1].size()-1, 1);
 
             type_value.append(std::string(" ") + buffer.toStdString());
-        }
+        }        
         if(buffer.contains("}")) {maps[static_cast<int>(ParserId::p)].get()->insert(std::pair<std::string, std::string>(key,type_value));}
     }
 
@@ -284,7 +284,7 @@ void configuration::Parser::parseBoundary()
             splittedBuffer = (buffer.trimmed().split(" "));
             splittedBuffer.removeAll(QString(""));
             buffer = splittedBuffer[1];
-            value = buffer.toStdString();
+            value = buffer.remove(buffer.indexOf(';'), 1).toStdString();
 
             maps[static_cast<int>(ParserId::boundary)].get()->insert(std::pair<std::string, std::string>(key,value));
             read_patch_type = false; continue;

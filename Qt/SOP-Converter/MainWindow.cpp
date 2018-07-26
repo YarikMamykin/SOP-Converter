@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow()
-{
+{    
     delete menuBar;           logging::Logger::getInstance()->log("menuBar deinited", logging::LogDirection::file);
     delete tableAndEtc;       logging::Logger::getInstance()->log("tableAndEtc deinited", logging::LogDirection::file);
     delete consoleAndButtons; logging::Logger::getInstance()->log("ConsoleAndButtons deinited", logging::LogDirection::file);

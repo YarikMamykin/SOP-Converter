@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QDir>
+#include <QThread>
 #include "general/general.h"
 #include "logging/Logger/Logger.h"
 #include "logging/Messanger/Messanger.h"
@@ -25,7 +26,6 @@ int main(int argc, char *argv[])
 //    pf.setFileStructure();
 //    configuration::FileManager::getInstance()->saveProjectFile(pf);
 
-
-
-    return a.exec();
+    int retcode = a.exec();
+    return retcode;
 }

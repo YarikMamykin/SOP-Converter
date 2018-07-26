@@ -22,34 +22,51 @@ public:
 private slots:
     void setDefaultProperties();
     void loadMaps();
+    void updateCellInfo(int row, int column);
 private:
-//    class Cell;
-    QTableWidgetItem* newItem;
+    class Cell;
+    enum class Column { type_p, value_p, type_U, value_U, type_boundary };
+
+    std::vector<std::vector<Cell*>*> cells;    
     std::shared_ptr<std::map<std::string, std::string>> pMap;
-//    std::vector<Cell*> pCells;
     std::shared_ptr<std::map<std::string, std::string>> uMap;
-//    std::vector<Cell*> uCells;
     std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
-//    std::vector<Cell*> boundaryCells;
 };
 
-//class SetTable::Cell : public QTableWidgetItem
-//{
-//    // must receive signals from table about change and
-//    // sync changes accordingly to both maps: table and parser
-//    Q_OBJECT
-//public:
-//    explicit Cell();
-//    explicit Cell(int col, int row, std::string patch, std::string value);
-//    virtual ~Cell();
-//    void setTableIndexColumn(int column);
-//    void setTableIndexRow(int row);
-//    void setMapIndexPatchName(std::string patchName);
-//    void setMapIndexPatchTypeValue(std::string patchTypeValue);
-//private:
-//    std::pair<int, int> tableIndex;
-//    std::pair<std::string, std::string> mapIndex;
-//};
+class SetTable::Cell : public QObject
+{
+    // must receive signals from table about change and
+    // sync changes accordingly to both maps: table and parser
+    Q_OBJECT
+public:
+    explicit Cell(unsigned int row, unsigned int col, std::string patch, std::string value) :
+        tableIndex(row, col),
+        mapIndex(patch, value),
+        instance(new QTableWidgetItem(value.c_str()))
+    {
+        instance->setTextAlignment(Qt::AlignCenter);
+    }
+    virtual ~Cell()
+    {
+        delete instance;
+    }
+    /* set */
+    void setTableIndexRow(const unsigned int& row)                    {tableIndex.first = row;}
+    void setTableIndexColumn(const unsigned int& column)              {tableIndex.second = column;}
+    void setMapIndexPatchName(const std::string& patchName)           {mapIndex.first = patchName;}
+    void setMapIndexPatchTypeValue(const std::string& patchTypeValue) {mapIndex.second = patchTypeValue;}
+    /* get */
+    unsigned int getTableIndexRow()         {return tableIndex.first;}
+    unsigned int getTableIndexColumn()      {return tableIndex.second;}
+    std::string getMapIndexPatchName()      {return mapIndex.first;}
+    std::string getMapIndexPatchTypeValue() {return mapIndex.second;}
+    QTableWidgetItem* getInstance()         {return instance;}
+    /* */
+private:
+    std::pair<unsigned int, unsigned int> tableIndex;
+    std::pair<std::string, std::string> mapIndex;
+    QTableWidgetItem* instance;
+};
 
 }
 
