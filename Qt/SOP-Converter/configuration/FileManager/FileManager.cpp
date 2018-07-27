@@ -9,7 +9,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
     procExecutor(new QProcess),
-    logFile(new QFile),
+    logFile(std::make_shared<QFile>()),
     backupDir(std::make_shared<QDir>("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
     polyMeshFolderEntryValid(new QStringList),
@@ -27,7 +27,6 @@ configuration::FileManager::FileManager(QWidget* parent) :
     settingFiles.insert(std::pair<QString, std::shared_ptr<QFile>>(QString("transportProperties"), std::make_shared<QFile>()));
 
     *zeroFolderEntryValid     << "p" << "U";
-//    *constantFolderEntryValid << "transportProperties" << "polyMesh";
     *polyMeshFolderEntryValid << "blockMeshDict"
                               << "boundary"
                               << "faces"
@@ -48,12 +47,9 @@ configuration::FileManager::~FileManager()
     settingFiles.clear();
     QObject::disconnect(getInstance(),0,0,0);
     zeroFolderEntryValid->clear();     delete zeroFolderEntryValid;
-//    constantFolderEntryValid->clear(); delete constantFolderEntryValid;
     polyMeshFolderEntryValid->clear(); delete polyMeshFolderEntryValid;
     systemFolderEntryValid->clear();   delete systemFolderEntryValid;
-    logToFile("FileManager destructed");
-    logFile->close();
-    delete logFile;
+    logToFile("FileManager destructed");    
 }
 
 configuration::FileManager* configuration::FileManager::getInstance()
@@ -66,9 +62,9 @@ void configuration::FileManager::logToFile(const QString &log)
 {
     if(logFile->open(QIODevice::Append|QIODevice::Text))
     {
-        if(!logFile->write((log + QString("\n")).toStdString().c_str()))
+        if(!logFile.get()->write((log + QString("\n")).toStdString().c_str()))
             logging::Messanger::getInstance()->showMessage(QString("file write didn't occur"));
-        logFile->close();
+        logFile.get()->close();
     } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}
 }
 
@@ -76,7 +72,6 @@ void configuration::FileManager::createLogFile()
 {
     QDir logDir("/tmp");
     QStringList logList = logDir.entryList(QDir::Files);
-//    logging::Messanger::getInstance()->showMessage(logList.join("\n"));
     std::vector<QString> logFiles;
 
     for (auto e : logList)
@@ -96,19 +91,19 @@ void configuration::FileManager::createLogFile()
     QString filePath("/tmp/LOG");
     do
     {
-        logFile->setFileName
+        logFile.get()->setFileName
                 (
                     QString().sprintf("%s%d", filePath.toStdString().c_str(), fileNumber)
                 );
         fileNumber++;
-    }while(logFile->exists());
+    }while(logFile.get()->exists());
 
     // create file
-    if(!logFile->open(QIODevice::Append|QIODevice::Text))
+    if(!logFile.get()->open(QIODevice::Append|QIODevice::Text))
     {
         logging::Messanger::getInstance()->showMessage(QString("Couldn't open log file"));
     }
-    logFile->close();
+    logFile.get()->close();
 }
 
 bool configuration::FileManager::loadBackupFiles()
@@ -198,6 +193,7 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
     }
 }
 
+std::shared_ptr<QFile> configuration::FileManager::getLogFile() {return logFile;}
 std::shared_ptr<QFile> configuration::FileManager::getProjectFile() {return projectFile;}
 std::shared_ptr<QFile> configuration::FileManager::getMeshFile() {return meshFile;}
 std::shared_ptr<QDir> configuration::FileManager::getWorkDir() {return workDir;}

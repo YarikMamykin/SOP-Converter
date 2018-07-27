@@ -50,19 +50,20 @@ public:
     bool validateConstantBackedUpFolder();
     bool validateSystemFolder();
 
+    std::shared_ptr<QFile> getLogFile();
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
     std::shared_ptr<QDir> getBackupDir();
     std::shared_ptr<QFile> getSettingFile(const QString& filename);
     QStringList getListOfSettingFiles();
-public slots:
+private slots:
     void logToFile(const QString& log);
     void saveProjectFile(const configuration::ProjectFile& pfile);
 private:    
     unsigned int maxLogFilesCount;
     QProcess* procExecutor;
-    QFile* logFile;    
+    std::shared_ptr<QFile> logFile;
     std::shared_ptr<QDir> backupDir;
     QStringList* zeroFolderEntryValid;
     QStringList* polyMeshFolderEntryValid;

@@ -16,11 +16,13 @@ Ui::Menu::Menu(QWidget* parent) :
 
 Ui::Menu::~Menu()
 {
+    logging::Logger::getInstance()->log("Attempting to delete menu");
     for(auto e : items)
     {
         delete e;
     }
     items.clear();
+    logging::Logger::getInstance()->log("Menu deleted!");
 }
 
 void Ui::Menu::openWorkspace()

@@ -9,9 +9,8 @@ Ui::Console::Console() :
     this->setReadOnly(true);
 }
 Ui::Console::~Console()
-{
-//    QObject::disconnect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)));
-
+{    
+    QObject::disconnect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)));
 }
 void Ui::Console::showLog(const QString& log)
 {

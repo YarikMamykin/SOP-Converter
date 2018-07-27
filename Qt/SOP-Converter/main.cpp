@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QThread>
+#include <QDebug>
 #include "general/general.h"
 #include "logging/Logger/Logger.h"
 #include "logging/Messanger/Messanger.h"
@@ -12,11 +13,8 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);            
-    QObject::connect(logging::Logger::getInstance(),
-                     SIGNAL(logToFile(const QString&)),
-                     configuration::FileManager::getInstance(),
-                     SLOT(logToFile(const QString&)), Qt::QueuedConnection);
+    QApplication a(argc, argv);
+
 
     logging::Logger::getInstance()->log(QString("App start"), logging::LogDirection::file);
     MainWindow w;
@@ -27,5 +25,8 @@ int main(int argc, char *argv[])
 //    configuration::FileManager::getInstance()->saveProjectFile(pf);
 
     int retcode = a.exec();
+
+    logging::Logger::getInstance()->log("App END");
+    qDebug()<< "retcode = " << retcode;
     return retcode;
 }

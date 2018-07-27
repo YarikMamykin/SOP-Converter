@@ -9,19 +9,18 @@ Ui::SetTable::SetTable(QWidget* parent) :
     cells(),
     pMap(Parser::getInstance()->getParserMap(ParserId::p)),
     uMap(Parser::getInstance()->getParserMap(ParserId::U)),
-    boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary))
+    boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary)),
+    mapsLoaded(false)
 {
     this->show();
     QObject::connect(configuration::Parser::getInstance(),
                      SIGNAL(notifyAll()),
                      this,
-                     SLOT(loadMaps()), Qt::QueuedConnection);
-    LogManager::getInstance()->log("Connecting signal to slot");
+                     SLOT(loadMaps()), Qt::DirectConnection);
     QObject::connect(this,
                      SIGNAL(cellChanged(int,int)),
-                     SLOT(updateCellInfo(int,int)), Qt::QueuedConnection);
+                     SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
 
-    LogManager::getInstance()->log("Creating vectors");
     for(int i = 0; i < 5; i++)
     {
         cells.push_back(new std::vector<Cell*>());
@@ -41,7 +40,6 @@ Ui::SetTable::~SetTable()
                         this,
                         SLOT(updateCellInfo(int,int)));
 
-    LogManager::getInstance()->log("Attempting to delete cells");
     for(auto e : cells)
     {
         for(auto c : *e)
@@ -50,7 +48,6 @@ Ui::SetTable::~SetTable()
         }
         delete e;
     }
-    LogManager::getInstance()->log("cells cleared");
     LogManager::getInstance()->log("Table destroyed");
 }
 
@@ -100,22 +97,22 @@ void Ui::SetTable::loadMaps()
             labels.clear();
             labels = buffer.split(" ");
             cells[static_cast<int>(SetTable::Column::type_p)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::type_p),
+                                                                                  static_cast<int>(SetTable::Column::type_p),
                                                                                   e.first,
                                                                                   labels[0].toStdString()));
             cells[static_cast<int>(SetTable::Column::value_p)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::value_p),
+                                                                                  static_cast<int>(SetTable::Column::value_p),
                                                                                   e.first,
                                                                                   labels[1].toStdString()));
         }
         else
         {
             cells[static_cast<int>(SetTable::Column::type_p)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::type_p),
+                                                                                  static_cast<int>(SetTable::Column::type_p),
                                                                                   e.first,
                                                                                   e.second));
             cells[static_cast<int>(SetTable::Column::value_p)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::value_p),
+                                                                                  static_cast<int>(SetTable::Column::value_p),
                                                                                   e.first,
                                                                                   std::string("-")));
         }
@@ -131,22 +128,22 @@ void Ui::SetTable::loadMaps()
             labels.clear();
             labels = buffer.split(" ");
             cells[static_cast<int>(SetTable::Column::type_U)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::type_U),
+                                                                                  static_cast<int>(SetTable::Column::type_U),
                                                                                   e.first,
                                                                                   labels[0].toStdString()));
             cells[static_cast<int>(SetTable::Column::value_U)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::value_U),
+                                                                                  static_cast<int>(SetTable::Column::value_U),
                                                                                   e.first,
                                                                                   buffer.toStdString().substr(buffer.indexOf('('), buffer.indexOf(')') - buffer.indexOf('(') + 1)));
         }
         else
         {
             cells[static_cast<int>(SetTable::Column::type_U)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::type_U),
+                                                                                  static_cast<int>(SetTable::Column::type_U),
                                                                                   e.first,
                                                                                   e.second));
             cells[static_cast<int>(SetTable::Column::value_U)]->push_back(new Cell(i,
-                                                                                  static_cast<unsigned int>(SetTable::Column::value_U),
+                                                                                  static_cast<int>(SetTable::Column::value_U),
                                                                                   e.first,
                                                                                   std::string("-")));
         }
@@ -171,9 +168,21 @@ void Ui::SetTable::loadMaps()
     this->verticalScrollBar()->show();
 
     this->show();
+    mapsLoaded = true;
 }
 
 void Ui::SetTable::updateCellInfo(int row, int column)
 {
-    LogManager::getInstance()->log(QString("Cell updated [ %1;%2 ]").arg(row).arg(column));
+    if(!mapsLoaded) return;
+    LogManager::getInstance()->log(QString("mapsLoaded = ") + boolToString(mapsLoaded));
+
+    for(auto e : *cells[column])
+    {
+        if(e->getTableIndexRow() == row)
+        {
+            e->updateValue();
+            LogManager::getInstance()->log(QString("Cell updated [ %1;%2 ]").arg(row).arg(column));
+            break;
+        }
+    }
 }

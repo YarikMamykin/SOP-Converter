@@ -28,18 +28,22 @@ private:
     explicit Logger(const Logger&) = delete;
     virtual ~Logger();
 
+private slots:
     const QString formatLog(const QString& log);
+    void writeLogToFile(const QString& log);
 
 signals:
     void logToConsole(const QString& log);
     void logToFile(const QString& log);
 public:
     static logging::Logger* getInstance();
-    bool log(const QString& log, const logging::LogDirection& direction = logging::LogDirection::fileAndConsole);
+    bool log(const QString& log,
+             const logging::LogDirection& direction = logging::LogDirection::fileAndConsole);
 private:    
     QStringList fullLog;
     QDateTime currentDateTime;
     QString dateTimeFormat;
+    std::shared_ptr<QFile> logFile;
 };
 
 }

@@ -1,16 +1,22 @@
 #include "../../logging/Logger/Logger.h"
+#include <QDebug>
 
-logging::Logger::Logger() :    
+logging::Logger::Logger() :
+    QObject(),
     fullLog(),
     currentDateTime(),
     dateTimeFormat("yyyy-dd-MM hh:mm:ss.zzz")
 {
-
+    logFile = configuration::FileManager::getInstance()->getLogFile();
+    QObject::connect(this,
+                     SIGNAL(logToFile(const QString&)),
+                     SLOT(writeLogToFile(const QString&)), Qt::DirectConnection);
+    writeLogToFile("Logger constructed");
 }
 
 logging::Logger::~Logger()
 {
-
+    writeLogToFile("Logger destructed");
 }
 
 logging::Logger* logging::Logger::getInstance()
@@ -28,6 +34,16 @@ const QString logging::Logger::formatLog(const QString& log)
     fullLog << "->";
     fullLog << log;
     return fullLog.join(" ");
+}
+
+void logging::Logger::writeLogToFile(const QString &log)
+{
+    if(logFile->open(QIODevice::Append|QIODevice::Text))
+    {
+        if(!logFile.get()->write((log + QString("\n")).toStdString().c_str()))
+            logging::Messanger::getInstance()->showMessage(QString("file write didn't occur"));
+        logFile.get()->close();
+    } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}
 }
 
 bool logging::Logger::log(const QString& log, const logging::LogDirection& direction)

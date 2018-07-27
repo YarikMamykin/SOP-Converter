@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_logging__Logger_t {
-    QByteArrayData data[5];
-    char stringdata[45];
+    QByteArrayData data[7];
+    char stringdata[70];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,10 +33,12 @@ QT_MOC_LITERAL(0, 0, 15),
 QT_MOC_LITERAL(1, 16, 12),
 QT_MOC_LITERAL(2, 29, 0),
 QT_MOC_LITERAL(3, 30, 3),
-QT_MOC_LITERAL(4, 34, 9)
+QT_MOC_LITERAL(4, 34, 9),
+QT_MOC_LITERAL(5, 44, 9),
+QT_MOC_LITERAL(6, 54, 14)
     },
     "logging::Logger\0logToConsole\0\0log\0"
-    "logToFile\0"
+    "logToFile\0formatLog\0writeLogToFile\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -46,7 +48,7 @@ static const uint qt_meta_data_logging__Logger[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -54,11 +56,19 @@ static const uint qt_meta_data_logging__Logger[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   24,    2, 0x05,
-       4,    1,   27,    2, 0x05,
+       1,    1,   34,    2, 0x05,
+       4,    1,   37,    2, 0x05,
+
+ // slots: name, argc, parameters, tag, flags
+       5,    1,   40,    2, 0x08,
+       6,    1,   43,    2, 0x08,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void, QMetaType::QString,    3,
+
+ // slots: parameters
+    QMetaType::QString, QMetaType::QString,    3,
     QMetaType::Void, QMetaType::QString,    3,
 
        0        // eod
@@ -71,6 +81,9 @@ void logging::Logger::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         switch (_id) {
         case 0: _t->logToConsole((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 1: _t->logToFile((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: { QString _r = _t->formatLog((*reinterpret_cast< const QString(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
+        case 3: _t->writeLogToFile((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -116,13 +129,13 @@ int logging::Logger::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 2;
+        _id -= 4;
     }
     return _id;
 }

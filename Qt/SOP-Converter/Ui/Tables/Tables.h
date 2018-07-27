@@ -31,6 +31,8 @@ private:
     std::shared_ptr<std::map<std::string, std::string>> pMap;
     std::shared_ptr<std::map<std::string, std::string>> uMap;
     std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
+
+    bool mapsLoaded;
 };
 
 class SetTable::Cell : public QObject
@@ -51,19 +53,20 @@ public:
         delete instance;
     }
     /* set */
-    void setTableIndexRow(const unsigned int& row)                    {tableIndex.first = row;}
-    void setTableIndexColumn(const unsigned int& column)              {tableIndex.second = column;}
+    void setTableIndexRow(const int& row)                             {tableIndex.first = row;}
+    void setTableIndexColumn(const int& column)                       {tableIndex.second = column;}
     void setMapIndexPatchName(const std::string& patchName)           {mapIndex.first = patchName;}
     void setMapIndexPatchTypeValue(const std::string& patchTypeValue) {mapIndex.second = patchTypeValue;}
     /* get */
-    unsigned int getTableIndexRow()         {return tableIndex.first;}
-    unsigned int getTableIndexColumn()      {return tableIndex.second;}
+    int getTableIndexRow()                  {return tableIndex.first;}
+    int getTableIndexColumn()               {return tableIndex.second;}
     std::string getMapIndexPatchName()      {return mapIndex.first;}
     std::string getMapIndexPatchTypeValue() {return mapIndex.second;}
     QTableWidgetItem* getInstance()         {return instance;}
-    /* */
+    /* update */
+    void updateValue() { mapIndex.second = this->instance->text().toStdString(); }
 private:
-    std::pair<unsigned int, unsigned int> tableIndex;
+    std::pair<int, int> tableIndex;
     std::pair<std::string, std::string> mapIndex;
     QTableWidgetItem* instance;
 };

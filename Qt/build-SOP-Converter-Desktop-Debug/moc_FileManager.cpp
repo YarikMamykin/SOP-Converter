@@ -57,8 +57,8 @@ static const uint qt_meta_data_configuration__FileManager[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   24,    2, 0x0a,
-       4,    1,   27,    2, 0x0a,
+       1,    1,   24,    2, 0x08,
+       4,    1,   27,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    3,
