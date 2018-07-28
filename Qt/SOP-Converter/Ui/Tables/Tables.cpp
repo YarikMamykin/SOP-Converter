@@ -4,12 +4,13 @@ using LogManager = logging::Logger;
 using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
 
-Ui::SetTable::SetTable(QWidget* parent) :
+Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
     QTableWidget(parent),
     cells(),
     pMap(Parser::getInstance()->getParserMap(ParserId::p)),
     uMap(Parser::getInstance()->getParserMap(ParserId::U)),
     boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary)),
+    cm(clientManager),
     mapsLoaded(false)
 {
     this->show();

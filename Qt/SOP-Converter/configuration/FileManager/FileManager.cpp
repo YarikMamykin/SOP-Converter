@@ -8,7 +8,7 @@ using Parser     = configuration::Parser;
 configuration::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
-    procExecutor(new QProcess),
+    procExecutor(new QProcess),    
     logFile(std::make_shared<QFile>()),
     backupDir(std::make_shared<QDir>("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
@@ -49,6 +49,7 @@ configuration::FileManager::~FileManager()
     zeroFolderEntryValid->clear();     delete zeroFolderEntryValid;
     polyMeshFolderEntryValid->clear(); delete polyMeshFolderEntryValid;
     systemFolderEntryValid->clear();   delete systemFolderEntryValid;
+
     logToFile("FileManager destructed");    
 }
 
@@ -59,13 +60,13 @@ configuration::FileManager* configuration::FileManager::getInstance()
 }
 
 void configuration::FileManager::logToFile(const QString &log)
-{
+{    
     if(logFile->open(QIODevice::Append|QIODevice::Text))
     {
         if(!logFile.get()->write((log + QString("\n")).toStdString().c_str()))
             logging::Messanger::getInstance()->showMessage(QString("file write didn't occur"));
         logFile.get()->close();
-    } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}
+    } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}    
 }
 
 void configuration::FileManager::createLogFile()

@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QProcess>
+#include <QMutex>
 #include <exception>
 #include <memory>
 #include <map>
@@ -15,7 +16,6 @@
 #include "../../logging/Logger/Logger.h"
 #include "../ProjectFile/ProjectFile.h"
 #include "../../general/general.h"
-#include "../../configuration/ClientManager/ClientManager.h"
 #include "../../configuration/Parser/Parser.h"
 #include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
 
@@ -63,7 +63,7 @@ private slots:
     void saveProjectFile(const configuration::ProjectFile& pfile);
 private:    
     unsigned int maxLogFilesCount;
-    QProcess* procExecutor;
+    QProcess* procExecutor;    
     std::shared_ptr<QFile> logFile;
     std::shared_ptr<QDir> backupDir;
     QStringList* zeroFolderEntryValid;

@@ -1,11 +1,10 @@
 #include "Buttons.h"
 
 
-Ui::Button::Button() : QPushButton(QString("Unnamed")), pal() {}
-
-Ui::Button::Button(QString name, QWidget* parent) :
+Ui::Button::Button(std::shared_ptr<configuration::ClientManager> cm, QString name, QWidget* parent) :
     QPushButton(name, parent),
-    pal(new QPalette)
+    pal(new QPalette),
+    clientManager(cm)
 {
     QObject::connect(this, SIGNAL(clicked()), SLOT(showMessage()));
     this->setFixedSize(200, 50);

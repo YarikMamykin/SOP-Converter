@@ -6,21 +6,23 @@
 #include <QTextEdit>
 #include <memory>
 #include "../../logging/Logger/Logger.h"
+#include "../../configuration/ClientManager/ClientManager.h"
 
 namespace Ui
 {
 
-class Console : public QTextEdit // MAKE IT SINGLETON FOR LOGGER!!!
+class Console : public QTextEdit
 {
     Q_OBJECT
 private:
     explicit Console(const Console&) = delete;
 public:
-    explicit Console();
+    explicit Console(std::shared_ptr<configuration::ClientManager> cm);
     virtual ~Console();
 private slots:
     void showLog(const QString& log);
 private:
+    std::shared_ptr<configuration::ClientManager> clientManager;
 };
 
 }

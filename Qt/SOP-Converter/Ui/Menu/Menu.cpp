@@ -1,8 +1,8 @@
 #include "Menu.h"
 
-Ui::Menu::Menu(QWidget* parent) :
+Ui::Menu::Menu(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent) :
     QMenuBar(parent),    
-    clientManager(std::make_shared<configuration::ClientManager>())
+    clientManager(cm)
 {
     items.push_back(new Menu::MenuItem());
     items[0]->setMenuItem(this->addMenu("&Open"));

@@ -5,7 +5,8 @@ logging::Logger::Logger() :
     QObject(),
     fullLog(),
     currentDateTime(),
-    dateTimeFormat("yyyy-dd-MM hh:mm:ss.zzz")
+    dateTimeFormat("yyyy-dd-MM hh:mm:ss.zzz"),
+    logFileLocker()
 {
     logFile = configuration::FileManager::getInstance()->getLogFile();
     QObject::connect(this,
@@ -38,12 +39,14 @@ const QString logging::Logger::formatLog(const QString& log)
 
 void logging::Logger::writeLogToFile(const QString &log)
 {
+    logFileLocker.lock();
     if(logFile->open(QIODevice::Append|QIODevice::Text))
     {
         if(!logFile.get()->write((log + QString("\n")).toStdString().c_str()))
             logging::Messanger::getInstance()->showMessage(QString("file write didn't occur"));
         logFile.get()->close();
     } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}
+    logFileLocker.unlock();
 }
 
 bool logging::Logger::log(const QString& log, const logging::LogDirection& direction)

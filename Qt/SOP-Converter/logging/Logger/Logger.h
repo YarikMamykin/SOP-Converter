@@ -44,6 +44,7 @@ private:
     QDateTime currentDateTime;
     QString dateTimeFormat;
     std::shared_ptr<QFile> logFile;
+    QMutex logFileLocker;
 };
 
 }

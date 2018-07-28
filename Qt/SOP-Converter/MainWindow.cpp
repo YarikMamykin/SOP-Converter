@@ -4,10 +4,11 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
+    clientManager(std::make_shared<configuration::ClientManager>()),
     ui(new Ui::MainWindow),
-    menuBar(new Ui::Menu(this)),
-    tableAndEtc(new Ui::TableAndEtcGroup(this)),
-    consoleAndButtons(new Ui::ConsoleAndButtonsGroup(this)),
+    menuBar(new Ui::Menu(clientManager, this)),
+    tableAndEtc(new Ui::TableAndEtcGroup(clientManager, this)),
+    consoleAndButtons(new Ui::ConsoleAndButtonsGroup(clientManager, this)),
     layout(new QVBoxLayout)
 {
     ui->setupUi(this);

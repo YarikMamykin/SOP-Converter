@@ -17,7 +17,7 @@ namespace Ui
 class Menu : public QMenuBar
 {    
 public:
-    explicit Menu(QWidget* parent = 0);
+    explicit Menu(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent = 0);
     virtual ~Menu();
 public:
     class MenuItem;

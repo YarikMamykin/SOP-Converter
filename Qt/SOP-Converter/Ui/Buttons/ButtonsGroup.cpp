@@ -1,11 +1,11 @@
 #include "ButtonsGroup.h"
 
-Ui::ButtonsGroup::ButtonsGroup(QWidget* parent) :
+Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
     QWidget(parent),
-    startConvertion(new Ui::Button("Start conversion")),
-    resetSettings(new Ui::Button("Reset settings")),
-    saveSettings(new Ui::Button("Save settings")),
-    clearConsole(new Ui::Button("Clear CONSOLE")),
+    startConvertion(new Ui::Button(clientManager, "Start conversion")),
+    resetSettings(new Ui::Button(clientManager, "Reset settings")),
+    saveSettings(new Ui::Button(clientManager, "Save settings")),
+    clearConsole(new Ui::Button(clientManager, "Clear CONSOLE")),
     layout(new QVBoxLayout)
 {
     layout->addWidget(startConvertion);

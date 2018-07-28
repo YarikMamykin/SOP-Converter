@@ -2,8 +2,9 @@
 //#include "../../logging/Messanger/Messanger.h"
 
 
-Ui::Console::Console() :
-    QTextEdit()
+Ui::Console::Console(std::shared_ptr<configuration::ClientManager> cm) :
+    QTextEdit(),
+    clientManager(cm)
 {
     QObject::connect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)), Qt::QueuedConnection);
     this->setReadOnly(true);

@@ -8,6 +8,7 @@
 #include <memory>
 #include <map>
 #include "../../configuration/Parser/Parser.h"
+#include "../../configuration/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -16,7 +17,7 @@ class SetTable : public QTableWidget
 {
     Q_OBJECT
 public:
-    explicit SetTable(QWidget* parent = 0);
+    explicit SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~SetTable();
 
 private slots:
@@ -31,6 +32,7 @@ private:
     std::shared_ptr<std::map<std::string, std::string>> pMap;
     std::shared_ptr<std::map<std::string, std::string>> uMap;
     std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
+    std::shared_ptr<configuration::ClientManager> cm;
 
     bool mapsLoaded;
 };

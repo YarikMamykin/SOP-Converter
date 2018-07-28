@@ -17,7 +17,9 @@ public:
     void selectWorkspace();
     void selectMeshFile();
     void selectProjectFile();
-public signals:
+signals:
+    void clearConsole();
+    void clearTable();
 
 private:
     void notifyUi();

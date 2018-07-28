@@ -8,6 +8,7 @@
 #include "Ui/Console/ConsoleAndButtonsGroup.h"
 #include "Ui/Menu/Menu.h"
 #include "Ui/Tables/TableAndEtcGroup.h"
+#include "configuration/ClientManager/ClientManager.h"
 #include <memory>
 
 namespace Ui {
@@ -23,6 +24,7 @@ public:
     virtual ~MainWindow();
 
 private:
+    std::shared_ptr<configuration::ClientManager> clientManager;
     Ui::MainWindow *ui;
     Ui::Menu* menuBar;
     Ui::TableAndEtcGroup* tableAndEtc;

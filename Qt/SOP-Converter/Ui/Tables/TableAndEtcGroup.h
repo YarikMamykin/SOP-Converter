@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include "../Buttons/ButtonsGroup.h"
 #include "Tables.h"
+#include "configuration/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -12,12 +13,12 @@ namespace Ui
 class TableAndEtcGroup : public QWidget
 {
 public:
-    explicit TableAndEtcGroup(QWidget* parent = 0);
+    explicit TableAndEtcGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~TableAndEtcGroup();
-private: // Buttons in group
+private:
     Ui::SetTable* table;
     // add another widgets if needs
-    QHBoxLayout* layout;
+    QHBoxLayout* layout;    
 };
 
 }
