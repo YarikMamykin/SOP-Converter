@@ -15,10 +15,10 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
     cellsErased(true)
 {
     this->show();
-    QObject::connect(configuration::Parser::getInstance(),
+    QObject::connect(clientManager.get(),
                      SIGNAL(notifyAll()),
                      this,
-                     SLOT(loadMaps()), Qt::DirectConnection);
+                     SLOT(loadMaps()), Qt::QueuedConnection);
     QObject::connect(this,
                      SIGNAL(cellChanged(int,int)),
                      SLOT(updateCellInfo(int,int)), Qt::DirectConnection);

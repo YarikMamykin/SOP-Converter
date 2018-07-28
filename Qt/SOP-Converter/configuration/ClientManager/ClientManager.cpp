@@ -9,10 +9,15 @@ configuration::ClientManager::ClientManager() :
     selectDialog(new QFileDialog)
 {
     LogManager::getInstance()->log("ClientManager constructed");
+    QObject::connect(configuration::Parser::getInstance(),
+                     SIGNAL(notifyAll()),
+                     this,
+                     SIGNAL(notifyAll()), Qt::QueuedConnection);
 }
 
 configuration::ClientManager::~ClientManager()
 {
+    QObject::disconnect(this,0,0,0);
     delete selectDialog;
     LogManager::getInstance()->log("ClientManager destructed");
 }

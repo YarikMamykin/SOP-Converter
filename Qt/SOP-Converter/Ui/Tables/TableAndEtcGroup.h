@@ -6,6 +6,7 @@
 #include "../Buttons/ButtonsGroup.h"
 #include "Tables.h"
 #include "configuration/ClientManager/ClientManager.h"
+#include "Ui/TransportPropertiesField/TransportPropertiesField.h"
 
 namespace Ui
 {
@@ -17,6 +18,7 @@ public:
     virtual ~TableAndEtcGroup();
 private:
     Ui::SetTable* table;
+    Ui::TransportPropertiesField* tpField;
     // add another widgets if needs
     QHBoxLayout* layout;    
 };

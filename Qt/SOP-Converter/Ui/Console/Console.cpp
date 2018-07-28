@@ -17,6 +17,6 @@ Ui::Console::~Console()
 void Ui::Console::showLog(const QString& log)
 {
     consoleLocker.lock();
-    this->append(log);
+    this->append(log);    
     consoleLocker.unlock();
 }

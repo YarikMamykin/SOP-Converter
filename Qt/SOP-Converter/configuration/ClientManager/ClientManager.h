@@ -20,8 +20,9 @@ public:
 signals:
     void clearConsole();
     void clearTable();
+    void notifyAll();
 
-private:
+private:    
     void notifyUi();
     void notifyBe();
 private:
