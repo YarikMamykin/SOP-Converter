@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QTextEdit>
+#include <QMutex>
 #include <memory>
 #include "../../logging/Logger/Logger.h"
 #include "../../configuration/ClientManager/ClientManager.h"
@@ -22,6 +23,7 @@ public:
 private slots:
     void showLog(const QString& log);
 private:
+    QMutex consoleLocker;
     std::shared_ptr<configuration::ClientManager> clientManager;
 };
 

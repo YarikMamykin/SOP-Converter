@@ -7,13 +7,16 @@ Ui::Console::Console(std::shared_ptr<configuration::ClientManager> cm) :
     clientManager(cm)
 {
     QObject::connect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(), SIGNAL(clearConsole()), this, SLOT(clear()));
     this->setReadOnly(true);
 }
 Ui::Console::~Console()
 {    
-    QObject::disconnect(logging::Logger::getInstance(), SIGNAL(logToConsole(const QString&)), this, SLOT(showLog(const QString&)));
+    QObject::disconnect(this,0,0,0);
 }
 void Ui::Console::showLog(const QString& log)
 {
+    consoleLocker.lock();
     this->append(log);
+    consoleLocker.unlock();
 }

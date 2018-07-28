@@ -8,6 +8,8 @@ Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<configuration::ClientMana
     layout->addWidget(table);
     layout->setAlignment(Qt::AlignLeft);
     this->setLayout(layout);
+
+    QObject::connect(clientManager.get(),SIGNAL(clearTable()), table, SLOT(erase()), Qt::DirectConnection);
 }
 
 Ui::TableAndEtcGroup::~TableAndEtcGroup()

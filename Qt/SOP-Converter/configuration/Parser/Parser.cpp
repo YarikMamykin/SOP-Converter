@@ -537,9 +537,9 @@ void configuration::Parser::syncFile(std::shared_ptr<QFile> file)
             tempdata << std::string("}\n").c_str(); // closing bracket for boundaryField
         }break;
         /* All below parsing needs implementation */
-        case ParserId::boundary: return; break;
-        case ParserId::controlDict: return; break;
-        case ParserId::transportProperties: return; break;
+        case ParserId::boundary: file.get()->close(); return; break;
+        case ParserId::controlDict: file.get()->close(); return; break;
+        case ParserId::transportProperties: file.get()->close(); return; break;
     }
 
     file.get()->close();

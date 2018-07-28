@@ -24,6 +24,8 @@ private slots:
     void setDefaultProperties();
     void loadMaps();
     void updateCellInfo(int row, int column);
+    void eraseCells();
+    void erase();
 private:
     class Cell;
     enum class Column { type_p, value_p, type_U, value_U, type_boundary };
@@ -35,6 +37,7 @@ private:
     std::shared_ptr<configuration::ClientManager> cm;
 
     bool mapsLoaded;
+    bool cellsErased;
 };
 
 class SetTable::Cell : public QObject
@@ -52,7 +55,7 @@ public:
     }
     virtual ~Cell()
     {
-        delete instance;
+        if(instance) delete instance;
     }
     /* set */
     void setTableIndexRow(const int& row)                             {tableIndex.first = row;}

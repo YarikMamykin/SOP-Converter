@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__ClientManager_t {
-    QByteArrayData data[1];
-    char stringdata[30];
+    QByteArrayData data[4];
+    char stringdata[55];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -29,9 +29,13 @@ struct qt_meta_stringdata_configuration__ClientManager_t {
     )
 static const qt_meta_stringdata_configuration__ClientManager_t qt_meta_stringdata_configuration__ClientManager = {
     {
-QT_MOC_LITERAL(0, 0, 28)
+QT_MOC_LITERAL(0, 0, 28),
+QT_MOC_LITERAL(1, 29, 12),
+QT_MOC_LITERAL(2, 42, 0),
+QT_MOC_LITERAL(3, 43, 10)
     },
-    "configuration::ClientManager\0"
+    "configuration::ClientManager\0clearConsole\0"
+    "\0clearTable\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -41,21 +45,49 @@ static const uint qt_meta_data_configuration__ClientManager[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       2,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags
+       1,    0,   24,    2, 0x05,
+       3,    0,   25,    2, 0x05,
+
+ // signals: parameters
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
 
 void configuration::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        ClientManager *_t = static_cast<ClientManager *>(_o);
+        switch (_id) {
+        case 0: _t->clearConsole(); break;
+        case 1: _t->clearTable(); break;
+        default: ;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        void **func = reinterpret_cast<void **>(_a[1]);
+        {
+            typedef void (ClientManager::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::clearConsole)) {
+                *result = 0;
+            }
+        }
+        {
+            typedef void (ClientManager::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::clearTable)) {
+                *result = 1;
+            }
+        }
+    }
     Q_UNUSED(_a);
 }
 
@@ -83,6 +115,27 @@ int configuration::ClientManager::qt_metacall(QMetaObject::Call _c, int _id, voi
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 2)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 2;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 2)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 2;
+    }
     return _id;
+}
+
+// SIGNAL 0
+void configuration::ClientManager::clearConsole()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, 0);
+}
+
+// SIGNAL 1
+void configuration::ClientManager::clearTable()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, 0);
 }
 QT_END_MOC_NAMESPACE

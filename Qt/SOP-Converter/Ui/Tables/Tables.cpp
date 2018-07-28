@@ -11,7 +11,8 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
     uMap(Parser::getInstance()->getParserMap(ParserId::U)),
     boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary)),
     cm(clientManager),
-    mapsLoaded(false)
+    mapsLoaded(false),
+    cellsErased(true)
 {
     this->show();
     QObject::connect(configuration::Parser::getInstance(),
@@ -32,21 +33,14 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
 Ui::SetTable::~SetTable()
 {
     this->hide();
-    QObject::disconnect(configuration::Parser::getInstance(),
-                        SIGNAL(notifyAll()),
-                        this,
-                        SLOT(loadMaps()));
-    QObject::disconnect(this,
-                        SIGNAL(cellChanged(int,int)),
-                        this,
-                        SLOT(updateCellInfo(int,int)));
-
+    QObject::disconnect(this,0,0,0);
     for(auto e : cells)
     {
         for(auto c : *e)
         {
             delete c;
         }
+        e->clear();
         delete e;
     }
     LogManager::getInstance()->log("Table destroyed");
@@ -59,6 +53,9 @@ void Ui::SetTable::setDefaultProperties()
 
 void Ui::SetTable::loadMaps()
 {
+    LogManager::getInstance()->log("Loading maps");
+    mapsLoaded = false;
+    this->erase();
     QStringList labels;
     labels << "type (p)"
            << "value (p)"
@@ -165,17 +162,22 @@ void Ui::SetTable::loadMaps()
     this->resizeColumnsToContents();
     this->resizeRowsToContents();
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->horizontalHeader()->show();
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->verticalHeader()->show();
     this->verticalScrollBar()->show();
 
     this->show();
     mapsLoaded = true;
+    cellsErased = false;
 }
 
 void Ui::SetTable::updateCellInfo(int row, int column)
 {
-    if(!mapsLoaded) return;
+    if(!mapsLoaded || cellsErased) return;
     LogManager::getInstance()->log(QString("mapsLoaded = ") + boolToString(mapsLoaded));
+    LogManager::getInstance()->log(QString("cellsErased = ") + boolToString(cellsErased));
+    LogManager::getInstance()->log(QString("columns count = ") + QString::number(cells.size()));
 
     for(auto e : *cells[column])
     {
@@ -186,4 +188,36 @@ void Ui::SetTable::updateCellInfo(int row, int column)
             break;
         }
     }
+}
+
+void Ui::SetTable::eraseCells()
+{
+    for(auto e : cells)
+    {
+        if(e->size() == 0) return;
+        for(auto c : *e)
+        {
+            delete c;
+        }
+        e->clear();
+    }
+    cellsErased = true;
+    LogManager::getInstance()->log(QString("Cells erased = ") + boolToString(cellsErased));
+}
+
+void Ui::SetTable::erase()
+{
+    QObject::disconnect(this,
+                        SIGNAL(cellChanged(int,int)),
+                        this,
+                        SLOT(updateCellInfo(int,int)));
+    eraseCells();
+    this->clear();
+    this->setRowCount(0);
+    this->setColumnCount(0);
+    this->horizontalHeader()->hide();
+    this->verticalHeader()->hide();
+    QObject::connect(this,
+                     SIGNAL(cellChanged(int,int)),
+                     SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
 }
