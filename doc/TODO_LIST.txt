@@ -45,9 +45,9 @@ Need to be done before next task!!!
 #! DONE
 10. Implement update cells logic
 
-#! NOT DONE
+#! DONE
 11. ClientManager must be provided to Ui components through MainWindow to have ability to connect to any signal from Ui components.
 
-#! NOT DONE
+#! DONE
 12. Adept table functionality to workspace changing event. Use idea from task 11.
 
