@@ -29,6 +29,7 @@ SOURCES += main.cpp\
     configuration/ProjectFile/ProjectFile.cpp \
     configuration/ClientManager/ClientManager.cpp \
     general/general.cpp \
+    configuration/OFCommandExecutor/QFCommandExecutor.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -46,6 +47,7 @@ HEADERS  += MainWindow.h \
     configuration/ProjectFile/ProjectFile.h \
     configuration/ClientManager/ClientManager.h \
     general/general.h \
+    configuration/OFCommandExecutor/OFCommandExecutor.h
 
 
 

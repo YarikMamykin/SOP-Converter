@@ -181,7 +181,7 @@ void Ui::SetTable::updateCellInfo(int row, int column)
         if(e->getTableIndexRow() == row)
         {
             e->updateValue();
-            LogManager::getInstance()->log(QString("Cell updated [ %1;%2 ]").arg(row).arg(column));
+            LogManager::getInstance()->log(QString("Cell updated [ %1 ; %2 ]").arg(e->getMapIndexPatchName().c_str()).arg(this->model()->headerData(column, Qt::Horizontal).toString()));
             break;
         }
     }
