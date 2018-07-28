@@ -39,8 +39,15 @@ Need to be done before next task!!!
 #! DONE
 8. Implement cells logic for SetTable::Cells class.
 
-#! NOT DONE
-9. Figure out what is wrong with Ui destroy.
+#! DONE (Fix is in signal file write to log file) 
+9. Figure out what is wrong with Ui destroy logging.
+
+#! DONE
+10. Implement update cells logic
 
 #! NOT DONE
-10. Implement update cells logic
+11. ClientManager must be provided to Ui components through MainWindow to have ability to connect to any signal from Ui components.
+
+#! NOT DONE
+12. Adept table functionality to workspace changing event. Use idea from task 11.
+
