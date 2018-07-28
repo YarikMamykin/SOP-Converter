@@ -17,6 +17,7 @@
 #include "../../general/general.h"
 #include "../../configuration/ClientManager/ClientManager.h"
 #include "../../configuration/Parser/Parser.h"
+#include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
 
 namespace configuration
 {

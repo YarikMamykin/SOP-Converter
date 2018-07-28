@@ -273,17 +273,15 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             {
                 LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));
 
+                // --------------------------------------------- //
+
                 /* Execute and check ideasUnvToFoam conversion */
                 QStringList command;
                 command << "ideasUnvToFoam" << QString(QFileInfo(*meshFile.get()).fileName());
                 LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
 
-                procExecutor->setWorkingDirectory(workDir.get()->path());
-                procExecutor->start(command.join(" "));
-                procExecutor->waitForFinished();
-
-                QString result(procExecutor->readAllStandardOutput());
-
+                OFCommandExecutor* executor = new OFCommandExecutor(command, workDir);
+                QString result(executor->execute());
                 LogManager::getInstance()->log(QString("Parsing ideasUnvToFoamLog --> ") + boolToString(Parser::parseIdeasUnvToFoamLog(result)));
 
                 // --------------------------------------------- //
@@ -291,20 +289,15 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
                 /* Execute and check transformPoints operation */
                 command.clear();
                 result.clear();
-                command << "-scale" << "(1 1 1)";
-                LogManager::getInstance()->log(QString("Executing transformPoints ") + command.join(" "));
 
-                procExecutor->reset();
-                procExecutor->setWorkingDirectory(workDir.get()->path());
-                procExecutor->start("transformPoints", command);
-                procExecutor->waitForFinished();
-
-                result = procExecutor->readAllStandardOutput();
+                command << "transformPoints" << "-scale" << "(1 1 1)";
+                executor->setCommand(command);
+                result = executor->execute();
                 LogManager::getInstance()->log(QString("Parsing transformPoints.log --> ") + boolToString(Parser::parseTransformPointsLog(result)));
 
-                procExecutor->reset();
                 command.clear();
                 result.clear();
+                delete executor;
 
                 validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
             }
