@@ -51,6 +51,9 @@ Need to be done before next task!!!
 #! DONE
 12. Adept table functionality to workspace changing event. Use idea from task 11.
 
-#! NOT DONE
+#! DONE
 13. Implement table for controlDict properties.
+
+#! NOT DONE
+14. Implement Ui enable. Change Save settings button to STOP calculation."
 
