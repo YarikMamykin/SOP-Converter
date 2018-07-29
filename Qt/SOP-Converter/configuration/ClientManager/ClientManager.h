@@ -22,10 +22,10 @@ signals:
     void clearTable();
     void clearTpSets();
     void notifyAll();
+    void syncFiles();
+    void disableUi();
+    void enableUi();
 
-private:    
-    void notifyUi();
-    void notifyBe();
 private:
     QFileDialog* selectDialog;
 };

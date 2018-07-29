@@ -4,13 +4,16 @@ using LogManager = logging::Logger;
 using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
 
+/* ---------------------------------------------------------------------- */
+/* -- SetTable -- */
+/* ---------------------------------------------------------------------- */
+
 Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
     QTableWidget(parent),
     cells(),
     pMap(Parser::getInstance()->getParserMap(ParserId::p)),
     uMap(Parser::getInstance()->getParserMap(ParserId::U)),
     boundaryMap(Parser::getInstance()->getParserMap(ParserId::boundary)),
-    cm(clientManager),
     mapsLoaded(false),
     cellsErased(true)
 {
@@ -22,12 +25,16 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
     QObject::connect(this,
                      SIGNAL(cellChanged(int,int)),
                      SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(disableUi()),
+                     this,
+                     SLOT(disable()), Qt::QueuedConnection);
 
     for(int i = 0; i < 5; i++)
     {
         cells.push_back(new std::vector<Cell*>());
     }
-    LogManager::getInstance()->log("Table created");
+    LogManager::getInstance()->log("SetTable created");
 }
 
 Ui::SetTable::~SetTable()
@@ -43,10 +50,10 @@ Ui::SetTable::~SetTable()
         e->clear();
         delete e;
     }
-    LogManager::getInstance()->log("Table destroyed");
+    LogManager::getInstance()->log("SetTable destroyed");
 }
 
-void Ui::SetTable::setDefaultProperties()
+void Ui::SetTable::syncMaps()
 {
 
 }
@@ -175,16 +182,15 @@ void Ui::SetTable::loadMaps()
 void Ui::SetTable::updateCellInfo(int row, int column)
 {
     if(!mapsLoaded || cellsErased) return;
-    LogManager::getInstance()->log(QString("mapsLoaded = ") + boolToString(mapsLoaded));
-    LogManager::getInstance()->log(QString("cellsErased = ") + boolToString(cellsErased));
-    LogManager::getInstance()->log(QString("columns count = ") + QString::number(cells.size()));
 
     for(auto e : *cells[column])
     {
         if(e->getTableIndexRow() == row)
         {
             e->updateValue();
-            LogManager::getInstance()->log(QString("Cell updated [ %1 ; %2 ]").arg(e->getMapIndexPatchName().c_str()).arg(this->model()->headerData(column, Qt::Horizontal).toString()));
+            LogManager::getInstance()->log(QString("Cell updated [ %1 ; %2 ]").
+                                           arg(e->getMapIndexPatchName().c_str()).
+                                           arg(this->model()->headerData(column, Qt::Horizontal).toString()));
             break;
         }
     }
@@ -222,6 +228,149 @@ void Ui::SetTable::erase()
                      SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
 }
 
+void Ui::SetTable::disable()
+{
+    this->setDisabled(true);
+}
+
+/* ---------------------------------------------------------------------- */
+/* -- ControlDictTable -- */
 /* ---------------------------------------------------------------------- */
 
+Ui::ControlDictTable::ControlDictTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
+    QTableWidget(parent),
+    cells(),
+    controlDictMap(Parser::getInstance()->getParserMap(ParserId::controlDict)),
+    mapsLoaded(false),
+    cellsErased(true)
+{
+    this->show();
+    QObject::connect(clientManager.get(),
+                     SIGNAL(notifyAll()),
+                     this,
+                     SLOT(loadMaps()), Qt::QueuedConnection);
+    QObject::connect(this,
+                     SIGNAL(cellChanged(int,int)),
+                     SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(disableUi()),
+                     this,
+                     SLOT(disable()), Qt::QueuedConnection);
 
+    LogManager::getInstance()->log("ControlDictTable created");
+}
+
+Ui::ControlDictTable::~ControlDictTable()
+{
+    this->hide();
+    QObject::disconnect(this,0,0,0);
+    for(auto e : cells)
+    {
+        delete e;
+    }
+    cells.clear();
+    LogManager::getInstance()->log("ControlDictTable destroyed");
+}
+
+void Ui::ControlDictTable::syncMaps()
+{
+
+}
+
+void Ui::ControlDictTable::loadMaps()
+{
+    LogManager::getInstance()->log("Loading maps");
+    mapsLoaded = false;
+    this->erase();
+    QStringList labels;
+    labels << "Value";
+
+    for(int i = 0; i < labels.size(); i++)
+    {
+        this->insertColumn(i);
+    }
+    this->setHorizontalHeaderLabels(labels);
+
+    labels.clear();
+    int i = 0;
+    for(auto e : *controlDictMap.get())
+    {
+        labels << e.first.c_str();
+        cells.push_back(new Cell(i,
+                                 0,
+                                 e.first,
+                                 e.second));
+        this->insertRow(i++);
+    }
+    this->setVerticalHeaderLabels(labels);
+
+    // ------ //
+
+    labels.clear();
+    i = 0;
+    for(auto e : cells)
+    {
+       this->setItem(i++, 0, e->getInstance());
+    }
+
+    this->resizeColumnsToContents();
+    this->resizeRowsToContents();
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->horizontalHeader()->show();
+    this->verticalHeader()->show();
+
+    this->show();
+    mapsLoaded = true;
+    cellsErased = false;
+}
+
+void Ui::ControlDictTable::updateCellInfo(int row, int column)
+{
+    if(!mapsLoaded || cellsErased) return;
+
+    for(auto e : cells)
+    {
+        if(e->getTableIndexRow() == row)
+        {
+            e->updateValue();
+            LogManager::getInstance()->log(QString("Cell updated [ %1 ; %2 ]").
+                                           arg(e->getMapIndexPatchName().c_str()).
+                                           arg(this->model()->headerData(column, Qt::Horizontal).toString()));
+            break;
+        }
+    }
+}
+
+void Ui::ControlDictTable::eraseCells()
+{
+    for(auto e : cells)
+    {
+        delete e;
+    }
+    cells.clear();
+    cellsErased = true;
+    LogManager::getInstance()->log(QString("Cells erased = ") + boolToString(cellsErased));
+}
+
+void Ui::ControlDictTable::erase()
+{
+    QObject::disconnect(this,
+                        SIGNAL(cellChanged(int,int)),
+                        this,
+                        SLOT(updateCellInfo(int,int)));
+    eraseCells();
+    this->clear();
+    this->setRowCount(0);
+    this->setColumnCount(0);
+    this->horizontalHeader()->hide();
+    this->verticalHeader()->hide();
+    QObject::connect(this,
+                     SIGNAL(cellChanged(int,int)),
+                     SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
+}
+
+void Ui::ControlDictTable::disable()
+{
+    this->setDisabled(true);
+}

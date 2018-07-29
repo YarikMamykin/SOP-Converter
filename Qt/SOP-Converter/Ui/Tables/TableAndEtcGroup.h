@@ -18,8 +18,7 @@ public:
     virtual ~TableAndEtcGroup();
 private:
     Ui::SetTable* table;
-//    Ui::TransportPropertiesField* tpField;
-    // add another widgets if needs
+    Ui::ControlDictTable* cdTable;
     QHBoxLayout* layout;    
 };
 

@@ -2,7 +2,9 @@
 #define TRANSPORTPROPERTIESFIELD_H
 
 #include <QObject>
+#include <QStyle>
 #include <QWidget>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDoubleSpinBox>
@@ -15,7 +17,7 @@
 namespace Ui
 {
 
-class TransportPropertiesField : public QWidget
+class TransportPropertiesField : public QGroupBox
 {
     Q_OBJECT
 public:
@@ -25,6 +27,7 @@ private slots:
     void loadMap();
     void syncMap();
     void reset();
+    void disable();
 private:
     std::shared_ptr<configuration::ClientManager> clientManager;
     std::vector<QVBoxLayout*> tpUnit;

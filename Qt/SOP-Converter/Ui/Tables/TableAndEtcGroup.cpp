@@ -3,12 +3,13 @@
 Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget *parent) :
     QWidget(parent),
     table(new Ui::SetTable(clientManager)),
-//    tpField(new Ui::TransportPropertiesField(clientManager)),
+    cdTable(new Ui::ControlDictTable(clientManager)),
     layout(new QHBoxLayout)
 {
     layout->addWidget(table);
-//    layout->addLayout(tpField);
-    layout->setAlignment(Qt::AlignCenter);
+    layout->addWidget(cdTable);
+    layout->setAlignment(Qt::AlignRight);
+    layout->setStretch(0,1);
     this->setLayout(layout);
 
     QObject::connect(clientManager.get(),SIGNAL(clearTable()), table, SLOT(erase()), Qt::DirectConnection);
@@ -17,7 +18,7 @@ Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<configuration::ClientMana
 Ui::TableAndEtcGroup::~TableAndEtcGroup()
 {
     delete table;
-//    delete tpField;
+    delete cdTable;
     delete layout;
 }
 

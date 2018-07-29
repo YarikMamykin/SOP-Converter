@@ -6,7 +6,7 @@ Ui::Button::Button(std::shared_ptr<configuration::ClientManager> cm, QString nam
     pal(new QPalette),
     clientManager(cm)
 {
-    QObject::connect(this, SIGNAL(clicked()), SLOT(showMessage()));
+    QObject::connect(this, SIGNAL(clicked()), SLOT(showMessage()));    
     this->setFixedSize(200, 50);
 }
 
@@ -19,6 +19,11 @@ Ui::Button::~Button()
 void Ui::Button::showMessage()
 {
     logging::Logger::getInstance()->log(this->text());
+}
+
+void Ui::Button::disable()
+{
+    this->setDisabled(true);
 }
 
 //void Ui::Button::setColor(Qt::GlobalColor color, Qt::GlobalColor fontColor)

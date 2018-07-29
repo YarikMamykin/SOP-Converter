@@ -33,11 +33,7 @@ private:
     void createLogFile();
     bool loadBackupFiles();
 public:
-    enum class ValidatePathsPoint
-    {
-        meshFile, workDir
-    };
-
+    enum class ValidatePathsPoint { meshFile, workDir };
     class Exception;
 
     static configuration::FileManager* getInstance();

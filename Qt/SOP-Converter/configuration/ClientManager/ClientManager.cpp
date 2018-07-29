@@ -13,6 +13,18 @@ configuration::ClientManager::ClientManager() :
                      SIGNAL(notifyAll()),
                      this,
                      SIGNAL(notifyAll()), Qt::QueuedConnection);
+    QObject::connect(configuration::Parser::getInstance(),
+                     SIGNAL(startParsing()),
+                     this,
+                     SIGNAL(clearConsole()), Qt::QueuedConnection);
+    QObject::connect(configuration::Parser::getInstance(),
+                     SIGNAL(startSyncFiles()),
+                     this,
+                     SIGNAL(clearConsole()), Qt::QueuedConnection);
+    QObject::connect(this,
+                     SIGNAL(syncFiles()),
+                     configuration::Parser::getInstance(),
+                     SIGNAL(startSyncFiles()), Qt::QueuedConnection);
 }
 
 configuration::ClientManager::~ClientManager()

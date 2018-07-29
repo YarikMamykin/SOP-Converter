@@ -13,34 +13,7 @@
 namespace Ui
 {
 
-class SetTable : public QTableWidget
-{
-    Q_OBJECT
-public:
-    explicit SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
-    virtual ~SetTable();
-
-private slots:
-    void setDefaultProperties();
-    void loadMaps();
-    void updateCellInfo(int row, int column);
-    void eraseCells();
-    void erase();
-private:
-    class Cell;
-    enum class Column { type_p, value_p, type_U, value_U, type_boundary };
-
-    std::vector<std::vector<Cell*>*> cells;    
-    std::shared_ptr<std::map<std::string, std::string>> pMap;
-    std::shared_ptr<std::map<std::string, std::string>> uMap;
-    std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
-    std::shared_ptr<configuration::ClientManager> cm;
-
-    bool mapsLoaded;
-    bool cellsErased;
-};
-
-class SetTable::Cell : public QObject
+class Cell : public QObject
 {
     // must receive signals from table about change and
     // sync changes accordingly to both maps: table and parser
@@ -74,6 +47,62 @@ private:
     std::pair<int, int> tableIndex;
     std::pair<std::string, std::string> mapIndex;
     QTableWidgetItem* instance;
+};
+
+/* ---------------------------------------------------------------------- */
+/* -- SetTable -- */
+/* ---------------------------------------------------------------------- */
+
+class SetTable : public QTableWidget
+{
+    Q_OBJECT
+public:
+    explicit SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    virtual ~SetTable();
+
+private slots:
+    void syncMaps();
+    void loadMaps();
+    void updateCellInfo(int row, int column);
+    void eraseCells();
+    void erase();
+    void disable();
+private:    
+    enum class Column { type_p, value_p, type_U, value_U, type_boundary };
+
+    std::vector<std::vector<Cell*>*> cells;    
+    std::shared_ptr<std::map<std::string, std::string>> pMap;
+    std::shared_ptr<std::map<std::string, std::string>> uMap;
+    std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
+
+    bool mapsLoaded;
+    bool cellsErased;
+};
+
+/* ---------------------------------------------------------------------- */
+/* -- ControlDictTable -- */
+/* ---------------------------------------------------------------------- */
+
+class ControlDictTable : public QTableWidget
+{
+    Q_OBJECT
+public:
+    explicit ControlDictTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    virtual ~ControlDictTable();
+private slots:
+    void syncMaps();
+    void loadMaps();
+    void updateCellInfo(int row, int column);
+    void eraseCells();
+    void erase();
+    void disable();
+private:
+    std::vector<Cell*> cells;
+    std::shared_ptr<std::map<std::string, std::string>> controlDictMap;
+    std::shared_ptr<configuration::ClientManager> cm;
+
+    bool mapsLoaded;
+    bool cellsErased;
 };
 
 }

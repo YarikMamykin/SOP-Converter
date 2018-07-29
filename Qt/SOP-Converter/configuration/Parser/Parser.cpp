@@ -14,7 +14,6 @@ configuration::Parser::Parser() :
     QObject(),
     maps()
 {    
-//    qRegisterMetaType<ParserId>("ParserId");
     QObject::connect(this, SIGNAL(startParsing()), SLOT(ParseAll()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseP()), SLOT(parseP()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseU()), SLOT(parseU()), Qt::QueuedConnection);
@@ -22,7 +21,7 @@ configuration::Parser::Parser() :
     QObject::connect(this, SIGNAL(startParseControlDict()), SLOT(parseControlDict()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseTransportProperties()), SLOT(parseTransportProperties()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(endParsing(bool)), SLOT(parsingEnded(bool)), Qt::QueuedConnection);
-//    QObject::connect(this, SIGNAL(startSyncFile(ParserId)), SLOT(syncFileRequest(ParserId)), Qt::QueuedConnection);
+    QObject::connect(this, SIGNAL(startSyncFiles()), SLOT(syncFiles()), Qt::QueuedConnection);
 
     resetFlags();
 

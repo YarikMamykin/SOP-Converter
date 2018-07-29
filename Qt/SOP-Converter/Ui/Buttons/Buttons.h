@@ -19,6 +19,7 @@ public:
     virtual ~Button();
 public slots:
     void showMessage();
+    void disable();
 //    void setColor(Qt::GlobalColor color, Qt::GlobalColor fontColor = Qt::GlobalColor::black);
 private:
     QPalette* pal; // left for setting background color

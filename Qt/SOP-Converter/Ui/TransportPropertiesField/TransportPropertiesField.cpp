@@ -6,7 +6,7 @@ using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
 
 Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent) :
-    QWidget(parent),
+    QGroupBox(QString("-- Transport Properties --"),parent),
     clientManager(cm),
     tpUnit(),
     labels(),
@@ -22,6 +22,10 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
                      SIGNAL(clearTpSets()),
                      this,
                      SLOT(reset()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(disableUi()),
+                     this,
+                     SLOT(disable()), Qt::QueuedConnection);
 
     for(auto e : tpDimensions)
     {
@@ -32,11 +36,13 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
         {
             editFields.push_back(new QSpinBox);
             dynamic_cast<QSpinBox*>(*(--editFields.end()))->setRange(-1000, 1000);
+            dynamic_cast<QSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
         }else
         {
             editFields.push_back(new QDoubleSpinBox);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setRange(0,1000);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setSingleStep(0.01);
+            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
         }
 
         tpUnit.push_back(new QVBoxLayout);
@@ -105,3 +111,10 @@ void Ui::TransportPropertiesField::reset()
     }
 }
 
+void Ui::TransportPropertiesField::disable()
+{
+    for(auto e : editFields)
+    {
+        e->setDisabled(true);
+    }
+}
