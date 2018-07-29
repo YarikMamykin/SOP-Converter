@@ -20,6 +20,7 @@ public:
 signals:
     void clearConsole();
     void clearTable();
+    void clearTpSets();
     void notifyAll();
 
 private:    

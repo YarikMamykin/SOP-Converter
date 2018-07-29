@@ -28,6 +28,7 @@ private:
     Ui::MainWindow *ui;
     Ui::Menu* menuBar;
     Ui::TableAndEtcGroup* tableAndEtc;
+    Ui::TransportPropertiesField* tpField;
     Ui::ConsoleAndButtonsGroup* consoleAndButtons;
     QVBoxLayout* layout;
 };

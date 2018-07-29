@@ -221,3 +221,7 @@ void Ui::SetTable::erase()
                      SIGNAL(cellChanged(int,int)),
                      SLOT(updateCellInfo(int,int)), Qt::DirectConnection);
 }
+
+/* ---------------------------------------------------------------------- */
+
+

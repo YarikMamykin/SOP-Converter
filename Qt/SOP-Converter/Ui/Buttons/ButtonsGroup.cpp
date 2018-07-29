@@ -16,6 +16,7 @@ Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<configuration::ClientManager> cli
 
     QObject::connect(clearConsole, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearConsole()));
     QObject::connect(resetSettings, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearTable()));
+    QObject::connect(resetSettings, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearTpSets()));
 }
 
 Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getStartConversionButton() {return startConvertion;}

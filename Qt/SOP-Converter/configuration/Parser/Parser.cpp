@@ -388,15 +388,6 @@ void configuration::Parser::parseTransportProperties()
     QTextStream* data = new QTextStream(file.get());
     QString buffer("");
     QStringList splittedBuffer;
-    QStringList keys;
-    keys << "kg"
-         << "m"
-         << "s"
-         << "K"
-         << "kgmol"
-         << "A"
-         << "cd"
-         << "viscosity";
 
     LogManager::getInstance()->log(QString("Clearing ") + parserIdToString(ParserId::transportProperties));
     maps[static_cast<int>(ParserId::transportProperties)].get()->clear();
@@ -414,7 +405,7 @@ void configuration::Parser::parseTransportProperties()
         int i = 0;
         for(auto e : splittedBuffer)
         {
-            maps[static_cast<int>(ParserId::transportProperties)].get()->insert(std::pair<std::string, std::string>(keys[i++].toStdString(), e.toStdString()));
+            maps[static_cast<int>(ParserId::transportProperties)].get()->insert(std::pair<std::string, std::string>(tpDimensions[i++].toStdString(), e.toStdString()));
         }
     }catch(std::exception& ex) {LogManager::getInstance()->log(ex.what());}
 
