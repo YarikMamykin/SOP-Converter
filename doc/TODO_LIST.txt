@@ -29,5 +29,31 @@ Implement appropriate map for parsing file 'transportProperties'.
 - then remove original file context with temp file context.
 
 #! NOT DONE
-6. Manage Parser::notifyAll signal usage to connect Ui.
+6. Implement file sync for boundary, controlDict and transportProperties files.
+Need to be done before next task!!!
+#!____________________________________________________________________________#!
+
+#! DONE
+7. Manage Parser::notifyAll signal usage for SetTable.
+
+#! DONE
+8. Implement cells logic for SetTable::Cells class.
+
+#! DONE (Fix is in signal file write to log file) 
+9. Figure out what is wrong with Ui destroy logging.
+
+#! DONE
+10. Implement update cells logic
+
+#! DONE
+11. ClientManager must be provided to Ui components through MainWindow to have ability to connect to any signal from Ui components.
+
+#! DONE
+12. Adept table functionality to workspace changing event. Use idea from task 11.
+
+#! DONE
+13. Implement table for controlDict properties.
+
+#! NOT DONE
+14. Implement Ui enable. Change Save settings button to STOP calculation."
 
