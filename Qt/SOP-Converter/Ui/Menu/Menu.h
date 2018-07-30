@@ -15,7 +15,7 @@ namespace Ui
 {
 
 class Menu : public QMenuBar
-{    
+{
 public:
     explicit Menu(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent = 0);
     virtual ~Menu();
@@ -23,10 +23,13 @@ public:
     class MenuItem;
 //    class MenuAction;
 
-public slots:
+public slots:    
     void openWorkspace();
     void openMeshFile();
     void openProjectFile();
+    void reloadWorkspace();
+    void disable();
+    void enable();
 private:
     std::vector<Menu::MenuItem*> items;
     std::shared_ptr<configuration::ClientManager> clientManager;

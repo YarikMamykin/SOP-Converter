@@ -26,6 +26,10 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
                      SIGNAL(disableUi()),
                      this,
                      SLOT(disable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(enableUi()),
+                     this,
+                     SLOT(enable()), Qt::QueuedConnection);
 
     for(auto e : tpDimensions)
     {
@@ -116,5 +120,13 @@ void Ui::TransportPropertiesField::disable()
     for(auto e : editFields)
     {
         e->setDisabled(true);
+    }
+}
+
+void Ui::TransportPropertiesField::enable()
+{
+    for(auto e : editFields)
+    {
+        e->setDisabled(false);
     }
 }

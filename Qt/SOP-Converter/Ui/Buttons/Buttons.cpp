@@ -25,6 +25,10 @@ void Ui::Button::disable()
 {
     this->setDisabled(true);
 }
+void Ui::Button::enable()
+{
+    this->setDisabled(false);
+}
 
 //void Ui::Button::setColor(Qt::GlobalColor color, Qt::GlobalColor fontColor)
 //{

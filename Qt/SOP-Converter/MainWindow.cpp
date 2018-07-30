@@ -20,11 +20,16 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setLayout(this->layout);    
     this->setWindowTitle("SOP-Converter");
     this->setMinimumSize(1000, 400);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(syncMaps()),
+                     this,
+                     SLOT(syncMaps()), Qt::QueuedConnection);
     logging::Logger::getInstance()->log("Window constructed");
 }
 
 MainWindow::~MainWindow()
 {
+    QObject::disconnect(this,0,0,0);
     delete menuBar;           logging::Logger::getInstance()->log("menuBar deinited", logging::LogDirection::file);
     delete tableAndEtc;       logging::Logger::getInstance()->log("tableAndEtc deinited", logging::LogDirection::file);
     delete tpField;           logging::Logger::getInstance()->log("TransportPropertiesField deinited", logging::LogDirection::file);
@@ -32,4 +37,9 @@ MainWindow::~MainWindow()
     delete layout;            logging::Logger::getInstance()->log("Window layout deinited", logging::LogDirection::file);
     delete ui;                logging::Logger::getInstance()->log("ui deinited", logging::LogDirection::file);
     logging::Logger::getInstance()->log("Window destroyed", logging::LogDirection::file);
+}
+
+void MainWindow::syncMaps()
+{
+
 }

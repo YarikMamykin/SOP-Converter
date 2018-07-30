@@ -29,7 +29,7 @@ SOURCES += main.cpp\
     configuration/ProjectFile/ProjectFile.cpp \
     configuration/ClientManager/ClientManager.cpp \
     general/general.cpp \
-    configuration/OFCommandExecutor/QFCommandExecutor.cpp \
+    configuration/OFCommandExecutor/OFCommandExecutor.cpp \
     Ui/TransportPropertiesField/TransportPropertiesField.cpp
 
 

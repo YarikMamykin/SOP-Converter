@@ -2,38 +2,43 @@
 
 Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
     QWidget(parent),
-    startConvertion(new Ui::Button(clientManager, "Start conversion")),
+    startCalculation(new Ui::Button(clientManager, "Start Calculation")),
     resetSettings(new Ui::Button(clientManager, "Reset settings")),
-    saveSettings(new Ui::Button(clientManager, "Save settings")),
+    stopCalculation(new Ui::Button(clientManager, "Stop Calculation")),
     clearConsole(new Ui::Button(clientManager, "Clear CONSOLE")),
     layout(new QVBoxLayout)
 {
-    layout->addWidget(startConvertion);
+    layout->addWidget(startCalculation);
     layout->addWidget(resetSettings);
-    layout->addWidget(saveSettings);
+    layout->addWidget(stopCalculation);
     layout->addWidget(clearConsole);
     this->setLayout(layout);
 
     QObject::connect(clearConsole, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearConsole()));
     QObject::connect(resetSettings, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearTable()));
     QObject::connect(resetSettings, SIGNAL(clicked()), clientManager.get(), SIGNAL(clearTpSets()));
-    QObject::connect(startConvertion, SIGNAL(clicked()), clientManager.get(), SIGNAL(disableUi()));
-    QObject::connect(clientManager.get(), SIGNAL(disableUi()), startConvertion, SLOT(disable()));
-    QObject::connect(clientManager.get(), SIGNAL(disableUi()), resetSettings, SLOT(disable()));
-    QObject::connect(clientManager.get(), SIGNAL(disableUi()), saveSettings, SLOT(disable()));
 
+    QObject::connect(startCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(disableUi()));
+    QObject::connect(stopCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(enableUi()));
+
+    QObject::connect(clientManager.get(), SIGNAL(disableUi()), startCalculation, SLOT(disable()));
+    QObject::connect(clientManager.get(), SIGNAL(disableUi()), resetSettings, SLOT(disable()));
+    QObject::connect(clientManager.get(), SIGNAL(disableUi()), clearConsole, SLOT(disable()));
+    QObject::connect(clientManager.get(), SIGNAL(enableUi()), startCalculation, SLOT(enable()));
+    QObject::connect(clientManager.get(), SIGNAL(enableUi()), resetSettings, SLOT(enable()));
+    QObject::connect(clientManager.get(), SIGNAL(enableUi()), clearConsole, SLOT(enable()));
 }
 
-Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getStartConversionButton() {return startConvertion;}
+Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getStartConversionButton() {return startCalculation;}
 Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getResetSettingsButton()   {return resetSettings;}
-Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getSaveSettingsButton()    {return saveSettings;}
+Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getStopConvertionButton()  {return stopCalculation;}
 Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getClearConsoleButton()    {return clearConsole;}
 
 Ui::ButtonsGroup::~ButtonsGroup()
 {
-    delete startConvertion;
+    delete startCalculation;
     delete resetSettings;
-    delete saveSettings;
+    delete stopCalculation;
     delete clearConsole;
     delete layout;
 }

@@ -29,6 +29,10 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
                      SIGNAL(disableUi()),
                      this,
                      SLOT(disable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(enableUi()),
+                     this,
+                     SLOT(enable()), Qt::QueuedConnection);
 
     for(int i = 0; i < 5; i++)
     {
@@ -233,6 +237,11 @@ void Ui::SetTable::disable()
     this->setDisabled(true);
 }
 
+void Ui::SetTable::enable()
+{
+    this->setDisabled(false);
+}
+
 /* ---------------------------------------------------------------------- */
 /* -- ControlDictTable -- */
 /* ---------------------------------------------------------------------- */
@@ -256,6 +265,10 @@ Ui::ControlDictTable::ControlDictTable(std::shared_ptr<configuration::ClientMana
                      SIGNAL(disableUi()),
                      this,
                      SLOT(disable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(enableUi()),
+                     this,
+                     SLOT(enable()), Qt::QueuedConnection);
 
     LogManager::getInstance()->log("ControlDictTable created");
 }
@@ -373,4 +386,9 @@ void Ui::ControlDictTable::erase()
 void Ui::ControlDictTable::disable()
 {
     this->setDisabled(true);
+}
+
+void Ui::ControlDictTable::enable()
+{
+    this->setDisabled(false);
 }

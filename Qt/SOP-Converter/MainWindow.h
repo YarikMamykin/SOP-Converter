@@ -22,7 +22,8 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
-
+private slots:
+    void syncMaps();
 private:
     std::shared_ptr<configuration::ClientManager> clientManager;
     Ui::MainWindow *ui;

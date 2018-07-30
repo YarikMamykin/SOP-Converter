@@ -18,13 +18,13 @@ public:
 
     Ui::Button* getStartConversionButton();
     Ui::Button* getResetSettingsButton();
-    Ui::Button* getSaveSettingsButton();
+    Ui::Button* getStopConvertionButton();
     Ui::Button* getClearConsoleButton();
 
 private: // Buttons in group
-    Ui::Button* startConvertion;
+    Ui::Button* startCalculation;
     Ui::Button* resetSettings;
-    Ui::Button* saveSettings;
+    Ui::Button* stopCalculation;
     Ui::Button* clearConsole;
     QVBoxLayout* layout;
 };

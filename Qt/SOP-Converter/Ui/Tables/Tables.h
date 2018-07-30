@@ -67,6 +67,7 @@ private slots:
     void eraseCells();
     void erase();
     void disable();
+    void enable();
 private:    
     enum class Column { type_p, value_p, type_U, value_U, type_boundary };
 
@@ -96,6 +97,7 @@ private slots:
     void eraseCells();
     void erase();
     void disable();
+    void enable();
 private:
     std::vector<Cell*> cells;
     std::shared_ptr<std::map<std::string, std::string>> controlDictMap;

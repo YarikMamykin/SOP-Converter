@@ -13,6 +13,7 @@ Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<configuration::ClientMana
     this->setLayout(layout);
 
     QObject::connect(clientManager.get(),SIGNAL(clearTable()), table, SLOT(erase()), Qt::DirectConnection);
+    QObject::connect(clientManager.get(),SIGNAL(clearTable()), cdTable, SLOT(erase()), Qt::DirectConnection);
 }
 
 Ui::TableAndEtcGroup::~TableAndEtcGroup()

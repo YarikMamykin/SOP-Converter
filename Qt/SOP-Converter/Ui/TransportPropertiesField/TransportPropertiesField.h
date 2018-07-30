@@ -28,6 +28,7 @@ private slots:
     void syncMap();
     void reset();
     void disable();
+    void enable();
 private:
     std::shared_ptr<configuration::ClientManager> clientManager;
     std::vector<QVBoxLayout*> tpUnit;

@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__ClientManager_t {
-    QByteArrayData data[9];
-    char stringdata[106];
+    QByteArrayData data[10];
+    char stringdata[115];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,12 +36,13 @@ QT_MOC_LITERAL(3, 43, 10),
 QT_MOC_LITERAL(4, 54, 11),
 QT_MOC_LITERAL(5, 66, 9),
 QT_MOC_LITERAL(6, 76, 9),
-QT_MOC_LITERAL(7, 86, 9),
-QT_MOC_LITERAL(8, 96, 8)
+QT_MOC_LITERAL(7, 86, 8),
+QT_MOC_LITERAL(8, 95, 9),
+QT_MOC_LITERAL(9, 105, 8)
     },
     "configuration::ClientManager\0clearConsole\0"
     "\0clearTable\0clearTpSets\0notifyAll\0"
-    "syncFiles\0disableUi\0enableUi\0"
+    "syncFiles\0syncMaps\0disableUi\0enableUi\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -51,23 +52,25 @@ static const uint qt_meta_data_configuration__ClientManager[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       7,       // signalCount
+       8,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   49,    2, 0x05,
-       3,    0,   50,    2, 0x05,
-       4,    0,   51,    2, 0x05,
-       5,    0,   52,    2, 0x05,
-       6,    0,   53,    2, 0x05,
-       7,    0,   54,    2, 0x05,
-       8,    0,   55,    2, 0x05,
+       1,    0,   54,    2, 0x05,
+       3,    0,   55,    2, 0x05,
+       4,    0,   56,    2, 0x05,
+       5,    0,   57,    2, 0x05,
+       6,    0,   58,    2, 0x05,
+       7,    0,   59,    2, 0x05,
+       8,    0,   60,    2, 0x05,
+       9,    0,   61,    2, 0x05,
 
  // signals: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -89,8 +92,9 @@ void configuration::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::
         case 2: _t->clearTpSets(); break;
         case 3: _t->notifyAll(); break;
         case 4: _t->syncFiles(); break;
-        case 5: _t->disableUi(); break;
-        case 6: _t->enableUi(); break;
+        case 5: _t->syncMaps(); break;
+        case 6: _t->disableUi(); break;
+        case 7: _t->enableUi(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -128,14 +132,20 @@ void configuration::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::
         }
         {
             typedef void (ClientManager::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::disableUi)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::syncMaps)) {
                 *result = 5;
             }
         }
         {
             typedef void (ClientManager::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::enableUi)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::disableUi)) {
                 *result = 6;
+            }
+        }
+        {
+            typedef void (ClientManager::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ClientManager::enableUi)) {
+                *result = 7;
             }
         }
     }
@@ -167,13 +177,13 @@ int configuration::ClientManager::qt_metacall(QMetaObject::Call _c, int _id, voi
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }
@@ -209,14 +219,20 @@ void configuration::ClientManager::syncFiles()
 }
 
 // SIGNAL 5
-void configuration::ClientManager::disableUi()
+void configuration::ClientManager::syncMaps()
 {
     QMetaObject::activate(this, &staticMetaObject, 5, 0);
 }
 
 // SIGNAL 6
-void configuration::ClientManager::enableUi()
+void configuration::ClientManager::disableUi()
 {
     QMetaObject::activate(this, &staticMetaObject, 6, 0);
+}
+
+// SIGNAL 7
+void configuration::ClientManager::enableUi()
+{
+    QMetaObject::activate(this, &staticMetaObject, 7, 0);
 }
 QT_END_MOC_NAMESPACE

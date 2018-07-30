@@ -23,6 +23,7 @@ signals:
     void clearTpSets();
     void notifyAll();
     void syncFiles();
+    void syncMaps();
     void disableUi();
     void enableUi();
 

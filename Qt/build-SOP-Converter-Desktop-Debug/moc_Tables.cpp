@@ -86,8 +86,8 @@ int Ui::Cell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_Ui__SetTable_t {
-    QByteArrayData data[10];
-    char stringdata[84];
+    QByteArrayData data[11];
+    char stringdata[91];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -105,11 +105,12 @@ QT_MOC_LITERAL(5, 47, 3),
 QT_MOC_LITERAL(6, 51, 6),
 QT_MOC_LITERAL(7, 58, 10),
 QT_MOC_LITERAL(8, 69, 5),
-QT_MOC_LITERAL(9, 75, 7)
+QT_MOC_LITERAL(9, 75, 7),
+QT_MOC_LITERAL(10, 83, 6)
     },
     "Ui::SetTable\0syncMaps\0\0loadMaps\0"
     "updateCellInfo\0row\0column\0eraseCells\0"
-    "erase\0disable\0"
+    "erase\0disable\0enable\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -119,7 +120,7 @@ static const uint qt_meta_data_Ui__SetTable[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -127,17 +128,19 @@ static const uint qt_meta_data_Ui__SetTable[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x08,
-       3,    0,   45,    2, 0x08,
-       4,    2,   46,    2, 0x08,
-       7,    0,   51,    2, 0x08,
-       8,    0,   52,    2, 0x08,
-       9,    0,   53,    2, 0x08,
+       1,    0,   49,    2, 0x08,
+       3,    0,   50,    2, 0x08,
+       4,    2,   51,    2, 0x08,
+       7,    0,   56,    2, 0x08,
+       8,    0,   57,    2, 0x08,
+       9,    0,   58,    2, 0x08,
+      10,    0,   59,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    5,    6,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -156,6 +159,7 @@ void Ui::SetTable::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 3: _t->eraseCells(); break;
         case 4: _t->erase(); break;
         case 5: _t->disable(); break;
+        case 6: _t->enable(); break;
         default: ;
         }
     }
@@ -186,19 +190,19 @@ int Ui::SetTable::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }
 struct qt_meta_stringdata_Ui__ControlDictTable_t {
-    QByteArrayData data[10];
-    char stringdata[92];
+    QByteArrayData data[11];
+    char stringdata[99];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -216,11 +220,12 @@ QT_MOC_LITERAL(5, 55, 3),
 QT_MOC_LITERAL(6, 59, 6),
 QT_MOC_LITERAL(7, 66, 10),
 QT_MOC_LITERAL(8, 77, 5),
-QT_MOC_LITERAL(9, 83, 7)
+QT_MOC_LITERAL(9, 83, 7),
+QT_MOC_LITERAL(10, 91, 6)
     },
     "Ui::ControlDictTable\0syncMaps\0\0loadMaps\0"
     "updateCellInfo\0row\0column\0eraseCells\0"
-    "erase\0disable\0"
+    "erase\0disable\0enable\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -230,7 +235,7 @@ static const uint qt_meta_data_Ui__ControlDictTable[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -238,17 +243,19 @@ static const uint qt_meta_data_Ui__ControlDictTable[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x08,
-       3,    0,   45,    2, 0x08,
-       4,    2,   46,    2, 0x08,
-       7,    0,   51,    2, 0x08,
-       8,    0,   52,    2, 0x08,
-       9,    0,   53,    2, 0x08,
+       1,    0,   49,    2, 0x08,
+       3,    0,   50,    2, 0x08,
+       4,    2,   51,    2, 0x08,
+       7,    0,   56,    2, 0x08,
+       8,    0,   57,    2, 0x08,
+       9,    0,   58,    2, 0x08,
+      10,    0,   59,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,    5,    6,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -267,6 +274,7 @@ void Ui::ControlDictTable::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         case 3: _t->eraseCells(); break;
         case 4: _t->erase(); break;
         case 5: _t->disable(); break;
+        case 6: _t->enable(); break;
         default: ;
         }
     }
@@ -297,13 +305,13 @@ int Ui::ControlDictTable::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }
