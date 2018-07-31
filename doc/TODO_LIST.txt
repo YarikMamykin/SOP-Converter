@@ -54,6 +54,9 @@ Need to be done before next task!!!
 #! DONE
 13. Implement table for controlDict properties.
 
-#! NOT DONE
+#! DONE
 14. Implement Ui enable. Change Save settings button to STOP calculation."
+
+#! NOT DONE
+15. Implement Synchronizer class logic. It must synchronize UI data with Parser maps and so on to appropriate files"
 
