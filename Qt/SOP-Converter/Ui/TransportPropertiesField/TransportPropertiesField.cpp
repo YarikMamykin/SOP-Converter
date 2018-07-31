@@ -12,6 +12,7 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
     labels(),
     editFields(),
     tpMap(),
+    tpParserMap(Parser::getInstance()->getParserMap(ParserId::transportProperties)),
     layout(new QHBoxLayout)
 {
     QObject::connect(clientManager.get(),
@@ -82,7 +83,7 @@ void Ui::TransportPropertiesField::loadMap()
     auto i = editFields.begin();
     for(auto e : tpMap)
     {
-        e->second = Parser::getInstance()->getParserMap(ParserId::transportProperties).get()->find(e->first)->second;
+        e->second = tpParserMap.get()->find(e->first)->second;
         if(i != (--editFields.end()))
             dynamic_cast<QSpinBox*>(*i)->setValue(std::stoi(e->second));
         else

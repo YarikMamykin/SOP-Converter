@@ -32,6 +32,8 @@ private:
     Ui::TransportPropertiesField* tpField;
     Ui::ConsoleAndButtonsGroup* consoleAndButtons;
     QVBoxLayout* layout;
+
+    static bool syncFlags[5];
 };
 
 #endif // MAINWINDOW_H

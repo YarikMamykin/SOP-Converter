@@ -35,6 +35,7 @@ private:
     std::vector<QLabel*> labels;
     std::vector<QAbstractSpinBox*> editFields;
     std::vector<std::pair<std::string, std::string>*> tpMap;
+    std::shared_ptr<std::map<std::string, std::string>> tpParserMap;
     QHBoxLayout* layout;
 };
 

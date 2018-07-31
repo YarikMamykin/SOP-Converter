@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     configuration/ClientManager/ClientManager.cpp \
     general/general.cpp \
     configuration/OFCommandExecutor/OFCommandExecutor.cpp \
-    Ui/TransportPropertiesField/TransportPropertiesField.cpp
+    Ui/TransportPropertiesField/TransportPropertiesField.cpp \
+    configuration/Synchronizer/Synchronizer.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -49,7 +50,8 @@ HEADERS  += MainWindow.h \
     configuration/ClientManager/ClientManager.h \
     general/general.h \
     configuration/OFCommandExecutor/OFCommandExecutor.h \
-    Ui/TransportPropertiesField/TransportPropertiesField.h
+    Ui/TransportPropertiesField/TransportPropertiesField.h \
+    configuration/Synchronizer/Synchronizer.h
 
 
 

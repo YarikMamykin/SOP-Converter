@@ -33,6 +33,10 @@ Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManag
                      SIGNAL(enableUi()),
                      this,
                      SLOT(enable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(syncMaps()),
+                     this,
+                     SLOT(syncMaps()), Qt::QueuedConnection);
 
     for(int i = 0; i < 5; i++)
     {

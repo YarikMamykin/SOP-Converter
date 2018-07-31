@@ -60,8 +60,8 @@ private slots:
     void syncFiles();
     std::string formatNode(const std::string& name, const std::string& type_value);
 private:
-    static std::vector<bool> parserFlags; // indicate only that parsing has been completed!
-    static unsigned char counter; // counts parsing operations
+    static std::vector<bool> parserFlags; // indicates only that parsing has been completed!
+    static unsigned char counter; // counts ended parsing operations
     std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;    
 
     friend class ParserThread;
