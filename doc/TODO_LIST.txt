@@ -59,4 +59,5 @@ Need to be done before next task!!!
 
 #! NOT DONE
 15. Implement Synchronizer class logic. It must synchronize UI data with Parser maps and so on to appropriate files"
+Implement SynchronizerThread to make synchronizing mutlithread.
 
