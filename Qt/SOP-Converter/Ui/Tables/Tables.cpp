@@ -63,7 +63,7 @@ Ui::SetTable::~SetTable()
 
 void Ui::SetTable::syncMaps()
 {
-
+    LogManager::getInstance()->log("Synchronize maps :: SetTable");
 }
 
 void Ui::SetTable::loadMaps()
@@ -273,6 +273,10 @@ Ui::ControlDictTable::ControlDictTable(std::shared_ptr<configuration::ClientMana
                      SIGNAL(enableUi()),
                      this,
                      SLOT(enable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(syncMaps()),
+                     this,
+                     SLOT(syncMaps()), Qt::QueuedConnection);
 
     LogManager::getInstance()->log("ControlDictTable created");
 }
@@ -291,7 +295,7 @@ Ui::ControlDictTable::~ControlDictTable()
 
 void Ui::ControlDictTable::syncMaps()
 {
-
+    LogManager::getInstance()->log("Synchronize maps :: ControlDictTable");
 }
 
 void Ui::ControlDictTable::loadMaps()

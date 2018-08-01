@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Ui__TransportPropertiesField_t {
     QByteArrayData data[7];
-    char stringdata[68];
+    char stringdata[70];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,15 +30,15 @@ struct qt_meta_stringdata_Ui__TransportPropertiesField_t {
 static const qt_meta_stringdata_Ui__TransportPropertiesField_t qt_meta_stringdata_Ui__TransportPropertiesField = {
     {
 QT_MOC_LITERAL(0, 0, 28),
-QT_MOC_LITERAL(1, 29, 7),
-QT_MOC_LITERAL(2, 37, 0),
-QT_MOC_LITERAL(3, 38, 7),
-QT_MOC_LITERAL(4, 46, 5),
-QT_MOC_LITERAL(5, 52, 7),
-QT_MOC_LITERAL(6, 60, 6)
+QT_MOC_LITERAL(1, 29, 8),
+QT_MOC_LITERAL(2, 38, 0),
+QT_MOC_LITERAL(3, 39, 8),
+QT_MOC_LITERAL(4, 48, 5),
+QT_MOC_LITERAL(5, 54, 7),
+QT_MOC_LITERAL(6, 62, 6)
     },
-    "Ui::TransportPropertiesField\0loadMap\0"
-    "\0syncMap\0reset\0disable\0enable\0"
+    "Ui::TransportPropertiesField\0loadMaps\0"
+    "\0syncMaps\0reset\0disable\0enable\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -77,8 +77,8 @@ void Ui::TransportPropertiesField::qt_static_metacall(QObject *_o, QMetaObject::
     if (_c == QMetaObject::InvokeMetaMethod) {
         TransportPropertiesField *_t = static_cast<TransportPropertiesField *>(_o);
         switch (_id) {
-        case 0: _t->loadMap(); break;
-        case 1: _t->syncMap(); break;
+        case 0: _t->loadMaps(); break;
+        case 1: _t->syncMaps(); break;
         case 2: _t->reset(); break;
         case 3: _t->disable(); break;
         case 4: _t->enable(); break;

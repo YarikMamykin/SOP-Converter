@@ -22,8 +22,6 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
-private slots:
-    void syncMaps();
 private:
     std::shared_ptr<configuration::ClientManager> clientManager;
     Ui::MainWindow *ui;
@@ -32,8 +30,6 @@ private:
     Ui::TransportPropertiesField* tpField;
     Ui::ConsoleAndButtonsGroup* consoleAndButtons;
     QVBoxLayout* layout;
-
-    static bool syncFlags[5];
 };
 
 #endif // MAINWINDOW_H

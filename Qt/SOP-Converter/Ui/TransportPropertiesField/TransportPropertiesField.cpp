@@ -1,6 +1,9 @@
 #include "TransportPropertiesField.h"
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
+#include "../../configuration/Synchronizer/Synchronizer.h"
+#include <functional>
+
 using LogManager = logging::Logger;
 using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
@@ -18,7 +21,7 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
     QObject::connect(clientManager.get(),
                      SIGNAL(notifyAll()),
                      this,
-                     SLOT(loadMap()), Qt::QueuedConnection);
+                     SLOT(loadMaps()), Qt::QueuedConnection);
     QObject::connect(clientManager.get(),
                      SIGNAL(clearTpSets()),
                      this,
@@ -31,7 +34,12 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
                      SIGNAL(enableUi()),
                      this,
                      SLOT(enable()), Qt::QueuedConnection);
+    QObject::connect(clientManager.get(),
+                     SIGNAL(syncMaps()),
+                     this,
+                     SLOT(syncMaps()), Qt::QueuedConnection);
 
+    int index = 0;
     for(auto e : tpDimensions)
     {
         tpMap.push_back(new std::pair<std::string, std::string>(e.toStdString(), std::string("")));
@@ -42,13 +50,26 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configura
             editFields.push_back(new QSpinBox);
             dynamic_cast<QSpinBox*>(*(--editFields.end()))->setRange(-1000, 1000);
             dynamic_cast<QSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
-        }else
+            QObject::connect(reinterpret_cast<QSpinBox*>(*(--editFields.end())),
+                             static_cast<void (QSpinBox::*)(const QString&)>(&QSpinBox::valueChanged),
+                             [this, index](const QString& value)
+            {
+                tpMap[index]->second = value.toStdString();
+            });
+        } else
         {
             editFields.push_back(new QDoubleSpinBox);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setRange(0,1000);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setSingleStep(0.01);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
+            QObject::connect(dynamic_cast<QDoubleSpinBox*>(*(--editFields.end())),
+                             static_cast<void (QDoubleSpinBox::*)(const QString&)>(&QDoubleSpinBox::valueChanged),
+                             [this, index](const QString& value)
+            {
+                this->tpMap[index]->second = value.toStdString();
+            });
         }
+        index++;
 
         tpUnit.push_back(new QVBoxLayout);
         (*(--tpUnit.end()))->addWidget(*(--labels.end()));
@@ -77,7 +98,7 @@ Ui::TransportPropertiesField::~TransportPropertiesField()
     delete layout;
 }
 
-void Ui::TransportPropertiesField::loadMap()
+void Ui::TransportPropertiesField::loadMaps()
 {
     LogManager::getInstance()->log("TransportProperties loading map");
     auto i = editFields.begin();
@@ -92,9 +113,26 @@ void Ui::TransportPropertiesField::loadMap()
     }
 }
 
-void Ui::TransportPropertiesField::syncMap()
+void Ui::TransportPropertiesField::syncMaps()
 {
+    LogManager::getInstance()->log("Synchronize maps :: TransportPropertiesField");
+    using Syncer = configuration::Synchronizer;
+    Syncer* s = new Syncer([this]()
+    {
+        for(auto e : this->tpMap)
+        {
+            this->tpParserMap.get()->find(e->first)->second = e->second;
+        }
 
+        for(auto e : *this->tpParserMap.get())
+        {
+            LogManager::getInstance()->log(QString("%1 === %2").
+                                           arg(e.first.c_str()).
+                                           arg(e.second.c_str()));
+        }
+    }, static_cast<int>(ParserId::transportProperties));
+    s->executor();
+    delete s;
 }
 
 void Ui::TransportPropertiesField::reset()
