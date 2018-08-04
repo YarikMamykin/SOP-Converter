@@ -61,3 +61,6 @@ Need to be done before next task!!!
 15. Implement Synchronizer class logic. It must synchronize UI data with Parser maps and so on to appropriate files"
 Implement SynchronizerThread to make synchronizing mutlithread.
 
+#! NOT DONE
+16. Change Parser std::map to std::vector<std::pair<std::string, std::string>*>. Order of file data must NOT be changed!"
+
