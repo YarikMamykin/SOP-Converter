@@ -72,9 +72,9 @@ private:
     enum class Column { type_p, value_p, type_U, value_U, type_boundary };
 
     std::vector<std::vector<Cell*>*> cells;    
-    std::shared_ptr<std::map<std::string, std::string>> pMap;
-    std::shared_ptr<std::map<std::string, std::string>> uMap;
-    std::shared_ptr<std::map<std::string, std::string>> boundaryMap;
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> pMap;
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> uMap;
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> boundaryMap;
 
     bool mapsLoaded;
     bool cellsErased;
@@ -100,7 +100,7 @@ private slots:
     void enable();
 private:
     std::vector<Cell*> cells;
-    std::shared_ptr<std::map<std::string, std::string>> controlDictMap;
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> controlDictMap;
     std::shared_ptr<configuration::ClientManager> cm;
 
     bool mapsLoaded;

@@ -35,8 +35,8 @@ private:
     std::vector<QVBoxLayout*> tpUnit;
     std::vector<QLabel*> labels;
     std::vector<QAbstractSpinBox*> editFields;
-    std::vector<std::pair<std::string, std::string>*> tpMap; // proxy between tpParserMap and Ui view of map (not ordered)
-    std::shared_ptr<std::map<std::string, std::string>> tpParserMap;
+    std::vector<std::pair<std::string, std::string>*> tpMap;
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> tpParserMap;
     QHBoxLayout* layout;
 };
 

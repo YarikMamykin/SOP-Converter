@@ -31,3 +31,14 @@ void copyDirRecursively(const QDir& from, const QDir& to)
     }
 }
 
+std::vector<std::pair<std::string, std::string>*>::iterator findKey(const std::string& key,
+                                                                    std::vector<std::pair<std::string, std::string>*>& map)
+{
+    for(auto result = map.begin(); result != map.end(); result++)
+    {
+        if((*result)->first == key)
+            return result;
+    }
+    return map.end();
+}
+

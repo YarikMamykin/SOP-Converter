@@ -30,7 +30,7 @@ public:
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);
     static bool parseTransformPointsLog(const QString& result);
-    std::shared_ptr<std::map<std::string, std::string>> getParserMap(const ParserId&);
+    std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> getParserMap(const ParserId&);
     static QString parserIdToString(const ParserId& id);
     static ParserId matchParserIdToFile(std::shared_ptr<QFile> file);
     static std::shared_ptr<QFile> matchFileToParserId(ParserId id);
@@ -62,7 +62,7 @@ private slots:
 private:
     static std::vector<bool> parserFlags; // indicates only that parsing has been completed!
     static unsigned char counter; // counts ended parsing operations
-    std::vector<std::shared_ptr<std::map<std::string, std::string>>> maps;    
+    std::vector<std::shared_ptr<std::vector<std::pair<std::string, std::string>*>>> maps;
 
     friend class ParserThread;
 };

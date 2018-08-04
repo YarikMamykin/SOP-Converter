@@ -75,11 +75,12 @@ void Ui::SetTable::syncMaps()
 
         for(auto e : *cells[static_cast<int>(Column::type_p)])
         {
-            buffer = pMap.get()->find(e->getMapIndexPatchName());
-            buffer->second = e->getMapIndexPatchTypeValue();
+//            buffer = pMap.get()->find(e->getMapIndexPatchName());
+            buffer = findKey(e->getMapIndexPatchName(), *pMap.get());
+            (*buffer)->second = e->getMapIndexPatchTypeValue();
             if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
             {
-                buffer->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
+                (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
             }
             ++iter;
         }
@@ -87,8 +88,8 @@ void Ui::SetTable::syncMaps()
         for(auto e : *this->pMap.get())
         {
             LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e.first.c_str()).
-                                           arg(e.second.c_str()));
+                                           arg(e->first.c_str()).
+                                           arg(e->second.c_str()));
         }
     }, static_cast<int>(ParserId::p)));
     SyncerThread sthreadU(new Syncer([this]()
@@ -98,11 +99,11 @@ void Ui::SetTable::syncMaps()
 
         for(auto e : *cells[static_cast<int>(Column::type_U)])
         {
-            buffer = uMap.get()->find(e->getMapIndexPatchName());
-            buffer->second = e->getMapIndexPatchTypeValue();
+            buffer = findKey(e->getMapIndexPatchName(), *uMap.get());
+            (*buffer)->second = e->getMapIndexPatchTypeValue();
             if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
             {
-                buffer->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
+                (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
             }
             ++iter;
         }
@@ -110,22 +111,22 @@ void Ui::SetTable::syncMaps()
         for(auto e : *this->uMap.get())
         {
             LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e.first.c_str()).
-                                           arg(e.second.c_str()));
+                                           arg(e->first.c_str()).
+                                           arg(e->second.c_str()));
         }
     }, static_cast<int>(ParserId::U)));
     SyncerThread sthreadB(new Syncer([this]()
     {
         for(auto e : *cells[static_cast<int>(Column::type_boundary)])
         {
-            boundaryMap.get()->find(e->getMapIndexPatchName())->second = e->getMapIndexPatchTypeValue();
+            (*findKey(e->getMapIndexPatchName(), *boundaryMap.get()))->second = e->getMapIndexPatchTypeValue();
         }
 
         for(auto e : *this->boundaryMap.get())
         {
             LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e.first.c_str()).
-                                           arg(e.second.c_str()));
+                                           arg(e->first.c_str()).
+                                           arg(e->second.c_str()));
         }
     }, static_cast<int>(ParserId::boundary)));
 
@@ -156,11 +157,11 @@ void Ui::SetTable::loadMaps()
     int i = 0;
     for(auto e : *boundaryMap.get())
     {
-        labels << e.first.c_str();    
+        labels << e->first.c_str();
         cells[static_cast<int>(SetTable::Column::type_boundary)]->push_back(new Cell(i,
                                                                                      static_cast<unsigned int>(SetTable::Column::type_boundary),
-                                                                                     e.first,
-                                                                                     e.second));
+                                                                                     e->first,
+                                                                                     e->second));
         this->insertRow(i++);
     }
     this->setVerticalHeaderLabels(labels);
@@ -172,29 +173,29 @@ void Ui::SetTable::loadMaps()
     i = 0;
     for(auto e : *pMap.get())
     {
-        buffer = QString(e.second.c_str());
+        buffer = QString(e->second.c_str());
         if(buffer.contains(" "))
         {
             labels.clear();
             labels = buffer.split(" ");
             cells[static_cast<int>(SetTable::Column::type_p)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::type_p),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   labels[0].toStdString()));
             cells[static_cast<int>(SetTable::Column::value_p)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::value_p),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   labels[1].toStdString()));
         }
         else
         {
             cells[static_cast<int>(SetTable::Column::type_p)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::type_p),
-                                                                                  e.first,
-                                                                                  e.second));
+                                                                                  e->first,
+                                                                                  e->second));
             cells[static_cast<int>(SetTable::Column::value_p)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::value_p),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   std::string("-")));
         }
         i++;
@@ -203,29 +204,29 @@ void Ui::SetTable::loadMaps()
     i = 0;
     for(auto e : *uMap.get())
     {
-        buffer = QString(e.second.c_str());
+        buffer = QString(e->second.c_str());
         if(buffer.contains(" "))
         {
             labels.clear();
             labels = buffer.split(" ");
             cells[static_cast<int>(SetTable::Column::type_U)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::type_U),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   labels[0].toStdString()));
             cells[static_cast<int>(SetTable::Column::value_U)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::value_U),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   buffer.toStdString().substr(buffer.indexOf('('), buffer.indexOf(')') - buffer.indexOf('(') + 1)));
         }
         else
         {
             cells[static_cast<int>(SetTable::Column::type_U)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::type_U),
-                                                                                  e.first,
-                                                                                  e.second));
+                                                                                  e->first,
+                                                                                  e->second));
             cells[static_cast<int>(SetTable::Column::value_U)]->push_back(new Cell(i,
                                                                                   static_cast<int>(SetTable::Column::value_U),
-                                                                                  e.first,
+                                                                                  e->first,
                                                                                   std::string("-")));
         }
         i++;
@@ -369,14 +370,14 @@ void Ui::ControlDictTable::syncMaps()
     {
         for(auto e : cells)
         {
-            controlDictMap.get()->find(e->getMapIndexPatchName())->second = e->getMapIndexPatchTypeValue();
+            (*findKey(e->getMapIndexPatchName(), *controlDictMap.get()))->second = e->getMapIndexPatchTypeValue();
         }
 
         for(auto e : *this->controlDictMap.get())
         {
             LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e.first.c_str()).
-                                           arg(e.second.c_str()));
+                                           arg(e->first.c_str()).
+                                           arg(e->second.c_str()));
         }
     }, static_cast<int>(ParserId::controlDict)));
 
@@ -401,11 +402,11 @@ void Ui::ControlDictTable::loadMaps()
     int i = 0;
     for(auto e : *controlDictMap.get())
     {
-        labels << e.first.c_str();
+        labels << e->first.c_str();
         cells.push_back(new Cell(i,
                                  0,
-                                 e.first,
-                                 e.second));
+                                 e->first,
+                                 e->second));
         this->insertRow(i++);
     }
     this->setVerticalHeaderLabels(labels);

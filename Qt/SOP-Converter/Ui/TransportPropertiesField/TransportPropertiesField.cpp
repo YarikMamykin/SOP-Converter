@@ -104,7 +104,7 @@ void Ui::TransportPropertiesField::loadMaps()
     auto i = editFields.begin();
     for(auto e : tpMap)
     {
-        e->second = tpParserMap.get()->find(e->first)->second;
+        e->second = (*findKey(e->first,*tpParserMap.get()))->second;
         if(i != (--editFields.end()))
             dynamic_cast<QSpinBox*>(*i)->setValue(std::stoi(e->second));
         else
@@ -123,14 +123,14 @@ void Ui::TransportPropertiesField::syncMaps()
     {
         for(auto e : this->tpMap)
         {
-            this->tpParserMap.get()->find(e->first)->second = e->second;
+            (*findKey(e->first, *tpParserMap.get()))->second = e->second;
         }
 
         for(auto e : *this->tpParserMap.get())
         {
             LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e.first.c_str()).
-                                           arg(e.second.c_str()));
+                                           arg(e->first.c_str()).
+                                           arg(e->second.c_str()));
         }
     }, static_cast<int>(ParserId::transportProperties)));
     emit sthread.start();

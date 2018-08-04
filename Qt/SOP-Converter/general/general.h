@@ -6,6 +6,8 @@
 #include <string>
 #include <QDir>
 #include <QFile>
+#include <vector>
+
 
 #include "../configuration/Parser/Parser.h"
 using ParserId = configuration::Parser::ParserId;
@@ -20,6 +22,8 @@ const std::string bigtab          = std::string("        ");
 const QString boolToString(const bool& value);
 void copyDir(const QDir& from, const QDir& to);
 void copyDirRecursively(const QDir& from, const QDir& to);
+std::vector<std::pair<std::string, std::string>*>::iterator findKey(const std::string& key,
+                                                                    std::vector<std::pair<std::string, std::string>*>& map);
 
 
 #endif // GENERAL_H

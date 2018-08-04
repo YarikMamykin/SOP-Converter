@@ -25,7 +25,7 @@ configuration::Parser::Parser() :
 
     resetFlags();
 
-    for(int i = 0; i < 5; i++) maps.push_back(std::make_shared<std::map<std::string, std::string>>());
+    for(int i = 0; i < 5; i++) maps.push_back(std::make_shared<std::vector<std::pair<std::string, std::string>*>>());
 
     LogManager::getInstance()->log("Parser constructed", logging::LogDirection::file);
 }
@@ -144,7 +144,7 @@ void configuration::Parser::parseP()
 
             type_value.append(std::string(" ") + buffer.toStdString());
         }        
-        if(buffer.contains("}")) {maps[static_cast<int>(ParserId::p)].get()->insert(std::pair<std::string, std::string>(key,type_value));}
+        if(buffer.contains("}")) {maps[static_cast<int>(ParserId::p)].get()->push_back(new std::pair<std::string, std::string>(key,type_value));}
     }
 
 
@@ -155,8 +155,8 @@ void configuration::Parser::parseP()
     LogManager::getInstance()->log(QString("Printing p map (%1)").arg(maps[static_cast<int>(ParserId::p)].get()->size()));
     for(auto e : *maps[static_cast<int>(ParserId::p)].get())
     {
-        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e.first.c_str()));
-        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e.second.c_str()));
+        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e->first.c_str()));
+        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e->second.c_str()));
     }
 
     file.get()->close();
@@ -221,7 +221,7 @@ void configuration::Parser::parseU()
             type_value.append(std::string(" ") +
                               buffer.toStdString().substr(buffer.indexOf('('), buffer.indexOf(')') - buffer.indexOf('(') + 1));
         }
-        if(buffer.contains("}")) {maps[static_cast<int>(ParserId::U)].get()->insert(std::pair<std::string, std::string>(key,type_value));}
+        if(buffer.contains("}")) {maps[static_cast<int>(ParserId::U)].get()->push_back(new std::pair<std::string, std::string>(key,type_value));}
     }
 
     Parser::parserFlags[static_cast<int>(ParserId::U)] = true;
@@ -231,8 +231,8 @@ void configuration::Parser::parseU()
     LogManager::getInstance()->log(QString("Printing U map (%1)").arg(maps[static_cast<int>(ParserId::U)].get()->size()));
     for(auto e : *maps[static_cast<int>(ParserId::U)].get())
     {
-        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e.first.c_str()));
-        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e.second.c_str()));
+        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e->first.c_str()));
+        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e->second.c_str()));
     }
 
     file.get()->close();
@@ -285,7 +285,7 @@ void configuration::Parser::parseBoundary()
             buffer = splittedBuffer[1];
             value = buffer.remove(buffer.indexOf(';'), 1).toStdString();
 
-            maps[static_cast<int>(ParserId::boundary)].get()->insert(std::pair<std::string, std::string>(key,value));
+            maps[static_cast<int>(ParserId::boundary)].get()->push_back(new std::pair<std::string, std::string>(key,value));
             read_patch_type = false; continue;
         }
         if(buffer.contains("{"))
@@ -302,8 +302,8 @@ void configuration::Parser::parseBoundary()
     LogManager::getInstance()->log(QString("Printing boundary map (%1)").arg(maps[static_cast<int>(ParserId::boundary)].get()->size()));
     for(auto e : *maps[static_cast<int>(ParserId::boundary)].get())
     {
-        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e.first.c_str()));
-        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e.second.c_str()));
+        LogManager::getInstance()->log(QString("Having patch --> ") + QString(e->first.c_str()));
+        LogManager::getInstance()->log(QString("Having patch type --> ") + QString(e->second.c_str()));
     }
 
     file.get()->close();
@@ -344,7 +344,7 @@ void configuration::Parser::parseControlDict()
         splittedBuffer.clear();
         splittedBuffer = buffer.trimmed().split(" ");
         splittedBuffer.removeAll(QString(""));
-        maps[static_cast<int>(ParserId::controlDict)].get()->insert(std::pair<std::string, std::string>(
+        maps[static_cast<int>(ParserId::controlDict)].get()->push_back(new std::pair<std::string, std::string>(
                                          splittedBuffer[0].toStdString(),
                                          splittedBuffer[1].toStdString()));
     }
@@ -356,8 +356,8 @@ void configuration::Parser::parseControlDict()
     LogManager::getInstance()->log(QString("Printing controlDict map (%1)").arg(maps[static_cast<int>(ParserId::controlDict)].get()->size()));
     for(auto e : *maps[static_cast<int>(ParserId::controlDict)].get())
     {
-        LogManager::getInstance()->log(QString("Having config --> ") + QString(e.first.c_str()));
-        LogManager::getInstance()->log(QString("Having config value --> ") + QString(e.second.c_str()));
+        LogManager::getInstance()->log(QString("Having config --> ") + QString(e->first.c_str()));
+        LogManager::getInstance()->log(QString("Having config value --> ") + QString(e->second.c_str()));
     }
 
     file.get()->close();
@@ -404,15 +404,15 @@ void configuration::Parser::parseTransportProperties()
         int i = 0;
         for(auto e : splittedBuffer)
         {
-            maps[static_cast<int>(ParserId::transportProperties)].get()->insert(std::pair<std::string, std::string>(tpDimensions[i++].toStdString(), e.toStdString()));
+            maps[static_cast<int>(ParserId::transportProperties)].get()->push_back(new std::pair<std::string, std::string>(tpDimensions[i++].toStdString(), e.toStdString()));
         }
     }catch(std::exception& ex) {LogManager::getInstance()->log(ex.what());}
 
     LogManager::getInstance()->log(QString("Printing transportProperties map (%1)").arg(maps[static_cast<int>(ParserId::transportProperties)].get()->size()));
     for(auto e : *maps[static_cast<int>(ParserId::transportProperties)].get())
     {
-        LogManager::getInstance()->log(QString("Having config --> ") + QString(e.first.c_str()));
-        LogManager::getInstance()->log(QString("Having config value --> ") + QString(e.second.c_str()));
+        LogManager::getInstance()->log(QString("Having config --> ") + QString(e->first.c_str()));
+        LogManager::getInstance()->log(QString("Having config value --> ") + QString(e->second.c_str()));
     }
 
     file.get()->close();
@@ -472,8 +472,8 @@ void configuration::Parser::syncFiles()
 
         for(auto e : *maps[static_cast<int>(ParserId::boundary)].get())
         {
-            maps[static_cast<int>(ParserId::p)].get()->insert(std::pair<std::string, std::string>(e.first, defaultNodeType));
-            maps[static_cast<int>(ParserId::U)].get()->insert(std::pair<std::string, std::string>(e.first, defaultNodeType));
+            maps[static_cast<int>(ParserId::p)].get()->push_back(new std::pair<std::string, std::string>(e->first, defaultNodeType));
+            maps[static_cast<int>(ParserId::U)].get()->push_back(new std::pair<std::string, std::string>(e->first, defaultNodeType));
         }
     }
 
@@ -522,7 +522,7 @@ void configuration::Parser::syncFile(std::shared_ptr<QFile> file)
 
             for(auto e : *maps[static_cast<int>(fileId)].get())
             {
-                tempdata << formatNode(e.first, e.second).c_str();
+                tempdata << formatNode(e->first, e->second).c_str();
             }
             tempdata << std::string("}\n").c_str(); // closing bracket for boundaryField
         }break;
@@ -586,7 +586,7 @@ bool configuration::Parser::parseTransformPointsLog(const QString& result)
         return true;
 }
 
-std::shared_ptr<std::map<std::string, std::string>> configuration::Parser::getParserMap(const ParserId& id)
+std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> configuration::Parser::getParserMap(const ParserId& id)
 {
     switch(id)
     {
