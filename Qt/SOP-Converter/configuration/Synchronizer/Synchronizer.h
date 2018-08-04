@@ -15,31 +15,44 @@
 namespace configuration
 {
 
+/* ---------------------------------------------------------------------- */
+/* -- Synchronizer -- */
+/* ---------------------------------------------------------------------- */
+
 class Synchronizer final : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Synchronizer(std::function<void()> _runner, int _id, QObject* parent = 0);
+    explicit Synchronizer(std::function<void()> runner, int _id, QObject* parent = 0);
     virtual ~Synchronizer();
 signals:
     void finished();
     void end(int, bool);
 public slots:
-    void executor();
+    void execute();
 private:
-    std::function<void()> runner;
+    std::function<void()> startRunner;
     int id;
 };
 
+
+/* ---------------------------------------------------------------------- */
+/* -- SynchronizerThread -- */
+/* ---------------------------------------------------------------------- */
+
 class SynchronizerThread : public QObject
 {
+    Q_OBJECT
 public:
-    explicit SynchronizerThread(std::unique_ptr<Synchronizer> _syncer);
+    explicit SynchronizerThread(Synchronizer* _syncer);
     virtual ~SynchronizerThread();
+signals:
+    void start();
 private:
-    std::unique_ptr<QThread> thread;
-    std::unique_ptr<Synchronizer> syncer;
+    QThread* thread;
+    Synchronizer* syncer;
+    static std::vector<SynchronizerThread*> sthreads;
 };
 
 }

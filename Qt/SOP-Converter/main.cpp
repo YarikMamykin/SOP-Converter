@@ -11,6 +11,7 @@
 #include "configuration/ProjectFile/ProjectFile.h"
 #include "configuration/Parser/Parser.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -25,6 +26,8 @@ int main(int argc, char *argv[])
 //    configuration::FileManager::getInstance()->saveProjectFile(pf);
 
     int retcode = a.exec();
+
+
 
     logging::Logger::getInstance()->log("App END");
     qDebug()<< "retcode = " << retcode;
