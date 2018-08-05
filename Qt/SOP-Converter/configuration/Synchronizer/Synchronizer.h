@@ -4,7 +4,9 @@
 #include <QObject>
 #include <functional>
 #include <memory>
+#include <vector>
 #include <QThread>
+
 
 // Retreives data from Ui component
 // and syncs it to appropriate map in Parser --> and so on appropriate file
@@ -26,14 +28,21 @@ class Synchronizer final : public QObject
 public:
     explicit Synchronizer(std::function<void()> runner, int _id, QObject* parent = 0);
     virtual ~Synchronizer();
+
+    enum class ID : unsigned char
+    { p, U, boundary, controlDict, transportProperties };
+
 signals:
     void finished();
     void end(int, bool);
 public slots:
     void execute();
+    static void executeFileSyncRunner(ID id);
+    static std::function<void()> getFileSyncRunner(ID id);
 private:
     std::function<void()> startRunner;
     int id;
+    static const std::vector<std::function<void()>> fileSyncRunners;
 };
 
 

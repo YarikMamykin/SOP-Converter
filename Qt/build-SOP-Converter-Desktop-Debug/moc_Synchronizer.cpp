@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__Synchronizer_t {
-    QByteArrayData data[5];
-    char stringdata[51];
+    QByteArrayData data[10];
+    char stringdata[119];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,10 +33,16 @@ QT_MOC_LITERAL(0, 0, 27),
 QT_MOC_LITERAL(1, 28, 8),
 QT_MOC_LITERAL(2, 37, 0),
 QT_MOC_LITERAL(3, 38, 3),
-QT_MOC_LITERAL(4, 42, 7)
+QT_MOC_LITERAL(4, 42, 7),
+QT_MOC_LITERAL(5, 50, 21),
+QT_MOC_LITERAL(6, 72, 2),
+QT_MOC_LITERAL(7, 75, 2),
+QT_MOC_LITERAL(8, 78, 17),
+QT_MOC_LITERAL(9, 96, 21)
     },
     "configuration::Synchronizer\0finished\0"
-    "\0end\0execute\0"
+    "\0end\0execute\0executeFileSyncRunner\0"
+    "ID\0id\0getFileSyncRunner\0std::function<void()>\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -46,7 +52,7 @@ static const uint qt_meta_data_configuration__Synchronizer[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -54,11 +60,13 @@ static const uint qt_meta_data_configuration__Synchronizer[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x05,
-       3,    2,   30,    2, 0x05,
+       1,    0,   39,    2, 0x05,
+       3,    2,   40,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,   35,    2, 0x0a,
+       4,    0,   45,    2, 0x0a,
+       5,    1,   46,    2, 0x0a,
+       8,    1,   49,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void,
@@ -66,6 +74,8 @@ static const uint qt_meta_data_configuration__Synchronizer[] = {
 
  // slots: parameters
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 6,    7,
+    0x80000000 | 9, 0x80000000 | 6,    7,
 
        0        // eod
 };
@@ -78,6 +88,9 @@ void configuration::Synchronizer::qt_static_metacall(QObject *_o, QMetaObject::C
         case 0: _t->finished(); break;
         case 1: _t->end((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 2: _t->execute(); break;
+        case 3: _t->executeFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1]))); break;
+        case 4: { std::function<void()> _r = _t->getFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< std::function<void()>*>(_a[0]) = _r; }  break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -123,13 +136,13 @@ int configuration::Synchronizer::qt_metacall(QMetaObject::Call _c, int _id, void
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 5)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 5;
     }
     return _id;
 }

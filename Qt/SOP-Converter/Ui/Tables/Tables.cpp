@@ -75,7 +75,6 @@ void Ui::SetTable::syncMaps()
 
         for(auto e : *cells[static_cast<int>(Column::type_p)])
         {
-//            buffer = pMap.get()->find(e->getMapIndexPatchName());
             buffer = findKey(e->getMapIndexPatchName(), *pMap.get());
             (*buffer)->second = e->getMapIndexPatchTypeValue();
             if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
@@ -91,6 +90,8 @@ void Ui::SetTable::syncMaps()
                                            arg(e->first.c_str()).
                                            arg(e->second.c_str()));
         }
+
+        Syncer::executeFileSyncRunner(Syncer::ID::p);
     }, static_cast<int>(ParserId::p)));
     SyncerThread sthreadU(new Syncer([this]()
     {
@@ -114,6 +115,8 @@ void Ui::SetTable::syncMaps()
                                            arg(e->first.c_str()).
                                            arg(e->second.c_str()));
         }
+
+        Syncer::executeFileSyncRunner(Syncer::ID::U);
     }, static_cast<int>(ParserId::U)));
     SyncerThread sthreadB(new Syncer([this]()
     {
@@ -128,6 +131,8 @@ void Ui::SetTable::syncMaps()
                                            arg(e->first.c_str()).
                                            arg(e->second.c_str()));
         }
+
+        Syncer::executeFileSyncRunner(Syncer::ID::boundary);
     }, static_cast<int>(ParserId::boundary)));
 
     emit sthreadP.start();
@@ -379,6 +384,8 @@ void Ui::ControlDictTable::syncMaps()
                                            arg(e->first.c_str()).
                                            arg(e->second.c_str()));
         }
+
+        Syncer::executeFileSyncRunner(Syncer::ID::controlDict);
     }, static_cast<int>(ParserId::controlDict)));
 
     emit sthread.start();

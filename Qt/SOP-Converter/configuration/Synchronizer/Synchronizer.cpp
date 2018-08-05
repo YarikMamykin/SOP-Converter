@@ -1,7 +1,35 @@
 #include "Synchronizer.h"
+#include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
+using Parser = configuration::Parser;
 using LogManager = logging::Logger;
 
+
+const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRunners
+(
+{
+    []() // p-file syncer
+    {
+        LogManager::getInstance()->log("file syncer p");
+    },
+    []() // U-file syncer
+    {
+        LogManager::getInstance()->log("file syncer U");
+    },
+    []() // boundary-file syncer
+    {
+        LogManager::getInstance()->log("file syncer boundary");
+    },
+    []() // controlDict-file syncer
+    {
+        LogManager::getInstance()->log("file syncer controlDict");
+    },
+    []() // transformProperties-file syncer
+    {
+        LogManager::getInstance()->log("file syncer transportProperties");
+    },
+}
+);
 
 /* ---------------------------------------------------------------------- */
 /* -- Synchronizer -- */
@@ -28,6 +56,16 @@ void configuration::Synchronizer::execute()
     LogManager::getInstance()->log(QString("Execution done. Id = %1").arg(QString::number(id)));
 }
 
+void configuration::Synchronizer::executeFileSyncRunner(configuration::Synchronizer::ID id)
+{
+    configuration::Synchronizer::fileSyncRunners[static_cast<unsigned char>(id)]();
+}
+
+std::function<void()> configuration::Synchronizer::getFileSyncRunner(ID id)
+{
+    return configuration::Synchronizer::fileSyncRunners[static_cast<unsigned char>(id)];
+}
+
 
 /* ---------------------------------------------------------------------- */
 /* -- SynchronizerThread -- */
@@ -52,4 +90,3 @@ configuration::SynchronizerThread::~SynchronizerThread()
 {
     LogManager::getInstance()->log("SynchronizerThread destroyed");
 }
-

@@ -15,8 +15,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-
     logging::Logger::getInstance()->log(QString("App start"), logging::LogDirection::file);
     MainWindow w;
     w.show();
@@ -26,10 +24,6 @@ int main(int argc, char *argv[])
 //    configuration::FileManager::getInstance()->saveProjectFile(pf);
 
     int retcode = a.exec();
-
-
-
-    logging::Logger::getInstance()->log("App END");
-    qDebug()<< "retcode = " << retcode;
+    logging::Logger::getInstance()->log(QString("App END. Retcode = %1").arg(QString::number(retcode)));
     return retcode;
 }

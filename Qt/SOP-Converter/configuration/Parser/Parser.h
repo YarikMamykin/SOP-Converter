@@ -23,9 +23,7 @@ private:
     virtual ~Parser();
 public:
     enum class ParserId : unsigned char
-    {
-        p, U, boundary, controlDict, transportProperties
-    };
+    { p, U, boundary, controlDict, transportProperties };
 
     static configuration::Parser* getInstance();
     static bool parseIdeasUnvToFoamLog(const QString& result);

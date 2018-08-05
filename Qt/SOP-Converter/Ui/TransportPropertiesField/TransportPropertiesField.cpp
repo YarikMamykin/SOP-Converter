@@ -132,6 +132,9 @@ void Ui::TransportPropertiesField::syncMaps()
                                            arg(e->first.c_str()).
                                            arg(e->second.c_str()));
         }
+
+        Syncer::executeFileSyncRunner(Syncer::ID::transportProperties);
+
     }, static_cast<int>(ParserId::transportProperties)));
     emit sthread.start();
 }
