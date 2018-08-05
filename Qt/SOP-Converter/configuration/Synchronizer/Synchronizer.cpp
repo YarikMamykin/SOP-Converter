@@ -37,7 +37,7 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     {
         buffer = filedata.readLine();
         tempdata << buffer.append('\n');
-    }while(!buffer.contains("boundaryField"));
+    } while(!buffer.contains("boundaryField"));
     tempdata << filedata.readLine() << QString("\n"); // writes down '{'
 
     for(auto e : *Parser::getInstance()->getParserMap(fileId).get())
@@ -80,7 +80,7 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     {
         buffer = filedata.readLine();
         tempdata << buffer.append('\n');
-    }while(!buffer.contains("boundaryField"));
+    } while(!buffer.contains("boundaryField"));
     tempdata << filedata.readLine() << QString("\n"); // writes down '{'
 
     for(auto e : *Parser::getInstance()->getParserMap(fileId).get())
@@ -115,18 +115,148 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
         throw FileManager::Exception(QString("Can't open file %1").arg(temp.get()->fileName()));
     }
 
-    QString buffer;
+    QString buffer, currentPatch;
+    std::string currentPatchType;
     QTextStream filedata(file.get());
     QTextStream tempdata(temp.get());
+    auto map = Parser::getInstance()->getParserMap(ParserId::boundary);
+    auto iterator = map.get()->end();
 
+    do
+    {
+        buffer = filedata.readLine();
+        tempdata << buffer.append('\n');
+    } while(!buffer.contains("("));
+
+    do
+    {
+        buffer = filedata.readLine();
+        iterator = findKey(buffer.trimmed().toStdString(), *map.get());
+        if(iterator != map.get()->end())
+        {
+            currentPatch = buffer;
+            currentPatchType = (*iterator)->second;
+        }
+        if(buffer.contains("type"))
+        { buffer = QString((bigtab + std::string("type") + bigtab + smalltab + currentPatchType + std::string(";")).c_str()); }
+
+        tempdata << buffer.append('\n');
+    } while(!buffer.contains(")"));
+
+    file.get()->close();
+    temp.get()->close();
+    file.get()->remove();
+    LogManager::getInstance()->log(QString("File synced %1 --> %2").
+                             arg(file.get()->fileName()).
+                             arg(boolToString(temp.get()->rename(file.get()->fileName()))));
 },
 []() // controlDict-file syncer
 {
     LogManager::getInstance()->log("file syncer controlDict");
+    std::shared_ptr<QFile> file =FileManager::getInstance()->getSettingFile("controlDict");
+    if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        file.get()->close();
+        throw FileManager::Exception(QString("Can't open file %1").arg(file.get()->fileName()));
+    }
+
+    std::shared_ptr<QFile> temp = std::make_shared<QFile>(file.get()->fileName() + QString(".temp"));
+    if(!temp.get()->open(QIODevice::WriteOnly|QIODevice::Text))
+    {
+        temp.get()->close();
+        throw FileManager::Exception(QString("Can't open file %1").arg(temp.get()->fileName()));
+    }
+
+
+    unsigned int maxTabSize = 0;
+    unsigned int tabSize = 0;
+    QString buffer;
+    std::string tab = std::string("");
+    QTextStream filedata(file.get());
+    QTextStream tempdata(temp.get());
+    auto map = Parser::getInstance()->getParserMap(ParserId::controlDict);
+
+    for(auto e : *map.get())
+    {
+        if(maxTabSize < e->first.size())
+        {
+            maxTabSize = e->first.size();
+        }
+    }
+
+    do
+    {
+        buffer = filedata.readLine();
+        tempdata << buffer.append('\n');
+    } while(!buffer.contains("//"));
+
+    for(auto e : *map.get())
+    {
+        tab = std::string("");
+        tabSize = maxTabSize - e->first.size();
+        for(unsigned int i = 0u; i < tabSize; i++)
+        {
+            tab.append(" ");
+        }
+        tab.append(smalltab);
+        tempdata << QString((e->first + tab + e->second + std::string(";\n\n")).c_str());
+    }
+
+    file.get()->close();
+    temp.get()->close();
+    file.get()->remove();
+    LogManager::getInstance()->log(QString("File synced %1 --> %2").
+                          arg(file.get()->fileName()).
+                          arg(boolToString(temp.get()->rename(file.get()->fileName()))));
 },
-[]() // transformProperties-file syncer
+[]() // transportProperties-file syncer
 {
     LogManager::getInstance()->log("file syncer transportProperties");
+    std::shared_ptr<QFile> file =FileManager::getInstance()->getSettingFile("transportProperties");
+    if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        file.get()->close();
+        throw FileManager::Exception(QString("Can't open file %1").arg(file.get()->fileName()));
+    }
+
+    std::shared_ptr<QFile> temp = std::make_shared<QFile>(file.get()->fileName() + QString(".temp"));
+    if(!temp.get()->open(QIODevice::WriteOnly|QIODevice::Text))
+    {
+        temp.get()->close();
+        throw FileManager::Exception(QString("Can't open file %1").arg(temp.get()->fileName()));
+    }
+
+    std::string data = std::string("nu") + bigtab + bigtab + std::string("nu [ ");
+    QString buffer;
+    QTextStream filedata(file.get());
+    QTextStream tempdata(temp.get());
+    auto map = Parser::getInstance()->getParserMap(ParserId::transportProperties);
+    LogManager::getInstance()->log("Copying");
+
+    do
+    {
+        buffer = filedata.readLine();
+        tempdata << buffer.append('\n');
+    } while(!buffer.contains("//"));
+
+    for(auto e = map.get()->begin(); e != (--map.get()->end()); ++e)
+    {
+        data.append((*e)->second);
+        data.append(std::string(" "));
+    }
+    LogManager::getInstance()->log("Data appended");
+    data.append(std::string("] "));
+    data.append((*(--map.get()->end()))->second);
+    data.append(std::string(";\n"));
+    LogManager::getInstance()->log("Attempt to write data");
+    tempdata << QString(data.c_str());
+
+    file.get()->close();
+    temp.get()->close();
+    file.get()->remove();
+    LogManager::getInstance()->log(QString("File synced %1 --> %2").
+                       arg(file.get()->fileName()).
+                       arg(boolToString(temp.get()->rename(file.get()->fileName()))));
 }
 }
 );
