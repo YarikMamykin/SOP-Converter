@@ -28,7 +28,7 @@ Implement appropriate map for parsing file 'transportProperties'.
 - there we create temp file and input actual values of synced maps.
 - then remove original file context with temp file context.
 
-#! NOT DONE
+#! DONE
 6. Implement file sync for boundary, controlDict and transportProperties files.
 Need to be done before next task!!!
 #!____________________________________________________________________________#!
@@ -54,6 +54,18 @@ Need to be done before next task!!!
 #! DONE
 13. Implement table for controlDict properties.
 
-#! NOT DONE
+#! DONE
 14. Implement Ui enable. Change Save settings button to STOP calculation."
 
+#! DONE
+15. Implement Synchronizer class logic. It must synchronize UI data with Parser maps and so on to appropriate files"
+Implement SynchronizerThread to make synchronizing mutlithread.
+
+#! DONE
+16. Change Parser std::map to std::vector<std::pair<std::string, std::string>*>. Order of file data must NOT be changed!"
+
+#! NOT DONE
+17. Rework Ui logic on start. Start convertion button must be disabled on start and be enabled only after workspace load"
+
+#! NOT DONE
+18. Rework Parser syncFiles logic using SynchronizerThread 
