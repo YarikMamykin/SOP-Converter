@@ -12,7 +12,8 @@ unsigned char configuration::Parser::counter = 0;
 
 configuration::Parser::Parser() :
     QObject(),
-    maps()
+    maps(),
+    formatNodeLocker(std::make_shared<QMutex>())
 {    
     QObject::connect(this, SIGNAL(startParsing()), SLOT(ParseAll()), Qt::QueuedConnection);
     QObject::connect(this, SIGNAL(startParseP()), SLOT(parseP()), Qt::QueuedConnection);
@@ -566,6 +567,9 @@ std::string configuration::Parser::formatNode(const std::string& name, const std
     return result;
 }
 
+std::shared_ptr<QMutex> configuration::Parser::getFormatNodeLocker()
+{ return formatNodeLocker; }
+
 bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
 {
     QStringList iufres = result.split("\n");
@@ -644,11 +648,10 @@ std::shared_ptr<QFile> configuration::Parser::matchFileToParserId(ParserId id)
 }
 
 
-/*****************************************/
-/*
- *     PARSER THREAD CLASS
- */
-/*****************************************/
+/* ---------------------------------------------------------------------- */
+/* -- ParserThread -- */
+/* ---------------------------------------------------------------------- */
+
 configuration::ParserThread::ParserThread(Parser::ParserId _id) :
     QThread(Parser::getInstance()),
     id(_id)

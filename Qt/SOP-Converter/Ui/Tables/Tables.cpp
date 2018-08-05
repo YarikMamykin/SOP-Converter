@@ -93,6 +93,7 @@ void Ui::SetTable::syncMaps()
 
         Syncer::executeFileSyncRunner(Syncer::ID::p);
     }, static_cast<int>(ParserId::p)));
+
     SyncerThread sthreadU(new Syncer([this]()
     {
         auto iter = cells[static_cast<int>(Column::value_U)]->begin();
@@ -118,6 +119,7 @@ void Ui::SetTable::syncMaps()
 
         Syncer::executeFileSyncRunner(Syncer::ID::U);
     }, static_cast<int>(ParserId::U)));
+
     SyncerThread sthreadB(new Syncer([this]()
     {
         for(auto e : *cells[static_cast<int>(Column::type_boundary)])

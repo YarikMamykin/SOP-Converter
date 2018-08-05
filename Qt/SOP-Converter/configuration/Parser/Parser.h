@@ -33,6 +33,8 @@ public:
     static ParserId matchParserIdToFile(std::shared_ptr<QFile> file);
     static std::shared_ptr<QFile> matchFileToParserId(ParserId id);
     void syncFile(std::shared_ptr<QFile> file);
+    static std::string formatNode(const std::string& name, const std::string& type_value);
+    std::shared_ptr<QMutex> getFormatNodeLocker();
 signals:
     void startParsing(); // parses all
     void startParseP();
@@ -55,12 +57,12 @@ private slots:
 
     void collectResults();
     void resetFlags();
-    void syncFiles();
-    std::string formatNode(const std::string& name, const std::string& type_value);
+    void syncFiles();    
 private:
     static std::vector<bool> parserFlags; // indicates only that parsing has been completed!
     static unsigned char counter; // counts ended parsing operations
     std::vector<std::shared_ptr<std::vector<std::pair<std::string, std::string>*>>> maps;
+    std::shared_ptr<QMutex> formatNodeLocker;
 
     friend class ParserThread;
 };
