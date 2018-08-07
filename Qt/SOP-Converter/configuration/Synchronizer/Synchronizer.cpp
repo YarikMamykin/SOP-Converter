@@ -231,7 +231,6 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     QTextStream filedata(file.get());
     QTextStream tempdata(temp.get());
     auto map = Parser::getInstance()->getParserMap(ParserId::transportProperties);
-    LogManager::getInstance()->log("Copying");
 
     do
     {
@@ -244,11 +243,10 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
         data.append((*e)->second);
         data.append(std::string(" "));
     }
-    LogManager::getInstance()->log("Data appended");
+
     data.append(std::string("] "));
     data.append((*(--map.get()->end()))->second);
     data.append(std::string(";\n"));
-    LogManager::getInstance()->log("Attempt to write data");
     tempdata << QString(data.c_str());
 
     file.get()->close();
@@ -318,7 +316,7 @@ configuration::SynchronizerThread::SynchronizerThread(Synchronizer* _syncer) :
     QObject::connect(syncer, SIGNAL(finished()), syncer, SLOT(deleteLater()));
     QObject::connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     QObject::connect(thread, &QThread::finished, [](){ LogManager::getInstance()->log("Thread finished"); });
-    QObject::connect(this, SIGNAL(start()), thread, SLOT(start()));
+    QObject::connect(this, SIGNAL(start()), thread, SLOT(start()), Qt::QueuedConnection);
 
     LogManager::getInstance()->log("SynchronizerThread constructed");
 }

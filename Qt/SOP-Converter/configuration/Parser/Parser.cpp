@@ -2,6 +2,7 @@
 
 #include "../../logging/Logger/Logger.h"
 #include "../../configuration/FileManager/FileManager.h"
+#include "../../configuration/Synchronizer/Synchronizer.h"
 
 using LogManager = logging::Logger;
 using FileManager = configuration::FileManager;
@@ -468,6 +469,8 @@ void configuration::Parser::syncFiles()
             ||
         maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::U)].get()->size())
     {
+        for(auto e : *maps[static_cast<int>(ParserId::p)].get()) { delete e; }
+        for(auto e : *maps[static_cast<int>(ParserId::U)].get()) { delete e; }
         maps[static_cast<int>(ParserId::p)].get()->clear();
         maps[static_cast<int>(ParserId::U)].get()->clear();
 
@@ -478,12 +481,20 @@ void configuration::Parser::syncFiles()
         }
     }
 
+    using Syncer = configuration::Synchronizer;
+    using SyncerThread = configuration::SynchronizerThread;
+
     LogManager::getInstance()->log("Start synchronize");
-    syncFile(FileManager::getInstance()->getSettingFile("p"));
-    syncFile(FileManager::getInstance()->getSettingFile("U"));
-    syncFile(FileManager::getInstance()->getSettingFile("boundary"));
-    syncFile(FileManager::getInstance()->getSettingFile("controlDict"));
-    syncFile(FileManager::getInstance()->getSettingFile("transportProperties"));
+    SyncerThread sthreadP(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::p), static_cast<int>(ParserId::p)));
+    SyncerThread sthreadU(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::U), static_cast<int>(ParserId::U)));
+//    SyncerThread sthreadB(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::boundary), static_cast<int>(ParserId::boundary)));
+//    SyncerThread sthreadC(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::controlDict), static_cast<int>(ParserId::controlDict)));
+//    SyncerThread sthreadT(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::transportProperties), static_cast<int>(ParserId::transportProperties)));
+    emit sthreadP.start();
+    emit sthreadU.start();
+//    emit sthreadB.start();
+//    emit sthreadC.start();
+//    emit sthreadT.start();
     LogManager::getInstance()->log("End synchronize");
 }
 
