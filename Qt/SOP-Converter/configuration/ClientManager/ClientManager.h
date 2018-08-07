@@ -22,11 +22,13 @@ signals:
     void clearTable();
     void clearTpSets();
     void notifyAll();
-    void syncFiles();
+    void syncFiles();    
     void syncMaps();
     void disableUi();
     void enableUi();
-
+public slots:
+    void startSyncMaps();
+    void collectSyncResults(int, bool);
 private:
     QFileDialog* selectDialog;
 };

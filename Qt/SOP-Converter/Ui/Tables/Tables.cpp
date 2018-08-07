@@ -8,6 +8,44 @@ using Syncer = configuration::Synchronizer;
 using SyncerThread = configuration::SynchronizerThread;
 
 /* ---------------------------------------------------------------------- */
+/* -- Cell -- */
+/* ---------------------------------------------------------------------- */
+
+Ui::Cell::Cell(unsigned int row, unsigned int col, std::string patch, std::string value) :
+    tableIndex(row, col),
+    mapIndex(patch, value),
+    instance(new QTableWidgetItem(value.c_str()))
+{
+    instance->setTextAlignment(Qt::AlignCenter);
+}
+
+Ui::Cell::~Cell()
+{
+    if(instance) delete instance;
+}
+
+/* set */
+void Ui::Cell::setTableIndexRow(const int& row)                             {tableIndex.first = row;}
+void Ui::Cell::setTableIndexColumn(const int& column)                       {tableIndex.second = column;}
+void Ui::Cell::setMapIndexPatchName(const std::string& patchName)           {mapIndex.first = patchName;}
+void Ui::Cell::setMapIndexPatchTypeValue(const std::string& patchTypeValue) {mapIndex.second = patchTypeValue;}
+
+/* get */
+int Ui::Cell::getTableIndexRow()                  {return tableIndex.first;}
+int Ui::Cell::getTableIndexColumn()               {return tableIndex.second;}
+std::string Ui::Cell::getMapIndexPatchName()      {return mapIndex.first;}
+std::string Ui::Cell::getMapIndexPatchTypeValue() {return mapIndex.second;}
+QTableWidgetItem* Ui::Cell::getInstance()         {return instance;}
+
+/* update */
+void Ui::Cell::updateValue()
+{
+    mapIndex.second = this->instance->text().toStdString();
+}
+
+
+
+/* ---------------------------------------------------------------------- */
 /* -- SetTable -- */
 /* ---------------------------------------------------------------------- */
 

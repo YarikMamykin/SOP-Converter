@@ -1,8 +1,10 @@
 #include "ClientManager.h"
 #include "../../logging/Logger/Logger.h"
+#include "../../logging/Messanger/Messanger.h"
 #include "../../configuration/FileManager/FileManager.h"
 
 using LogManager = logging::Logger;
+using Messanger = logging::Messanger;
 using FManager = configuration::FileManager;
 
 configuration::ClientManager::ClientManager() :
@@ -90,4 +92,30 @@ void configuration::ClientManager::selectProjectFile()
             LogManager::getInstance()->log(e.what());
         }
     }else LogManager::getInstance()->log(QString("Project file is not selected!"));
+}
+
+void configuration::ClientManager::startSyncMaps()
+{
+    if( FManager::getInstance()->getWorkDir().get()->path().isEmpty() ||
+        FManager::getInstance()->getWorkDir().get()->path() == QString("."))
+    {
+        Messanger::getInstance()->showMessage("No workspace directory selected!");
+        LogManager::getInstance()->log("No workspace directory selected!");
+        emit enableUi();
+        return;
+    }
+    else if(FManager::getInstance()->getMeshFile().get()->fileName().isEmpty())
+    {
+        Messanger::getInstance()->showMessage("No mesh file selected!");
+        LogManager::getInstance()->log("No mesh file selected!");
+        emit enableUi();
+        return;
+    }
+    else emit syncMaps();
+}
+
+void configuration::ClientManager::collectSyncResults(int id, bool result)
+{
+    LogManager::getInstance()->log(QString("Sync finished %1 -> %2").arg(QString::number(id)
+                                                                    .arg(boolToString(result))));
 }

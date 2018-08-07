@@ -18,7 +18,7 @@ Ui::Button::~Button()
 
 void Ui::Button::showMessage()
 {
-    logging::Logger::getInstance()->log(this->text());
+    logging::Logger::getInstance()->log(this->text(), logging::LogDirection::file);
 }
 
 void Ui::Button::disable()

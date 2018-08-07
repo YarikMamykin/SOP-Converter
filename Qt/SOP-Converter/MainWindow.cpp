@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("SOP-Converter");
     this->setMinimumSize(1000, 400);
 
-    logging::Logger::getInstance()->log("Window constructed");
+    logging::Logger::getInstance()->log("Window constructed", logging::LogDirection::file);
 }
 
 MainWindow::~MainWindow()

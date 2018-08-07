@@ -19,30 +19,21 @@ class Cell : public QObject
     // sync changes accordingly to both maps: table and parser
     Q_OBJECT
 public:
-    explicit Cell(unsigned int row, unsigned int col, std::string patch, std::string value) :
-        tableIndex(row, col),
-        mapIndex(patch, value),
-        instance(new QTableWidgetItem(value.c_str()))
-    {
-        instance->setTextAlignment(Qt::AlignCenter);
-    }
-    virtual ~Cell()
-    {
-        if(instance) delete instance;
-    }
+    explicit Cell(unsigned int row, unsigned int col, std::string patch, std::string value);
+    virtual ~Cell();
     /* set */
-    void setTableIndexRow(const int& row)                             {tableIndex.first = row;}
-    void setTableIndexColumn(const int& column)                       {tableIndex.second = column;}
-    void setMapIndexPatchName(const std::string& patchName)           {mapIndex.first = patchName;}
-    void setMapIndexPatchTypeValue(const std::string& patchTypeValue) {mapIndex.second = patchTypeValue;}
+    void setTableIndexRow(const int& row);
+    void setTableIndexColumn(const int& column);
+    void setMapIndexPatchName(const std::string& patchName);
+    void setMapIndexPatchTypeValue(const std::string& patchTypeValue);
     /* get */
-    int getTableIndexRow()                  {return tableIndex.first;}
-    int getTableIndexColumn()               {return tableIndex.second;}
-    std::string getMapIndexPatchName()      {return mapIndex.first;}
-    std::string getMapIndexPatchTypeValue() {return mapIndex.second;}
-    QTableWidgetItem* getInstance()         {return instance;}
+    int getTableIndexRow();
+    int getTableIndexColumn();
+    std::string getMapIndexPatchName();
+    std::string getMapIndexPatchTypeValue();
+    QTableWidgetItem* getInstance();
     /* update */
-    void updateValue() { mapIndex.second = this->instance->text().toStdString(); }
+    void updateValue();
 private:
     std::pair<int, int> tableIndex;
     std::pair<std::string, std::string> mapIndex;

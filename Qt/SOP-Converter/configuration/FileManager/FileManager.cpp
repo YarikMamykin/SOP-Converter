@@ -307,8 +307,8 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
         case configuration::FileManager::ValidatePathsPoint::meshFile:
         {
             QString rootDir = QFileInfo(meshFile.get()->fileName()).absoluteDir().path();
-            LogManager::getInstance()->log(meshFile.get()->fileName(), logging::LogDirection::console);
-            LogManager::getInstance()->log(QString("root dir = ") + rootDir, logging::LogDirection::console);
+            LogManager::getInstance()->log(meshFile.get()->fileName());
+            LogManager::getInstance()->log(QString("root dir = ") + rootDir);
 
             workDir.get()->setPath(rootDir);
             validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);

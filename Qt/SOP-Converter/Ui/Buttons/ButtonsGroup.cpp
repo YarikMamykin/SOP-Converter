@@ -28,7 +28,7 @@ Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<configuration::ClientManager> cli
     QObject::connect(clientManager.get(), SIGNAL(enableUi()), resetSettings, SLOT(enable()));
     QObject::connect(clientManager.get(), SIGNAL(enableUi()), clearConsole, SLOT(enable()));
 
-    QObject::connect(startCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(syncMaps()));
+    QObject::connect(startCalculation, SIGNAL(clicked()), clientManager.get(), SLOT(startSyncMaps()));
 }
 
 Ui::Button* Ui::ButtonsGroup::ButtonsGroup::getStartConversionButton() {return startCalculation;}

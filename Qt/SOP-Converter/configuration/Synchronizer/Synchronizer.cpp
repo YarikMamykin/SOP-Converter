@@ -259,6 +259,9 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
 }
 );
 
+//std::shared_ptr<configuration::ClientManager>
+//configuration::Synchronizer::clientManager = std::make_shared<configuration::ClientManager>();
+
 /* ---------------------------------------------------------------------- */
 /* -- Synchronizer -- */
 /* ---------------------------------------------------------------------- */
@@ -268,11 +271,13 @@ configuration::Synchronizer::Synchronizer(std::function<void()> runner, int _id,
     startRunner(runner),
     id(_id)
 {
+//    QObject::connect(this, SIGNAL(end(int,bool)), configuration::Synchronizer::clientManager.get(), SLOT(collectSyncResults(int, bool)));
     LogManager::getInstance()->log(QString("Synchronizer constructed. Id = %1").arg(QString::number(id)));
 }
 
 configuration::Synchronizer::~Synchronizer()
 {
+    QObject::disconnect(this,0,0,0);
     LogManager::getInstance()->log(QString("Synchronizer deleted. Id = %1").arg(QString::number(id)));
 }
 
@@ -300,6 +305,7 @@ std::function<void()> configuration::Synchronizer::getFileSyncRunner(ID id)
 {
     return configuration::Synchronizer::fileSyncRunners[static_cast<unsigned char>(id)];
 }
+
 
 
 /* ---------------------------------------------------------------------- */
