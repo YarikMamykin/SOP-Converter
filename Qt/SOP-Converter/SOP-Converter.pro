@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     general/general.cpp \
     configuration/OFCommandExecutor/OFCommandExecutor.cpp \
     Ui/TransportPropertiesField/TransportPropertiesField.cpp \
-    configuration/Synchronizer/Synchronizer.cpp
+    configuration/Synchronizer/Synchronizer.cpp \
+    configuration/IcoFoamManager/IcoFoamManager.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -51,7 +52,8 @@ HEADERS  += MainWindow.h \
     general/general.h \
     configuration/OFCommandExecutor/OFCommandExecutor.h \
     Ui/TransportPropertiesField/TransportPropertiesField.h \
-    configuration/Synchronizer/Synchronizer.h
+    configuration/Synchronizer/Synchronizer.h \
+    configuration/IcoFoamManager/IcoFoamManager.h
 
 
 

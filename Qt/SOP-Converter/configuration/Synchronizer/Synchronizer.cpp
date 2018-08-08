@@ -259,9 +259,6 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
 }
 );
 
-//std::shared_ptr<configuration::ClientManager>
-//configuration::Synchronizer::clientManager = std::make_shared<configuration::ClientManager>();
-
 /* ---------------------------------------------------------------------- */
 /* -- Synchronizer -- */
 /* ---------------------------------------------------------------------- */

@@ -28,7 +28,6 @@ signals:
     void enableUi();
 public slots:
     void startSyncMaps();
-    void collectSyncResults(int, bool);
 private:
     QFileDialog* selectDialog;
 };

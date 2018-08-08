@@ -114,8 +114,3 @@ void configuration::ClientManager::startSyncMaps()
     else emit syncMaps();
 }
 
-void configuration::ClientManager::collectSyncResults(int id, bool result)
-{
-    LogManager::getInstance()->log(QString("Sync finished %1 -> %2").arg(QString::number(id)
-                                                                    .arg(boolToString(result))));
-}
