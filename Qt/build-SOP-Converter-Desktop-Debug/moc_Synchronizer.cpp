@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_configuration__Synchronizer_t {
-    QByteArrayData data[10];
-    char stringdata[119];
+    QByteArrayData data[9];
+    char stringdata[115];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,17 +32,16 @@ static const qt_meta_stringdata_configuration__Synchronizer_t qt_meta_stringdata
 QT_MOC_LITERAL(0, 0, 27),
 QT_MOC_LITERAL(1, 28, 8),
 QT_MOC_LITERAL(2, 37, 0),
-QT_MOC_LITERAL(3, 38, 3),
-QT_MOC_LITERAL(4, 42, 7),
-QT_MOC_LITERAL(5, 50, 21),
-QT_MOC_LITERAL(6, 72, 2),
-QT_MOC_LITERAL(7, 75, 2),
-QT_MOC_LITERAL(8, 78, 17),
-QT_MOC_LITERAL(9, 96, 21)
+QT_MOC_LITERAL(3, 38, 7),
+QT_MOC_LITERAL(4, 46, 21),
+QT_MOC_LITERAL(5, 68, 2),
+QT_MOC_LITERAL(6, 71, 2),
+QT_MOC_LITERAL(7, 74, 17),
+QT_MOC_LITERAL(8, 92, 21)
     },
     "configuration::Synchronizer\0finished\0"
-    "\0end\0execute\0executeFileSyncRunner\0"
-    "ID\0id\0getFileSyncRunner\0std::function<void()>\0"
+    "\0execute\0executeFileSyncRunner\0ID\0id\0"
+    "getFileSyncRunner\0std::function<void()>\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -52,30 +51,28 @@ static const uint qt_meta_data_configuration__Synchronizer[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   39,    2, 0x05,
-       3,    2,   40,    2, 0x05,
+       1,    0,   34,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,   45,    2, 0x0a,
-       5,    1,   46,    2, 0x0a,
-       8,    1,   49,    2, 0x0a,
+       3,    0,   35,    2, 0x0a,
+       4,    1,   36,    2, 0x0a,
+       7,    1,   39,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int, QMetaType::Bool,    2,    2,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 6,    7,
-    0x80000000 | 9, 0x80000000 | 6,    7,
+    QMetaType::Void, 0x80000000 | 5,    6,
+    0x80000000 | 8, 0x80000000 | 5,    6,
 
        0        // eod
 };
@@ -86,10 +83,9 @@ void configuration::Synchronizer::qt_static_metacall(QObject *_o, QMetaObject::C
         Synchronizer *_t = static_cast<Synchronizer *>(_o);
         switch (_id) {
         case 0: _t->finished(); break;
-        case 1: _t->end((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 2: _t->execute(); break;
-        case 3: _t->executeFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1]))); break;
-        case 4: { std::function<void()> _r = _t->getFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1])));
+        case 1: _t->execute(); break;
+        case 2: _t->executeFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1]))); break;
+        case 3: { std::function<void()> _r = _t->getFileSyncRunner((*reinterpret_cast< ID(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< std::function<void()>*>(_a[0]) = _r; }  break;
         default: ;
         }
@@ -100,12 +96,6 @@ void configuration::Synchronizer::qt_static_metacall(QObject *_o, QMetaObject::C
             typedef void (Synchronizer::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Synchronizer::finished)) {
                 *result = 0;
-            }
-        }
-        {
-            typedef void (Synchronizer::*_t)(int , bool );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Synchronizer::end)) {
-                *result = 1;
             }
         }
     }
@@ -136,13 +126,13 @@ int configuration::Synchronizer::qt_metacall(QMetaObject::Call _c, int _id, void
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 5;
+        _id -= 4;
     }
     return _id;
 }
@@ -151,13 +141,6 @@ int configuration::Synchronizer::qt_metacall(QMetaObject::Call _c, int _id, void
 void configuration::Synchronizer::finished()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, 0);
-}
-
-// SIGNAL 1
-void configuration::Synchronizer::end(int _t1, bool _t2)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 struct qt_meta_stringdata_configuration__SynchronizerThread_t {
     QByteArrayData data[3];

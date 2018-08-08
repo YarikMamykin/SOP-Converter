@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include <QDebug>
 #include "ui_mainwindow.h"
+#include "configuration/IcoFoamManager/IcoFoamManager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -20,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setLayout(this->layout);    
     this->setWindowTitle("SOP-Converter");
     this->setMinimumSize(1000, 400);
+
+    configuration::IcoFoamManager::getInstance()->setClientManager(clientManager);
 
     logging::Logger::getInstance()->log("Window constructed", logging::LogDirection::file);
 }

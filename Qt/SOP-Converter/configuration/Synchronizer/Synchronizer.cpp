@@ -2,10 +2,15 @@
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
 #include "../../configuration/FileManager/FileManager.h"
-using Parser = configuration::Parser;
-using ParserId = configuration::Parser::ParserId;
-using LogManager = logging::Logger;
-using FileManager = configuration::FileManager;
+#include "../../configuration/IcoFoamManager/IcoFoamManager.h"
+#include <QDebug>
+
+using Parser       = configuration::Parser;
+using ParserId     = configuration::Parser::ParserId;
+using LogManager   = logging::Logger;
+using FileManager  = configuration::FileManager;
+using IFoamManager = configuration::IcoFoamManager;
+
 
 
 const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRunners
@@ -51,9 +56,12 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     file.get()->close();
     temp.get()->close();
     file.get()->remove();
+    bool res = temp.get()->rename(file.get()->fileName());
     LogManager::getInstance()->log(QString("File synced %1 --> %2").
                                    arg(file.get()->fileName()).
-                                   arg(boolToString(temp.get()->rename(file.get()->fileName()))));
+                                   arg(boolToString(res)));
+
+    IFoamManager::getInstance()->addSyncResult(static_cast<int>(fileId), res);
 },
 []() // U-file syncer
 {
@@ -94,9 +102,11 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     file.get()->close();
     temp.get()->close();
     file.get()->remove();
+    bool res = temp.get()->rename(file.get()->fileName());
     LogManager::getInstance()->log(QString("File synced %1 --> %2").
                                 arg(file.get()->fileName()).
-                                arg(boolToString(temp.get()->rename(file.get()->fileName()))));
+                                arg(boolToString(res)));
+    IFoamManager::getInstance()->addSyncResult(static_cast<int>(fileId), res);
 },
 []() // boundary-file syncer
 {
@@ -146,9 +156,11 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     file.get()->close();
     temp.get()->close();
     file.get()->remove();
+    bool res = temp.get()->rename(file.get()->fileName());
     LogManager::getInstance()->log(QString("File synced %1 --> %2").
-                             arg(file.get()->fileName()).
-                             arg(boolToString(temp.get()->rename(file.get()->fileName()))));
+                                 arg(file.get()->fileName()).
+                                 arg(boolToString(res)));
+    IFoamManager::getInstance()->addSyncResult(static_cast<int>(ParserId::boundary), res);
 },
 []() // controlDict-file syncer
 {
@@ -205,9 +217,11 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     file.get()->close();
     temp.get()->close();
     file.get()->remove();
+    bool res = temp.get()->rename(file.get()->fileName());
     LogManager::getInstance()->log(QString("File synced %1 --> %2").
-                          arg(file.get()->fileName()).
-                          arg(boolToString(temp.get()->rename(file.get()->fileName()))));
+                                  arg(file.get()->fileName()).
+                                  arg(boolToString(res)));
+    IFoamManager::getInstance()->addSyncResult(static_cast<int>(ParserId::controlDict), res);
 },
 []() // transportProperties-file syncer
 {
@@ -252,9 +266,11 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
     file.get()->close();
     temp.get()->close();
     file.get()->remove();
+    bool res = temp.get()->rename(file.get()->fileName());
     LogManager::getInstance()->log(QString("File synced %1 --> %2").
-                       arg(file.get()->fileName()).
-                       arg(boolToString(temp.get()->rename(file.get()->fileName()))));
+                                  arg(file.get()->fileName()).
+                                  arg(boolToString(res)));
+    IFoamManager::getInstance()->addSyncResult(static_cast<int>(ParserId::transportProperties), res);
 }
 }
 );
@@ -268,29 +284,27 @@ configuration::Synchronizer::Synchronizer(std::function<void()> runner, int _id,
     startRunner(runner),
     id(_id)
 {
-//    QObject::connect(this, SIGNAL(end(int,bool)), configuration::Synchronizer::clientManager.get(), SLOT(collectSyncResults(int, bool)));
-    LogManager::getInstance()->log(QString("Synchronizer constructed. Id = %1").arg(QString::number(id)));
+    LogManager::getInstance()->log(QString("Synchronizer constructed. Id = %1").arg(id));
 }
 
 configuration::Synchronizer::~Synchronizer()
 {
     QObject::disconnect(this,0,0,0);
-    LogManager::getInstance()->log(QString("Synchronizer deleted. Id = %1").arg(QString::number(id)));
+    LogManager::getInstance()->log(QString("Synchronizer deleted. Id = %1").arg(id));
 }
 
 void configuration::Synchronizer::execute()
 {
     try
     {
-        startRunner();
-        emit end(id, true);
+        startRunner();        
     } catch(FileManager::Exception& e)
     {
-        emit end(id, false);
+        LogManager::getInstance()->log(e.what());
     }
 
     emit finished();
-    LogManager::getInstance()->log(QString("Execution done. Id = %1").arg(QString::number(id)));
+    LogManager::getInstance()->log(QString("Execution done. Id = %1").arg(id));
 }
 
 void configuration::Synchronizer::executeFileSyncRunner(configuration::Synchronizer::ID id)

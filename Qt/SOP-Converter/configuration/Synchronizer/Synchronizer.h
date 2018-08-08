@@ -34,8 +34,7 @@ public:
     { p, U, boundary, controlDict, transportProperties };
 
 signals:
-    void finished();
-    void end(int, bool);
+    void finished();    
 public slots:
     void execute();
     static void executeFileSyncRunner(ID id);
