@@ -22,6 +22,8 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
+
+    std::shared_ptr<configuration::ClientManager> getClientManager();
 private:
     std::shared_ptr<configuration::ClientManager> clientManager;
     Ui::MainWindow *ui;

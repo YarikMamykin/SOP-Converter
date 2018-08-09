@@ -2,10 +2,12 @@
 #include "../../logging/Logger/Logger.h"
 #include "../../logging/Messanger/Messanger.h"
 #include "../../configuration/FileManager/FileManager.h"
+#include "configuration/IcoFoamManager/IcoFoamManager.h"
 
 using LogManager = logging::Logger;
 using Messanger = logging::Messanger;
 using FManager = configuration::FileManager;
+using IcoFoam = configuration::IcoFoamManager;
 
 configuration::ClientManager::ClientManager() :
     selectDialog(new QFileDialog)

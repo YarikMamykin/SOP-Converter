@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include <QDebug>
 #include "ui_mainwindow.h"
-#include "configuration/IcoFoamManager/IcoFoamManager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -22,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("SOP-Converter");
     this->setMinimumSize(1000, 400);
 
-    configuration::IcoFoamManager::getInstance()->setClientManager(clientManager);
-
     logging::Logger::getInstance()->log("Window constructed", logging::LogDirection::file);
 }
 
@@ -37,4 +34,9 @@ MainWindow::~MainWindow()
     delete layout;            logging::Logger::getInstance()->log("Window layout deinited", logging::LogDirection::file);
     delete ui;                logging::Logger::getInstance()->log("ui deinited", logging::LogDirection::file);
     logging::Logger::getInstance()->log("Window destroyed", logging::LogDirection::file);
+}
+
+std::shared_ptr<configuration::ClientManager> MainWindow::getClientManager()
+{
+    return this->clientManager;
 }

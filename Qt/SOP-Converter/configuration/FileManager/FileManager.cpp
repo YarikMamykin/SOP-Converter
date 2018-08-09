@@ -194,12 +194,18 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
     }
 }
 
-std::shared_ptr<QFile> configuration::FileManager::getLogFile() {return logFile;}
-std::shared_ptr<QFile> configuration::FileManager::getProjectFile() {return projectFile;}
-std::shared_ptr<QFile> configuration::FileManager::getMeshFile() {return meshFile;}
-std::shared_ptr<QDir> configuration::FileManager::getWorkDir() {return workDir;}
-std::shared_ptr<QDir> configuration::FileManager::getBackupDir() {return backupDir;}
-std::shared_ptr<QFile> configuration::FileManager::getSettingFile(const QString& filename) {return settingFiles.find(filename)->second;}
+std::shared_ptr<QFile> configuration::FileManager::getLogFile()
+{return logFile;}
+std::shared_ptr<QFile> configuration::FileManager::getProjectFile()
+{return projectFile;}
+std::shared_ptr<QFile> configuration::FileManager::getMeshFile()
+{return meshFile;}
+std::shared_ptr<QDir> configuration::FileManager::getWorkDir()
+{return workDir;}
+std::shared_ptr<QDir> configuration::FileManager::getBackupDir()
+{return backupDir;}
+std::shared_ptr<QFile> configuration::FileManager::getSettingFile(const QString& filename)
+{return settingFiles.find(filename)->second;}
 
 QStringList configuration::FileManager::getListOfSettingFiles()
 {

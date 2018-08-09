@@ -591,6 +591,11 @@ bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
         return true;
 }
 
+int configuration::Parser::getMapsCount()
+{
+    return this->maps.size();
+}
+
 bool configuration::Parser::parseTransformPointsLog(const QString& result)
 {
     QStringList tplres = result.split("\n");

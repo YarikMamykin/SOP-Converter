@@ -7,8 +7,7 @@
 #include <memory>
 #include <map>
 #include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
-#include "../../configuration/ClientManager/ClientManager.h"
-#include "../../configuration/FileManager/FileManager.h"
+#include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
 
 namespace configuration
@@ -25,13 +24,14 @@ public:
     static IcoFoamManager* getInstance();
 //    void startExecution();
 //    void stopExecution();
+    // TODO: Define all necessary signals and connect them in ClientManager constructor
 public slots:
     void addSyncResult(int,bool);
-    void setClientManager(std::shared_ptr<configuration::ClientManager> cm);
 private:
+    // clientManager cannot be a member of static class!!! --> causes core dump
     std::unique_ptr<configuration::OFCommandExecutor> icoFoamExecutor;
-    std::shared_ptr<configuration::ClientManager> clientManager;
     std::unique_ptr<std::map<int, bool>> syncResults;
+    int appliableSyncResultsCounter;
 };
 
 }

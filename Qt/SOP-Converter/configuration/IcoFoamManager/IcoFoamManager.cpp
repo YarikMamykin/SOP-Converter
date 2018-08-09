@@ -1,12 +1,13 @@
 #include "IcoFoamManager.h"
-using FileManager = configuration::FileManager;
+//using FileManager = configuration::FileManager;
+using Parser = configuration::Parser;
 using LogManager = logging::Logger;
 
 configuration::IcoFoamManager::IcoFoamManager() :
     QObject(),
     icoFoamExecutor(new configuration::OFCommandExecutor(QStringList("icoFoam"), FileManager::getInstance()->getWorkDir())),
-    clientManager(nullptr),
-    syncResults(new std::map<int, bool>())
+    syncResults(new std::map<int, bool>()),
+    appliableSyncResultsCounter(0)
 {
     LogManager::getInstance()->log("IcoFoamManager constructed");
 }
@@ -14,7 +15,6 @@ configuration::IcoFoamManager::IcoFoamManager() :
 configuration::IcoFoamManager::~IcoFoamManager()
 {
     icoFoamExecutor.reset();
-    clientManager = nullptr;
     syncResults.reset();
     LogManager::getInstance()->log("IcoFoamManager destroyed");
 }
@@ -31,8 +31,3 @@ void configuration::IcoFoamManager::addSyncResult(int syncId, bool result)
     LogManager::getInstance()->log(QString("%1 -> %2").arg(syncId).arg(boolToString(result)));
 }
 
-void configuration::IcoFoamManager::setClientManager(std::shared_ptr<configuration::ClientManager> cm)
-{
-    LogManager::getInstance()->log("IcoFoamManager setClientManager");
-    clientManager = cm;
-}

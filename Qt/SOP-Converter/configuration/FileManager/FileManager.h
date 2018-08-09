@@ -53,7 +53,7 @@ public:
     std::shared_ptr<QDir> getWorkDir();
     std::shared_ptr<QDir> getBackupDir();
     std::shared_ptr<QFile> getSettingFile(const QString& filename);
-    QStringList getListOfSettingFiles();
+    QStringList getListOfSettingFiles();    
 private slots:
     void logToFile(const QString& log);
     void saveProjectFile(const configuration::ProjectFile& pfile);

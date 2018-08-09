@@ -35,6 +35,7 @@ public:
     void syncFile(std::shared_ptr<QFile> file);
     static std::string formatNode(const std::string& name, const std::string& type_value);
     std::shared_ptr<QMutex> getFormatNodeLocker();
+    int getMapsCount();
 signals:
     void startParsing(); // parses all
     void startParseP();
