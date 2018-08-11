@@ -1,6 +1,6 @@
 #include "ButtonsGroup.h"
 
-Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
+Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent) :
     QWidget(parent),
     startCalculation(new Ui::Button(clientManager, "Start Calculation")),
     resetSettings(new Ui::Button(clientManager, "Reset settings")),

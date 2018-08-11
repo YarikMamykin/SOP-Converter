@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <memory>
 #include <vector>
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -22,7 +22,7 @@ class TransportPropertiesField : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit TransportPropertiesField(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent = 0);
+    explicit TransportPropertiesField(std::shared_ptr<management::ClientManager> cm, QWidget* parent = 0);
     virtual ~TransportPropertiesField();
 private slots:
     void loadMaps();
@@ -31,7 +31,7 @@ private slots:
     void disable();
     void enable();
 private:
-    std::shared_ptr<configuration::ClientManager> clientManager;
+    std::shared_ptr<management::ClientManager> clientManager;
     std::vector<QVBoxLayout*> tpUnit;
     std::vector<QLabel*> labels;
     std::vector<QAbstractSpinBox*> editFields;

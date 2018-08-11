@@ -1,7 +1,7 @@
 #include "Buttons.h"
 
 
-Ui::Button::Button(std::shared_ptr<configuration::ClientManager> cm, QString name, QWidget* parent) :
+Ui::Button::Button(std::shared_ptr<management::ClientManager> cm, QString name, QWidget* parent) :
     QPushButton(name, parent),
     pal(new QPalette),
     clientManager(cm)

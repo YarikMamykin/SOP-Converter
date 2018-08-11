@@ -8,7 +8,7 @@ using LogManager = logging::Logger;
 using Parser = configuration::Parser;
 using ParserId = configuration::Parser::ParserId;
 
-Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent) :
+Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<management::ClientManager> cm, QWidget* parent) :
     QGroupBox(QString("-- Transport Properties --"),parent),
     clientManager(cm),
     tpUnit(),

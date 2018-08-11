@@ -49,7 +49,7 @@ void Ui::Cell::updateValue()
 /* -- SetTable -- */
 /* ---------------------------------------------------------------------- */
 
-Ui::SetTable::SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
+Ui::SetTable::SetTable(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent) :
     QTableWidget(parent),
     cells(),
     pMap(Parser::getInstance()->getParserMap(ParserId::p)),
@@ -364,7 +364,7 @@ void Ui::SetTable::enable()
 /* -- ControlDictTable -- */
 /* ---------------------------------------------------------------------- */
 
-Ui::ControlDictTable::ControlDictTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent) :
+Ui::ControlDictTable::ControlDictTable(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent) :
     QTableWidget(parent),
     cells(),
     controlDictMap(Parser::getInstance()->getParserMap(ParserId::controlDict)),

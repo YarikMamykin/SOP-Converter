@@ -27,12 +27,12 @@ SOURCES += main.cpp\
     Ui/Tables/TableAndEtcGroup.cpp \
     configuration/FileManager/FileManager.cpp \
     configuration/ProjectFile/ProjectFile.cpp \
-    configuration/ClientManager/ClientManager.cpp \
     general/general.cpp \
     configuration/OFCommandExecutor/OFCommandExecutor.cpp \
     Ui/TransportPropertiesField/TransportPropertiesField.cpp \
-    configuration/Synchronizer/Synchronizer.cpp \
-    configuration/IcoFoamManager/IcoFoamManager.cpp
+    configuration/Synchronizer/Synchronizer.cpp \    
+    management/ClientManager/ClientManager.cpp \
+    management/IcoFoamManager/IcoFoamManager.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -47,13 +47,13 @@ HEADERS  += MainWindow.h \
     Ui/Console/ConsoleAndButtonsGroup.h \
     Ui/Tables/TableAndEtcGroup.h \
     configuration/FileManager/FileManager.h \
-    configuration/ProjectFile/ProjectFile.h \
-    configuration/ClientManager/ClientManager.h \
+    configuration/ProjectFile/ProjectFile.h \    
     general/general.h \
     configuration/OFCommandExecutor/OFCommandExecutor.h \
     Ui/TransportPropertiesField/TransportPropertiesField.h \
-    configuration/Synchronizer/Synchronizer.h \
-    configuration/IcoFoamManager/IcoFoamManager.h
+    configuration/Synchronizer/Synchronizer.h \    
+    management/ClientManager/ClientManager.h \
+    management/IcoFoamManager/IcoFoamManager.h
 
 
 

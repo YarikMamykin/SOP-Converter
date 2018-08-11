@@ -4,4 +4,4 @@ set workspace=/home/yarik/Documents/diploma
 set password=yarik
 set file=%2
 
-pscp -r -pw %password% %file% %target_ip%:%workspace%
+pscp -r -pw %password% %file% %target_ip%:%workspace%/%file%

@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../SOP-Converter/configuration/ClientManager/ClientManager.h"
+#include "../SOP-Converter/management/ClientManager/ClientManager.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -18,37 +18,37 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_configuration__ClientManager_t {
+struct qt_meta_stringdata_management__ClientManager_t {
     QByteArrayData data[11];
-    char stringdata[129];
+    char stringdata[126];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_configuration__ClientManager_t, stringdata) + ofs \
+    offsetof(qt_meta_stringdata_management__ClientManager_t, stringdata) + ofs \
         - idx * sizeof(QByteArrayData) \
     )
-static const qt_meta_stringdata_configuration__ClientManager_t qt_meta_stringdata_configuration__ClientManager = {
+static const qt_meta_stringdata_management__ClientManager_t qt_meta_stringdata_management__ClientManager = {
     {
-QT_MOC_LITERAL(0, 0, 28),
-QT_MOC_LITERAL(1, 29, 12),
-QT_MOC_LITERAL(2, 42, 0),
-QT_MOC_LITERAL(3, 43, 10),
-QT_MOC_LITERAL(4, 54, 11),
-QT_MOC_LITERAL(5, 66, 9),
-QT_MOC_LITERAL(6, 76, 9),
-QT_MOC_LITERAL(7, 86, 8),
-QT_MOC_LITERAL(8, 95, 9),
-QT_MOC_LITERAL(9, 105, 8),
-QT_MOC_LITERAL(10, 114, 13)
+QT_MOC_LITERAL(0, 0, 25),
+QT_MOC_LITERAL(1, 26, 12),
+QT_MOC_LITERAL(2, 39, 0),
+QT_MOC_LITERAL(3, 40, 10),
+QT_MOC_LITERAL(4, 51, 11),
+QT_MOC_LITERAL(5, 63, 9),
+QT_MOC_LITERAL(6, 73, 9),
+QT_MOC_LITERAL(7, 83, 8),
+QT_MOC_LITERAL(8, 92, 9),
+QT_MOC_LITERAL(9, 102, 8),
+QT_MOC_LITERAL(10, 111, 13)
     },
-    "configuration::ClientManager\0clearConsole\0"
+    "management::ClientManager\0clearConsole\0"
     "\0clearTable\0clearTpSets\0notifyAll\0"
     "syncFiles\0syncMaps\0disableUi\0enableUi\0"
     "startSyncMaps\0"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_configuration__ClientManager[] = {
+static const uint qt_meta_data_management__ClientManager[] = {
 
  // content:
        7,       // revision
@@ -90,7 +90,7 @@ static const uint qt_meta_data_configuration__ClientManager[] = {
        0        // eod
 };
 
-void configuration::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void management::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         ClientManager *_t = static_cast<ClientManager *>(_o);
@@ -161,26 +161,26 @@ void configuration::ClientManager::qt_static_metacall(QObject *_o, QMetaObject::
     Q_UNUSED(_a);
 }
 
-const QMetaObject configuration::ClientManager::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_configuration__ClientManager.data,
-      qt_meta_data_configuration__ClientManager,  qt_static_metacall, 0, 0}
+const QMetaObject management::ClientManager::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_management__ClientManager.data,
+      qt_meta_data_management__ClientManager,  qt_static_metacall, 0, 0}
 };
 
 
-const QMetaObject *configuration::ClientManager::metaObject() const
+const QMetaObject *management::ClientManager::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *configuration::ClientManager::qt_metacast(const char *_clname)
+void *management::ClientManager::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_configuration__ClientManager.stringdata))
+    if (!strcmp(_clname, qt_meta_stringdata_management__ClientManager.stringdata))
         return static_cast<void*>(const_cast< ClientManager*>(this));
     return QObject::qt_metacast(_clname);
 }
 
-int configuration::ClientManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int management::ClientManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -198,49 +198,49 @@ int configuration::ClientManager::qt_metacall(QMetaObject::Call _c, int _id, voi
 }
 
 // SIGNAL 0
-void configuration::ClientManager::clearConsole()
+void management::ClientManager::clearConsole()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 
 // SIGNAL 1
-void configuration::ClientManager::clearTable()
+void management::ClientManager::clearTable()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, 0);
 }
 
 // SIGNAL 2
-void configuration::ClientManager::clearTpSets()
+void management::ClientManager::clearTpSets()
 {
     QMetaObject::activate(this, &staticMetaObject, 2, 0);
 }
 
 // SIGNAL 3
-void configuration::ClientManager::notifyAll()
+void management::ClientManager::notifyAll()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, 0);
 }
 
 // SIGNAL 4
-void configuration::ClientManager::syncFiles()
+void management::ClientManager::syncFiles()
 {
     QMetaObject::activate(this, &staticMetaObject, 4, 0);
 }
 
 // SIGNAL 5
-void configuration::ClientManager::syncMaps()
+void management::ClientManager::syncMaps()
 {
     QMetaObject::activate(this, &staticMetaObject, 5, 0);
 }
 
 // SIGNAL 6
-void configuration::ClientManager::disableUi()
+void management::ClientManager::disableUi()
 {
     QMetaObject::activate(this, &staticMetaObject, 6, 0);
 }
 
 // SIGNAL 7
-void configuration::ClientManager::enableUi()
+void management::ClientManager::enableUi()
 {
     QMetaObject::activate(this, &staticMetaObject, 7, 0);
 }

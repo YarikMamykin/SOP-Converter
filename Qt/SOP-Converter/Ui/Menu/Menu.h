@@ -7,7 +7,7 @@
 #include <QMenu>
 #include <QAction>
 #include "../../logging/Logger/Logger.h"
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 #include <vector>
 #include <memory>
 
@@ -17,7 +17,7 @@ namespace Ui
 class Menu : public QMenuBar
 {
 public:
-    explicit Menu(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent = 0);
+    explicit Menu(std::shared_ptr<management::ClientManager> cm, QWidget* parent = 0);
     virtual ~Menu();
 public:
     class MenuItem;
@@ -32,7 +32,7 @@ public slots:
     void enable();
 private:
     std::vector<Menu::MenuItem*> items;
-    std::shared_ptr<configuration::ClientManager> clientManager;
+    std::shared_ptr<management::ClientManager> clientManager;
 };
 
 class Menu::MenuItem : public QObject

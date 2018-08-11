@@ -1,6 +1,6 @@
 #include "TableAndEtcGroup.h"
 
-Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget *parent) :
+Ui::TableAndEtcGroup::TableAndEtcGroup(std::shared_ptr<management::ClientManager> clientManager, QWidget *parent) :
     QWidget(parent),
     table(new Ui::SetTable(clientManager)),
     cdTable(new Ui::ControlDictTable(clientManager)),

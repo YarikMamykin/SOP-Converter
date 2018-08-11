@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 #include <QThread>
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 
 
 // Retreives data from Ui component

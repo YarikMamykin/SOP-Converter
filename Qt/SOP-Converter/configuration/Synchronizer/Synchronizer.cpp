@@ -2,14 +2,14 @@
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
 #include "../../configuration/FileManager/FileManager.h"
-#include "../../configuration/IcoFoamManager/IcoFoamManager.h"
+#include "../../management/IcoFoamManager/IcoFoamManager.h"
 #include <QDebug>
 
 using Parser       = configuration::Parser;
 using ParserId     = configuration::Parser::ParserId;
 using LogManager   = logging::Logger;
 using FileManager  = configuration::FileManager;
-using IFoamManager = configuration::IcoFoamManager;
+using IFoamManager = management::IcoFoamManager;
 
 
 

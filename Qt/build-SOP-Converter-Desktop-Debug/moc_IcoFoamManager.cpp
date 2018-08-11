@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../SOP-Converter/configuration/IcoFoamManager/IcoFoamManager.h"
+#include "../SOP-Converter/management/IcoFoamManager/IcoFoamManager.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -18,33 +18,34 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_configuration__IcoFoamManager_t {
-    QByteArrayData data[3];
-    char stringdata[46];
+struct qt_meta_stringdata_management__IcoFoamManager_t {
+    QByteArrayData data[4];
+    char stringdata[56];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_configuration__IcoFoamManager_t, stringdata) + ofs \
+    offsetof(qt_meta_stringdata_management__IcoFoamManager_t, stringdata) + ofs \
         - idx * sizeof(QByteArrayData) \
     )
-static const qt_meta_stringdata_configuration__IcoFoamManager_t qt_meta_stringdata_configuration__IcoFoamManager = {
+static const qt_meta_stringdata_management__IcoFoamManager_t qt_meta_stringdata_management__IcoFoamManager = {
     {
-QT_MOC_LITERAL(0, 0, 29),
-QT_MOC_LITERAL(1, 30, 13),
-QT_MOC_LITERAL(2, 44, 0)
+QT_MOC_LITERAL(0, 0, 26),
+QT_MOC_LITERAL(1, 27, 13),
+QT_MOC_LITERAL(2, 41, 0),
+QT_MOC_LITERAL(3, 42, 12)
     },
-    "configuration::IcoFoamManager\0"
-    "addSyncResult\0\0"
+    "management::IcoFoamManager\0addSyncResult\0"
+    "\0clearCounter\0"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_configuration__IcoFoamManager[] = {
+static const uint qt_meta_data_management__IcoFoamManager[] = {
 
  // content:
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -52,57 +53,60 @@ static const uint qt_meta_data_configuration__IcoFoamManager[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    2,   19,    2, 0x0a,
+       1,    2,   24,    2, 0x0a,
+       3,    0,   29,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Bool,    2,    2,
+    QMetaType::Void,
 
        0        // eod
 };
 
-void configuration::IcoFoamManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void management::IcoFoamManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         IcoFoamManager *_t = static_cast<IcoFoamManager *>(_o);
         switch (_id) {
         case 0: _t->addSyncResult((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 1: _t->clearCounter(); break;
         default: ;
         }
     }
 }
 
-const QMetaObject configuration::IcoFoamManager::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_configuration__IcoFoamManager.data,
-      qt_meta_data_configuration__IcoFoamManager,  qt_static_metacall, 0, 0}
+const QMetaObject management::IcoFoamManager::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_management__IcoFoamManager.data,
+      qt_meta_data_management__IcoFoamManager,  qt_static_metacall, 0, 0}
 };
 
 
-const QMetaObject *configuration::IcoFoamManager::metaObject() const
+const QMetaObject *management::IcoFoamManager::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *configuration::IcoFoamManager::qt_metacast(const char *_clname)
+void *management::IcoFoamManager::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_configuration__IcoFoamManager.stringdata))
+    if (!strcmp(_clname, qt_meta_stringdata_management__IcoFoamManager.stringdata))
         return static_cast<void*>(const_cast< IcoFoamManager*>(this));
     return QObject::qt_metacast(_clname);
 }
 
-int configuration::IcoFoamManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int management::IcoFoamManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

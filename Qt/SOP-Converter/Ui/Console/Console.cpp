@@ -2,7 +2,7 @@
 //#include "../../logging/Messanger/Messanger.h"
 
 
-Ui::Console::Console(std::shared_ptr<configuration::ClientManager> cm) :
+Ui::Console::Console(std::shared_ptr<management::ClientManager> cm) :
     QTextEdit(),
     clientManager(cm)
 {

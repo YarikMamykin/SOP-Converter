@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include "../Buttons/ButtonsGroup.h"
 #include "Console.h"
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -13,7 +13,7 @@ namespace Ui
 class ConsoleAndButtonsGroup : public QWidget
 {
 public:
-    explicit ConsoleAndButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    explicit ConsoleAndButtonsGroup(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~ConsoleAndButtonsGroup();
 private: // Buttons in group
     Ui::ButtonsGroup* buttons;

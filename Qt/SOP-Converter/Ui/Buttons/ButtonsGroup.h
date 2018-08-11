@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include <memory>
 #include "Buttons.h"
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -13,7 +13,7 @@ namespace Ui
 class ButtonsGroup : public QWidget
 {
 public:
-    explicit ButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    explicit ButtonsGroup(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~ButtonsGroup();
 
     Ui::Button* getStartConversionButton();

@@ -4,7 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
-    clientManager(std::make_shared<configuration::ClientManager>()),
+    clientManager(std::make_shared<management::ClientManager>()),
     ui(new Ui::MainWindow),
     menuBar(new Ui::Menu(clientManager, this)),
     tableAndEtc(new Ui::TableAndEtcGroup(clientManager, this)),
@@ -36,7 +36,7 @@ MainWindow::~MainWindow()
     logging::Logger::getInstance()->log("Window destroyed", logging::LogDirection::file);
 }
 
-std::shared_ptr<configuration::ClientManager> MainWindow::getClientManager()
+std::shared_ptr<management::ClientManager> MainWindow::getClientManager()
 {
     return this->clientManager;
 }

@@ -8,7 +8,7 @@
 #include <memory>
 #include <map>
 #include "../../configuration/Parser/Parser.h"
-#include "../../configuration/ClientManager/ClientManager.h"
+#include "../../management/ClientManager/ClientManager.h"
 
 namespace Ui
 {
@@ -48,7 +48,7 @@ class SetTable : public QTableWidget
 {
     Q_OBJECT
 public:
-    explicit SetTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    explicit SetTable(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~SetTable();
 
 private slots:
@@ -79,7 +79,7 @@ class ControlDictTable : public QTableWidget
 {
     Q_OBJECT
 public:
-    explicit ControlDictTable(std::shared_ptr<configuration::ClientManager> clientManager, QWidget* parent = 0);
+    explicit ControlDictTable(std::shared_ptr<management::ClientManager> clientManager, QWidget* parent = 0);
     virtual ~ControlDictTable();
 private slots:
     void syncMaps();
@@ -92,7 +92,7 @@ private slots:
 private:
     std::vector<Cell*> cells;
     std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> controlDictMap;
-    std::shared_ptr<configuration::ClientManager> cm;
+    std::shared_ptr<management::ClientManager> cm;
 
     bool mapsLoaded;
     bool cellsErased;

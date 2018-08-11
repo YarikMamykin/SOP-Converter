@@ -8,7 +8,7 @@
 #include "Ui/Console/ConsoleAndButtonsGroup.h"
 #include "Ui/Menu/Menu.h"
 #include "Ui/Tables/TableAndEtcGroup.h"
-#include "configuration/ClientManager/ClientManager.h"
+#include "management/ClientManager/ClientManager.h"
 #include <memory>
 
 namespace Ui {
@@ -23,9 +23,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 
-    std::shared_ptr<configuration::ClientManager> getClientManager();
+    std::shared_ptr<management::ClientManager> getClientManager();
 private:
-    std::shared_ptr<configuration::ClientManager> clientManager;
+    std::shared_ptr<management::ClientManager> clientManager;
     Ui::MainWindow *ui;
     Ui::Menu* menuBar;
     Ui::TableAndEtcGroup* tableAndEtc;

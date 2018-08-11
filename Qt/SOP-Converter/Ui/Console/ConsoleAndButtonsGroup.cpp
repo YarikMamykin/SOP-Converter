@@ -1,6 +1,6 @@
 #include "ConsoleAndButtonsGroup.h"
 
-Ui::ConsoleAndButtonsGroup::ConsoleAndButtonsGroup(std::shared_ptr<configuration::ClientManager> clientManager, QWidget *parent) :
+Ui::ConsoleAndButtonsGroup::ConsoleAndButtonsGroup(std::shared_ptr<management::ClientManager> clientManager, QWidget *parent) :
     QWidget(parent),
     buttons(new Ui::ButtonsGroup(clientManager)),
     console(new Ui::Console(clientManager)),

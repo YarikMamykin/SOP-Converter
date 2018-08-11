@@ -6,16 +6,16 @@ using FileManager = configuration::FileManager;
 /* -- Menu -- */
 /* ---------------------------------------------------------------------- */
 
-Ui::Menu::Menu(std::shared_ptr<configuration::ClientManager> cm, QWidget* parent) :
+Ui::Menu::Menu(std::shared_ptr<management::ClientManager> cm, QWidget* parent) :
     QMenuBar(parent),    
     clientManager(cm)
 {
     QObject::connect(clientManager.get(),
-                     &configuration::ClientManager::disableUi,
+                     &management::ClientManager::disableUi,
                      this,
                      &Ui::Menu::disable, Qt::QueuedConnection);
     QObject::connect(clientManager.get(),
-                     &configuration::ClientManager::enableUi,
+                     &management::ClientManager::enableUi,
                      this,
                      &Ui::Menu::enable, Qt::QueuedConnection);
     items.push_back(new Menu::MenuItem());
