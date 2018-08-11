@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QThread>
+#include <QTimer>
+#include <QElapsedTimer>
 #include <QStringList>
 #include <memory>
 #include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
@@ -21,18 +23,26 @@ private:
     virtual ~IcoFoamManager();
 public:
     static IcoFoamManager* getInstance();
-//    void startExecution();
-//    void stopExecution();
+signals:
+    void startExecution();
+    void stopExecution();
+    void clearConsole();
     // TODO: Define all necessary signals and connect them in ClientManager constructor
 public slots:
+    void startTimer();
     void addSyncResult(int,bool);
-    void clearCounter();
+    void clearFlags();
+private slots:
+    void handleSyncFail();
 private:
     // clientManager cannot be a member of static class!!! --> causes core dump
-    std::unique_ptr<configuration::OFCommandExecutor> icoFoamExecutor;    
-    int addedSyncResultsCounter;
+    std::unique_ptr<configuration::OFCommandExecutor> icoFoamExecutor;        
     const int resultsCount;
+    const int syncTimeoutMax;
     std::unique_ptr<QThread> icoFoamThread;
+    std::unique_ptr<QTimer> timer;
+    std::unique_ptr<QElapsedTimer> elapsedTime;
+    std::unique_ptr<std::map<int, bool>> syncResults;
 };
 
 }

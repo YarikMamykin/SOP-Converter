@@ -32,7 +32,15 @@ management::ClientManager::ClientManager() :
     QObject::connect(this,
                      SIGNAL(syncMaps()),
                      IcoFoam::getInstance(),
-                     SLOT(clearCounter()), Qt::DirectConnection);
+                     SLOT(clearFlags()), Qt::DirectConnection);
+    QObject::connect(this,
+                     SIGNAL(syncMaps()),
+                     IcoFoam::getInstance(),
+                     SLOT(startTimer()), Qt::DirectConnection);
+    QObject::connect(IcoFoam::getInstance(),
+                     SIGNAL(clearConsole()),
+                     this,
+                     SIGNAL(clearConsole()), Qt::DirectConnection);
 }
 
 management::ClientManager::~ClientManager()
