@@ -15,6 +15,19 @@
 namespace management
 {
 
+class IcoFoamOutputProcessor : public QObject
+{
+    Q_OBJECT
+public:
+    explicit IcoFoamOutputProcessor();
+    virtual ~IcoFoamOutputProcessor();
+    void operator ()();
+signals:
+    void finished();
+public slots:
+    void observe();
+};
+
 class IcoFoamManager final : public QObject
 {
     Q_OBJECT
@@ -22,6 +35,8 @@ private:
     explicit IcoFoamManager();
     explicit IcoFoamManager(const IcoFoamManager&) = delete;
     virtual ~IcoFoamManager();
+
+    friend class IcoFoamOutputProcessor;
 public:
     static IcoFoamManager* getInstance();
 signals:
@@ -46,7 +61,10 @@ private:
     std::unique_ptr<QTimer> timer;
     std::unique_ptr<QElapsedTimer> elapsedTime;
     std::unique_ptr<std::map<int, bool>> syncResults;
+    std::unique_ptr<IcoFoamOutputProcessor> ifoamOutProc;
 };
+
+
 
 }
 #endif // ICOFOAMMANAGER_H

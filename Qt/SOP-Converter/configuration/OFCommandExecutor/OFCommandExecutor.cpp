@@ -46,6 +46,7 @@ void configuration::OFCommandExecutor::executeToFile()
     process->setStandardOutputFile(FileManager::getInstance()->getIcoFoamLogFile().get()->fileName());
 
     process->reset();
+    process->terminate();
     process->start(command->join(" "));
     process->setTextModeEnabled(true);
     process->waitForStarted();
