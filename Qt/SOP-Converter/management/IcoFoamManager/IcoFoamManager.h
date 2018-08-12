@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QStringList>
+#include <QTextStream>
 #include <memory>
 #include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
 #include "../../configuration/Parser/Parser.h"
@@ -24,9 +25,10 @@ private:
 public:
     static IcoFoamManager* getInstance();
 signals:
-    void startExecution();
+    void startExecution(); // must be used when Ui->file synchronizing is omitted. (Ui had no changes)
     void stopExecution();
     void clearConsole();
+    void processStandartOut();
     // TODO: Define all necessary signals and connect them in ClientManager constructor
 public slots:
     void startTimer();
@@ -34,6 +36,7 @@ public slots:
     void clearFlags();
 private slots:
     void handleSyncFail();
+    void doProcessStandartOut();
 private:
     // clientManager cannot be a member of static class!!! --> causes core dump
     std::unique_ptr<configuration::OFCommandExecutor> icoFoamExecutor;        

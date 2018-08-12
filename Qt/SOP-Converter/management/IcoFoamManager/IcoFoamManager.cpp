@@ -5,7 +5,7 @@ using LogManager = logging::Logger;
 
 management::IcoFoamManager::IcoFoamManager() :
     QObject(),
-    icoFoamExecutor(new configuration::OFCommandExecutor(QStringList("icoFoam"), FileManager::getInstance()->getWorkDir())),        
+    icoFoamExecutor(new configuration::OFCommandExecutor(QStringList("icoFoam"), FileManager::getInstance()->getWorkDir())),
     resultsCount(Parser::getInstance()->getMapsCount()),
     syncTimeoutMax(5000),
     icoFoamThread(new QThread),
@@ -17,6 +17,18 @@ management::IcoFoamManager::IcoFoamManager() :
                      SIGNAL(timeout()),
                      this,
                      SLOT(handleSyncFail()));
+    QObject::connect(this,
+                     SIGNAL(processStandartOut()),
+                     SLOT(doProcessStandartOut()), Qt::QueuedConnection);
+    QObject::connect(this,
+                     &IcoFoamManager::startExecution,
+                     icoFoamExecutor.get(),
+                     &configuration::OFCommandExecutor::executeToFile, Qt::QueuedConnection);
+    QObject::connect(this,
+                     &IcoFoamManager::stopExecution,
+                     icoFoamExecutor.get(),
+                     &configuration::OFCommandExecutor::terminateProcess, Qt::QueuedConnection);
+
     timer->setInterval(syncTimeoutMax);
     LogManager::getInstance()->log("IcoFoamManager constructed");
 }
@@ -57,10 +69,10 @@ void management::IcoFoamManager::addSyncResult(int syncId, bool result)
     {
         timer->stop();
         LogManager::getInstance()->log(QString("FILES SYNCED! Elapsed time = %1 ms").arg(elapsedTime->elapsed()));
-        LogManager::getInstance()->log("Starting icoFoam! Console will be cleared in 3 seconds!");
 
-        // here we start icoFoam app in separate thread
-        // to have full control on it.
+        emit startExecution();
+
+        LogManager::getInstance()->log("EXECUTION STARTED!");
     }
 }
 
@@ -83,4 +95,26 @@ void management::IcoFoamManager::handleSyncFail()
                                        arg(e.second));
     }
 
+}
+
+void management::IcoFoamManager::doProcessStandartOut()
+{
+    LogManager::getInstance()->log("doProcessStandartOut\n\n");
+    std::shared_ptr<QFile> icoFoamOut = FileManager::getInstance()->getIcoFoamLogFile();
+    if(!icoFoamOut.get()->open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        LogManager::getInstance()->log("Can't open icoFoam.log!");
+        return;
+    }
+
+    QString buffer;
+    while(!icoFoamOut.get()->atEnd())
+    {
+        QThread::msleep(5);
+        buffer = icoFoamOut.get()->readLine();
+        if(buffer != QString("\n"))
+            LogManager::getInstance()->log(buffer.trimmed());
+    }
+
+    icoFoamOut.get()->close();
 }

@@ -10,6 +10,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
     maxLogFilesCount(5),
     procExecutor(new QProcess),    
     logFile(std::make_shared<QFile>()),
+    icoFoamLogFile(std::make_shared<QFile>()),
     backupDir(std::make_shared<QDir>("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
     polyMeshFolderEntryValid(new QStringList),
@@ -196,6 +197,8 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
 
 std::shared_ptr<QFile> configuration::FileManager::getLogFile()
 {return logFile;}
+std::shared_ptr<QFile> configuration::FileManager::getIcoFoamLogFile()
+{return icoFoamLogFile;}
 std::shared_ptr<QFile> configuration::FileManager::getProjectFile()
 {return projectFile;}
 std::shared_ptr<QFile> configuration::FileManager::getMeshFile()
@@ -273,7 +276,8 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
             LogManager::getInstance()->log(QString("Validating system folder --> ") + boolToString(systemFolderValid));            
 
             if(zeroFolderValid && constantFolderValid && systemFolderValid && !meshFile.get()->fileName().isEmpty())
-            {                
+            {
+                icoFoamLogFile.get()->setFileName(workDir.get()->path() + QString("/icoFoam.log"));
                 emit Parser::getInstance()->startParsing(); return;
             }
             else if(!meshFile.get()->fileName().isEmpty())

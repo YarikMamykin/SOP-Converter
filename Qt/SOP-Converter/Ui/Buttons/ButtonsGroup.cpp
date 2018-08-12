@@ -20,6 +20,7 @@ Ui::ButtonsGroup::ButtonsGroup(std::shared_ptr<management::ClientManager> client
 
     QObject::connect(startCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(disableUi()));
     QObject::connect(stopCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(enableUi()));
+    QObject::connect(stopCalculation, SIGNAL(clicked()), clientManager.get(), SIGNAL(stopCalculation()));
 
     QObject::connect(clientManager.get(), SIGNAL(disableUi()), startCalculation, SLOT(disable()));
     QObject::connect(clientManager.get(), SIGNAL(disableUi()), resetSettings, SLOT(disable()));

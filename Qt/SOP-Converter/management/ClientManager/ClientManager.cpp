@@ -41,6 +41,10 @@ management::ClientManager::ClientManager() :
                      SIGNAL(clearConsole()),
                      this,
                      SIGNAL(clearConsole()), Qt::DirectConnection);
+    QObject::connect(this,
+                     SIGNAL(stopCalculation()),
+                     IcoFoam::getInstance(),
+                     SIGNAL(stopExecution()), Qt::QueuedConnection);
 }
 
 management::ClientManager::~ClientManager()

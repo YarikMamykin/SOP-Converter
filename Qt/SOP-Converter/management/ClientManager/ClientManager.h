@@ -26,6 +26,7 @@ signals:
     void syncMaps();
     void disableUi();
     void enableUi();
+    void stopCalculation();
 public slots:
     void startSyncMaps();
 private:

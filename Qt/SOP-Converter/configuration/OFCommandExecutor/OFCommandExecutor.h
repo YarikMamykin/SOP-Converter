@@ -18,8 +18,10 @@ public:
     virtual ~OFCommandExecutor();
 
     QString execute();
+    void executeToFile();
     void setCommand(const QStringList& _command);
     void setDir(std::shared_ptr<QDir> _wDir);
+    void terminateProcess();
 private:
     QProcess* process;
     QStringList* command;

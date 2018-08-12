@@ -1,6 +1,8 @@
 #include "OFCommandExecutor.h"
 #include "../../logging/Logger/Logger.h"
+#include "../../management/IcoFoamManager/IcoFoamManager.h"
 using LogManager = logging::Logger;
+using IcoFoam    = management::IcoFoamManager;
 
 configuration::OFCommandExecutor::OFCommandExecutor() :
     process(new QProcess),
@@ -37,6 +39,25 @@ QString configuration::OFCommandExecutor::execute()
     return process->readAllStandardOutput();
 }
 
+void configuration::OFCommandExecutor::executeToFile()
+{
+    process->setWorkingDirectory(wDir.get()->path());
+    process->setReadChannelMode(QProcess::MergedChannels);
+    process->setStandardOutputFile(FileManager::getInstance()->getIcoFoamLogFile().get()->fileName());
+
+    process->reset();
+    process->start(command->join(" "));
+    process->setTextModeEnabled(true);
+    process->waitForStarted();
+    process->waitForReadyRead();
+
+    LogManager::getInstance()->log(QString("icoFoam process STARTED at %1").arg(wDir.get()->path()));
+
+//    process->waitForFinished();
+
+    emit IcoFoam::getInstance()->processStandartOut();
+}
+
 void configuration::OFCommandExecutor::setCommand(const QStringList& _command)
 {
     if(this->command)
@@ -50,4 +71,9 @@ void configuration::OFCommandExecutor::setCommand(const QStringList& _command)
 void configuration::OFCommandExecutor::setDir(std::shared_ptr<QDir> _wDir)
 {
     this->wDir = _wDir;
+}
+
+void configuration::OFCommandExecutor::terminateProcess()
+{
+    process->terminate();
 }

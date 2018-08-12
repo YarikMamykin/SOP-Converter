@@ -48,6 +48,7 @@ public:
     bool validateSystemFolder();
 
     std::shared_ptr<QFile> getLogFile();
+    std::shared_ptr<QFile> getIcoFoamLogFile();
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
@@ -61,6 +62,7 @@ private:
     unsigned int maxLogFilesCount;
     QProcess* procExecutor;    
     std::shared_ptr<QFile> logFile;
+    std::shared_ptr<QFile> icoFoamLogFile;
     std::shared_ptr<QDir> backupDir;
     QStringList* zeroFolderEntryValid;
     QStringList* polyMeshFolderEntryValid;
