@@ -150,14 +150,14 @@ QT_MOC_LITERAL(5, 70, 18),
 QT_MOC_LITERAL(6, 89, 10),
 QT_MOC_LITERAL(7, 100, 13),
 QT_MOC_LITERAL(8, 114, 10),
-QT_MOC_LITERAL(9, 125, 14),
-QT_MOC_LITERAL(10, 140, 20)
+QT_MOC_LITERAL(9, 125, 20),
+QT_MOC_LITERAL(10, 146, 14)
     },
     "management::IcoFoamManager\0startExecution\0"
     "\0stopExecution\0clearConsole\0"
     "processStandartOut\0startTimer\0"
-    "addSyncResult\0clearFlags\0handleSyncFail\0"
-    "doProcessStandartOut\0"
+    "addSyncResult\0clearFlags\0doProcessStandartOut\0"
+    "handleSyncFail\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -184,7 +184,7 @@ static const uint qt_meta_data_management__IcoFoamManager[] = {
        6,    0,   63,    2, 0x0a,
        7,    2,   64,    2, 0x0a,
        8,    0,   69,    2, 0x0a,
-       9,    0,   70,    2, 0x08,
+       9,    0,   70,    2, 0x0a,
       10,    0,   71,    2, 0x08,
 
  // signals: parameters
@@ -215,8 +215,8 @@ void management::IcoFoamManager::qt_static_metacall(QObject *_o, QMetaObject::Ca
         case 4: _t->startTimer(); break;
         case 5: _t->addSyncResult((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 6: _t->clearFlags(); break;
-        case 7: _t->handleSyncFail(); break;
-        case 8: _t->doProcessStandartOut(); break;
+        case 7: _t->doProcessStandartOut(); break;
+        case 8: _t->handleSyncFail(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

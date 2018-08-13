@@ -3,12 +3,12 @@
 
 #include <QObject>
 #include <QThread>
+#include <QProcess>
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QStringList>
 #include <QTextStream>
 #include <memory>
-#include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
 
@@ -26,6 +26,8 @@ signals:
     void finished();
 public slots:
     void observe();
+private:
+    const int readLineTimeout;
 };
 
 class IcoFoamManager final : public QObject
@@ -49,19 +51,19 @@ public slots:
     void startTimer();
     void addSyncResult(int,bool);
     void clearFlags();
+    void doProcessStandartOut();
 private slots:
     void handleSyncFail();
-    void doProcessStandartOut();
+
 private:
     // clientManager cannot be a member of static class!!! --> causes core dump
-    std::unique_ptr<configuration::OFCommandExecutor> icoFoamExecutor;        
     const int resultsCount;
     const int syncTimeoutMax;
-    std::unique_ptr<QThread> icoFoamThread;
+    const int waitForReadyReadTimeout;
+
     std::unique_ptr<QTimer> timer;
     std::unique_ptr<QElapsedTimer> elapsedTime;
     std::unique_ptr<std::map<int, bool>> syncResults;
-    std::unique_ptr<IcoFoamOutputProcessor> ifoamOutProc;
 };
 
 

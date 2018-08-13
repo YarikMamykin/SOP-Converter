@@ -18,7 +18,7 @@ configuration::OFCommandExecutor::OFCommandExecutor(const QStringList& _command,
     wDir(_wDir)
 {
     process->setWorkingDirectory(wDir.get()->path());
-    LogManager::getInstance()->log(QString("OFCommandExecutor created. Command = ") + _command.join(" "));
+    LogManager::getInstance()->log(QString("OFCommandExecutor created. Dir = %1; Command = %2").arg(_wDir.get()->path()).arg(_command.join(" ")));
 }
 
 configuration::OFCommandExecutor::~OFCommandExecutor()
@@ -41,22 +41,25 @@ QString configuration::OFCommandExecutor::execute()
 
 void configuration::OFCommandExecutor::executeToFile()
 {
+    LogManager::getInstance()->log("OFCommandExecutor::executeToFile ");
+
     process->setWorkingDirectory(wDir.get()->path());
     process->setReadChannelMode(QProcess::MergedChannels);
     process->setStandardOutputFile(FileManager::getInstance()->getIcoFoamLogFile().get()->fileName());
-
-    process->reset();
-    process->terminate();
-    process->start(command->join(" "));
     process->setTextModeEnabled(true);
+
+//    process->kill();
+    process->reset();
+    process->start(command->join(" "));
+
     process->waitForStarted();
     process->waitForReadyRead();
 
     LogManager::getInstance()->log(QString("icoFoam process STARTED at %1").arg(wDir.get()->path()));
-
-//    process->waitForFinished();
-
-    emit IcoFoam::getInstance()->processStandartOut();
+    process->waitForFinished(-1);
+//    while(!process->atEnd());
+    LogManager::getInstance()->log("executeToFile finished!");
+//    emit IcoFoam::getInstance()->stopExecution();
 }
 
 void configuration::OFCommandExecutor::setCommand(const QStringList& _command)
@@ -76,5 +79,6 @@ void configuration::OFCommandExecutor::setDir(std::shared_ptr<QDir> _wDir)
 
 void configuration::OFCommandExecutor::terminateProcess()
 {
+    LogManager::getInstance()->log(QString("Terminating process ") + command->join(" "));
     process->terminate();
 }
