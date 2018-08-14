@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <memory>
+#include <atomic>
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
 
@@ -40,6 +41,7 @@ private:
 
     friend class IcoFoamOutputProcessor;
 public:
+    static std::atomic<bool> useReadLineTimeout;
     static IcoFoamManager* getInstance();
 signals:
     void startExecution(); // must be used when Ui->file synchronizing is omitted. (Ui had no changes)
@@ -64,6 +66,8 @@ private:
     std::unique_ptr<QTimer> timer;
     std::unique_ptr<QElapsedTimer> elapsedTime;
     std::unique_ptr<std::map<int, bool>> syncResults;
+
+    bool icoFoamStarted;
 };
 
 
