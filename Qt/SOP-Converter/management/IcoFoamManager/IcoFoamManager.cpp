@@ -78,7 +78,7 @@ void management::IcoFoamManager::addSyncResult(int syncId, bool result)
 void management::IcoFoamManager::clearFlags()
 {
     syncResults->clear();
-    LogManager::getInstance()->log("addedSyncResultsCounter cleared");
+    LogManager::getInstance()->log("syncResults cleared");
 }
 
 void management::IcoFoamManager::handleSyncFail()
@@ -116,7 +116,6 @@ void management::IcoFoamManager::doProcessStandartOut()
     {
         LogManager::getInstance()->log("processorThread started");
     });
-    QObject::connect(processorThread, &QThread::finished, [](){ LogManager::getInstance()->log("processorThread finished"); });
 
     /* icoFoam process init */
     QProcess* executor = new QProcess;
@@ -124,25 +123,36 @@ void management::IcoFoamManager::doProcessStandartOut()
     executor->setWorkingDirectory(FileManager::getInstance()->getWorkDir().get()->path());
     executor->setReadChannelMode(QProcess::MergedChannels);
     executor->setStandardOutputFile(FileManager::getInstance()->getIcoFoamLogFile().get()->fileName());
+    executor->open(QIODevice::Truncate|QIODevice::ReadWrite);
 
 
-    QObject::connect(this, &IcoFoamManager::stopExecution, [executor, this]()
+    QObject::connect(processorThread, &QThread::finished, [executor]()
     {
+        if(executor) delete executor;
+//        delete executorThread;
+        LogManager::getInstance()->log("processorThread finished");
+    });
+    QObject::connect(this, &IcoFoamManager::stopExecution, [executor, executorThread]()
+    {
+        management::IcoFoamManager::useReadLineTimeout.store(false);
+        if(!executor) return;
         executor->kill();
+        LogManager::getInstance()->log("executor->kill();");
+        executorThread->quit();
         LogManager::getInstance()->log("icoFoam process killed!");
     });
-    QObject::connect(executor, static_cast<void (QProcess::*)(int)>(&QProcess::finished), [executorThread](int)
+    QObject::connect(executor, static_cast<void (QProcess::*)(int)>(&QProcess::finished), [executor, executorThread](int)
     {
         management::IcoFoamManager::useReadLineTimeout.store(false);
         executorThread->quit();
-        LogManager::getInstance()->log("icoFoam process finished!");
+        LogManager::getInstance()->log(QString("icoFoam process finished! (%1)").arg(boolToString(executor->atEnd())));
     });
-    QObject::connect(executorThread, SIGNAL(finished()), executor, SLOT(deleteLater()));
+
+//    QObject::connect(executorThread, &QThread::finished, [executor](){delete executor;});
+    QObject::connect(executorThread, SIGNAL(finished()), executorThread, SLOT(quit()));
     QObject::connect(executorThread, SIGNAL(finished()), executorThread, SLOT(deleteLater()));
-    QObject::connect(executorThread, &QThread::finished, []()
-    {
-        LogManager::getInstance()->log("executorThread finished");
-    });
+//    QObject::connect(executorThread, SIGNAL(finished()), executor, SLOT(deleteLater()));
+    QObject::connect(executorThread, &QThread::finished, []() { LogManager::getInstance()->log("executorThread finished"); });
     QObject::connect(executorThread, &QThread::started, [executor, processorThread, waitTimeout=waitForReadyReadTimeout]()
     {
         executor->start();
@@ -150,14 +160,14 @@ void management::IcoFoamManager::doProcessStandartOut()
         executor->waitForReadyRead(waitTimeout);
         processorThread->start();
     });
-    QObject::connect(executorThread,  &QThread::started, [](){ LogManager::getInstance()->log("executorThread started"); } );
+    QObject::connect(executorThread,  &QThread::started, []() { LogManager::getInstance()->log("executorThread started"); });
     QObject::connect(executor, SIGNAL(readyRead()), processorThread, SLOT(start()));
 
     executor->moveToThread(executorThread);
     processor->moveToThread(processorThread);
 
-    executorThread->start();
 
+    executorThread->start();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -177,9 +187,6 @@ management::IcoFoamOutputProcessor::~IcoFoamOutputProcessor()
 
 void management::IcoFoamOutputProcessor::operator ()()
 {
-//    LogManager::getInstance()->log("Connecting to icoFoam output");
-//    QThread::msleep(10000);
-
     std::shared_ptr<QFile> icoFoamOut = FileManager::getInstance()->getIcoFoamLogFile();
     if(!icoFoamOut.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
@@ -200,7 +207,7 @@ void management::IcoFoamOutputProcessor::operator ()()
             LogManager::getInstance()->log(buffer.trimmed(), LogDirection::console);
     }
 
-    LogManager::getInstance()->log("File closing!");
+    LogManager::getInstance()->log("icoFoam.log closing!");
 
     icoFoamOut.get()->close();
 }

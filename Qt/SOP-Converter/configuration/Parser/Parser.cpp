@@ -3,6 +3,7 @@
 #include "../../logging/Logger/Logger.h"
 #include "../../configuration/FileManager/FileManager.h"
 #include "../../configuration/Synchronizer/Synchronizer.h"
+#include "../../management/IcoFoamManager/IcoFoamManager.h"
 
 using LogManager = logging::Logger;
 using FileManager = configuration::FileManager;
@@ -465,6 +466,7 @@ void configuration::Parser::resetFlags()
 
 void configuration::Parser::syncFiles()
 {
+    management::IcoFoamManager::getInstance()->clearFlags();
     if( maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::p)].get()->size()
             ||
         maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::U)].get()->size())
