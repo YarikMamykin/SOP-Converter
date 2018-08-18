@@ -45,6 +45,10 @@ management::ClientManager::ClientManager() :
                      SIGNAL(stopCalculation()),
                      IcoFoam::getInstance(),
                      SIGNAL(stopExecution()), Qt::QueuedConnection);
+    QObject::connect(IcoFoam::getInstance(),
+                     SIGNAL(requestEnableUi()),
+                     this,
+                     SIGNAL(enableUi()), Qt::QueuedConnection);
 }
 
 management::ClientManager::~ClientManager()

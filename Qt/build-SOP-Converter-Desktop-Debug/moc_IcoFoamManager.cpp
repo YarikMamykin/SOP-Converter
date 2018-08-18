@@ -131,8 +131,8 @@ void management::IcoFoamOutputProcessor::finished()
     QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 struct qt_meta_stringdata_management__IcoFoamManager_t {
-    QByteArrayData data[11];
-    char stringdata[162];
+    QByteArrayData data[13];
+    char stringdata[199];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -147,17 +147,20 @@ QT_MOC_LITERAL(2, 42, 0),
 QT_MOC_LITERAL(3, 43, 13),
 QT_MOC_LITERAL(4, 57, 12),
 QT_MOC_LITERAL(5, 70, 18),
-QT_MOC_LITERAL(6, 89, 10),
-QT_MOC_LITERAL(7, 100, 13),
-QT_MOC_LITERAL(8, 114, 10),
-QT_MOC_LITERAL(9, 125, 20),
-QT_MOC_LITERAL(10, 146, 14)
+QT_MOC_LITERAL(6, 89, 15),
+QT_MOC_LITERAL(7, 105, 10),
+QT_MOC_LITERAL(8, 116, 13),
+QT_MOC_LITERAL(9, 130, 10),
+QT_MOC_LITERAL(10, 141, 20),
+QT_MOC_LITERAL(11, 162, 14),
+QT_MOC_LITERAL(12, 177, 20)
     },
     "management::IcoFoamManager\0startExecution\0"
     "\0stopExecution\0clearConsole\0"
-    "processStandartOut\0startTimer\0"
-    "addSyncResult\0clearFlags\0doProcessStandartOut\0"
-    "handleSyncFail\0"
+    "processStandartOut\0requestEnableUi\0"
+    "startTimer\0addSyncResult\0clearFlags\0"
+    "doProcessStandartOut\0handleSyncFail\0"
+    "getStopExecutionConn\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -167,27 +170,30 @@ static const uint qt_meta_data_management__IcoFoamManager[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   59,    2, 0x05,
-       3,    0,   60,    2, 0x05,
-       4,    0,   61,    2, 0x05,
-       5,    0,   62,    2, 0x05,
+       1,    0,   69,    2, 0x05,
+       3,    0,   70,    2, 0x05,
+       4,    0,   71,    2, 0x05,
+       5,    0,   72,    2, 0x05,
+       6,    0,   73,    2, 0x05,
 
  // slots: name, argc, parameters, tag, flags
-       6,    0,   63,    2, 0x0a,
-       7,    2,   64,    2, 0x0a,
-       8,    0,   69,    2, 0x0a,
-       9,    0,   70,    2, 0x0a,
-      10,    0,   71,    2, 0x08,
+       7,    0,   74,    2, 0x0a,
+       8,    2,   75,    2, 0x0a,
+       9,    0,   80,    2, 0x0a,
+      10,    0,   81,    2, 0x0a,
+      11,    0,   82,    2, 0x08,
+      12,    0,   83,    2, 0x08,
 
  // signals: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -196,6 +202,7 @@ static const uint qt_meta_data_management__IcoFoamManager[] = {
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Bool,    2,    2,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -212,11 +219,13 @@ void management::IcoFoamManager::qt_static_metacall(QObject *_o, QMetaObject::Ca
         case 1: _t->stopExecution(); break;
         case 2: _t->clearConsole(); break;
         case 3: _t->processStandartOut(); break;
-        case 4: _t->startTimer(); break;
-        case 5: _t->addSyncResult((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 6: _t->clearFlags(); break;
-        case 7: _t->doProcessStandartOut(); break;
-        case 8: _t->handleSyncFail(); break;
+        case 4: _t->requestEnableUi(); break;
+        case 5: _t->startTimer(); break;
+        case 6: _t->addSyncResult((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 7: _t->clearFlags(); break;
+        case 8: _t->doProcessStandartOut(); break;
+        case 9: _t->handleSyncFail(); break;
+        case 10: _t->getStopExecutionConn(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -244,6 +253,12 @@ void management::IcoFoamManager::qt_static_metacall(QObject *_o, QMetaObject::Ca
             typedef void (IcoFoamManager::*_t)();
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&IcoFoamManager::processStandartOut)) {
                 *result = 3;
+            }
+        }
+        {
+            typedef void (IcoFoamManager::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&IcoFoamManager::requestEnableUi)) {
+                *result = 4;
             }
         }
     }
@@ -274,13 +289,13 @@ int management::IcoFoamManager::qt_metacall(QMetaObject::Call _c, int _id, void 
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }
@@ -307,5 +322,11 @@ void management::IcoFoamManager::clearConsole()
 void management::IcoFoamManager::processStandartOut()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void management::IcoFoamManager::requestEnableUi()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, 0);
 }
 QT_END_MOC_NAMESPACE

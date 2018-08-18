@@ -48,6 +48,7 @@ signals:
     void stopExecution();
     void clearConsole();
     void processStandartOut();
+    void requestEnableUi();
     // TODO: Define all necessary signals and connect them in ClientManager constructor
 public slots:
     void startTimer();
@@ -56,6 +57,7 @@ public slots:
     void doProcessStandartOut();
 private slots:
     void handleSyncFail();
+    QMetaObject::Connection& getStopExecutionConn();
 
 private:
     // clientManager cannot be a member of static class!!! --> causes core dump
@@ -68,6 +70,7 @@ private:
     std::unique_ptr<std::map<int, bool>> syncResults;
 
     bool icoFoamStarted;
+    QMetaObject::Connection stopExecutionConn;
 };
 
 
