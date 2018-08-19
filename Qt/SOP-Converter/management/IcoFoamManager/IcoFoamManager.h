@@ -8,6 +8,7 @@
 #include <QElapsedTimer>
 #include <QStringList>
 #include <QTextStream>
+#include <QDir>
 #include <memory>
 #include <atomic>
 #include "../../configuration/Parser/Parser.h"
@@ -27,8 +28,6 @@ signals:
     void finished();
 public slots:
     void observe();
-private:
-    const int readLineTimeout;
 };
 
 class IcoFoamManager final : public QObject
@@ -41,7 +40,6 @@ private:
 
     friend class IcoFoamOutputProcessor;
 public:
-    static std::atomic<bool> useReadLineTimeout;
     static std::atomic<bool> executorThreadFinished;
     static IcoFoamManager* getInstance();
 signals:
@@ -58,6 +56,7 @@ public slots:
     void doProcessStandartOut();
 private slots:
     void handleSyncFail();
+    void removeTempDirs();
     QMetaObject::Connection& getStopExecutionConn();
 
 private:
@@ -70,7 +69,6 @@ private:
     std::unique_ptr<QElapsedTimer> elapsedTime;
     std::unique_ptr<std::map<int, bool>> syncResults;
 
-    bool icoFoamStarted;
     QMetaObject::Connection stopExecutionConn;
 };
 
