@@ -9,6 +9,7 @@ using LogDirection = logging::LogDirection;
 /* -- IcoFoamManager -- */
 /* ---------------------------------------------------------------------- */
 std::atomic<bool> management::IcoFoamManager::useReadLineTimeout;
+std::atomic<bool> management::IcoFoamManager::executorThreadFinished;
 
 management::IcoFoamManager::IcoFoamManager() :
     QObject(),
@@ -139,8 +140,9 @@ void management::IcoFoamManager::doProcessStandartOut()
 
     stopExecutionConn = QObject::connect(this, &IcoFoamManager::stopExecution, [executor, executorThread, this]()
     {
-        LogManager::getInstance()->log("Stopping icoFoam");
         this->blockSignals(true);
+
+        LogManager::getInstance()->log("Stopping icoFoam");
         executor->kill();
         executor->waitForFinished(1500);
         executorThread->quit();
@@ -148,8 +150,8 @@ void management::IcoFoamManager::doProcessStandartOut()
         LogManager::getInstance()->log("icoFoam process killed!");
         management::IcoFoamManager::useReadLineTimeout.store(false);
         QObject::disconnect(this->getStopExecutionConn());
+//        IcoFoamManager::executorThreadFinished.store(true);
         this->blockSignals(false);
-
     });
     QObject::connect(executorThread, SIGNAL(finished()), executorThread, SLOT(quit()), Qt::QueuedConnection);
     QObject::connect(executorThread, SIGNAL(finished()), executorThread, SLOT(deleteLater()), Qt::QueuedConnection);
@@ -166,12 +168,14 @@ void management::IcoFoamManager::doProcessStandartOut()
             QObject::disconnect(this->getStopExecutionConn());
             emit this->requestEnableUi();
         }
+        IcoFoamManager::executorThreadFinished.store(true);
     });
 
     QObject::connect(executorThread, &QThread::finished, []() { LogManager::getInstance()->log("executorThread finished"); });
     QObject::connect(executorThread, &QThread::started, [this, executor, processorThread, waitTimeout=waitForReadyReadTimeout]()
     {
         executor->start();
+        IcoFoamManager::executorThreadFinished.store(false);
         executor->waitForReadyRead(waitTimeout);
         processorThread->start();
     });
@@ -208,16 +212,14 @@ void management::IcoFoamOutputProcessor::operator ()()
         return;
     }
 
-    QString buffer;
-
     LogManager::getInstance()->log("\n\n### - icoFoam.log START - ###");
-
-    while(!icoFoamOut.get()->atEnd())
+    QString buffer;
+    while(!icoFoamOut.get()->atEnd() || !IcoFoamManager::executorThreadFinished.load())
     {
         if(management::IcoFoamManager::useReadLineTimeout.load())
         { QThread::msleep(readLineTimeout); }
         buffer = icoFoamOut.get()->readLine();
-        if(buffer != QString("\n"))
+        if(buffer != QString("\n") && !buffer.isEmpty() && !buffer.isNull())
             LogManager::getInstance()->log(buffer.trimmed(), LogDirection::console);
     }
 

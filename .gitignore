@@ -1,4 +1,2 @@
-./Qt/build-SOP-Converter-Desktop-Debug/*.o
-./Qt/build-SOP-Converter-Desktop-Release/*.o
-./Qt/build-SOP-Converter-Desktop-Debug/moc_*
-./Qt/build-SOP-Converter-Desktop-Release/moc_*
+**/*.o
+**/moc_*

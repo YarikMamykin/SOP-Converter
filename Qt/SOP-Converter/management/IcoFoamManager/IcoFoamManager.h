@@ -42,6 +42,7 @@ private:
     friend class IcoFoamOutputProcessor;
 public:
     static std::atomic<bool> useReadLineTimeout;
+    static std::atomic<bool> executorThreadFinished;
     static IcoFoamManager* getInstance();
 signals:
     void startExecution(); // must be used when Ui->file synchronizing is omitted. (Ui had no changes)
