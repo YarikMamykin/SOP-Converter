@@ -11,6 +11,7 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 #include <QStringList>
+#include <QSizePolicy>
 #include <memory>
 #include <vector>
 #include "../../management/ClientManager/ClientManager.h"

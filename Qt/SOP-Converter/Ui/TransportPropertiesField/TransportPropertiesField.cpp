@@ -49,7 +49,7 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<managemen
         {
             editFields.push_back(new QSpinBox);
             dynamic_cast<QSpinBox*>(*(--editFields.end()))->setRange(-1000, 1000);
-            dynamic_cast<QSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
+            dynamic_cast<QSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);            
             QObject::connect(reinterpret_cast<QSpinBox*>(*(--editFields.end())),
                              static_cast<void (QSpinBox::*)(const QString&)>(&QSpinBox::valueChanged),
                              [this, index](const QString& value)
@@ -59,9 +59,10 @@ Ui::TransportPropertiesField::TransportPropertiesField(std::shared_ptr<managemen
         } else
         {
             editFields.push_back(new QDoubleSpinBox);
-            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setRange(0,1000);
-            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setSingleStep(0.01);
+            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setRange(0.00,1000.00);
+            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setSingleStep(0.000001);
             dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setAlignment(Qt::AlignCenter);
+            dynamic_cast<QDoubleSpinBox*>(*(--editFields.end()))->setDecimals(6);
             QObject::connect(dynamic_cast<QDoubleSpinBox*>(*(--editFields.end())),
                              static_cast<void (QDoubleSpinBox::*)(const QString&)>(&QDoubleSpinBox::valueChanged),
                              [this, index](const QString& value)
