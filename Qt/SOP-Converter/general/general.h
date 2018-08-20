@@ -12,7 +12,7 @@
 #include "../configuration/Parser/Parser.h"
 using ParserId = configuration::Parser::ParserId;
 
-const QStringList tpDimensions = {"kg","m","s","K","kgmol","A","cd","viscosity"};
+const QStringList tpDimensions = {"kg","m","s","K","kgmol","A","cd","value"};
 
 // declare here general purpose functions and variables
 const std::string defaultNodeType = std::string("empty");
