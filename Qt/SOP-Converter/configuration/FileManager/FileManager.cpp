@@ -301,7 +301,7 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
                 command.clear();
                 result.clear();
 
-                command << "transformPoints" << "-scale" << "(1 1 1)";
+                command << "transformPoints" << "-scale" << "(0.001 0.001 0.001)";
                 executor->setCommand(command);
                 result = executor->execute();
                 LogManager::getInstance()->log(QString("Parsing transformPoints.log --> ") + boolToString(Parser::parseTransformPointsLog(result)));
