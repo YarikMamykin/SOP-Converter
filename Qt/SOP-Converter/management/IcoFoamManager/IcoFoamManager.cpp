@@ -100,9 +100,9 @@ void management::IcoFoamManager::removeTempDirs()
 {
     LogManager::getInstance()->log("removing old temporary dirs");
     auto workdir = FileManager::getInstance()->getWorkDir();
-    QStringList* wentry = new QStringList(workdir.get()->entryList(QDir::AllDirs | QDir::NoDotAndDotDot));
+    QStringList wentry(workdir.get()->entryList(QDir::AllDirs | QDir::NoDotAndDotDot));
     QDir dirbuf;
-    for(auto e : *wentry)
+    for(auto e : wentry)
     {
         if(e != "0" && e != "constant" && e != "system")
         {
@@ -110,8 +110,6 @@ void management::IcoFoamManager::removeTempDirs()
             LogManager::getInstance()->log(QString("Removing %1 --> %2").arg(e).arg(boolToString(dirbuf.removeRecursively())));
         }
     }
-    wentry->clear();
-    delete wentry;
 }
 
 QMetaObject::Connection& management::IcoFoamManager::getStopExecutionConn()
