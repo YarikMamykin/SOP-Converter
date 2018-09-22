@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/usr/bin/lsb_release", line 20, in <module>
+    from optparse import OptionParser
+  File "/usr/lib/python3.6/optparse.py", line 90, in <module>
+    from gettext import gettext, ngettext
+  File "/usr/lib/python3.6/gettext.py", line 49, in <module>
+    import locale, copy, io, os, re, struct, sys
+  File "/usr/lib/python3.6/struct.py", line 13, in <module>
+    from _struct import *
+KeyboardInterrupt
+
+(firefox:2984): Gtk-WARNING **: 09:48:48.439: Theme parsing error: <data>:1:34: Expected ')' in color definition
+
+(firefox:2984): Gtk-WARNING **: 09:48:48.439: Theme parsing error: <data>:1:77: Expected ')' in color definition
