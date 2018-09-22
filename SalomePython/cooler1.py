@@ -19,7 +19,7 @@ counter = 0
 for each_face in geompy.SubShapeAllSortedCentres(cooler, geompy.ShapeType["FACE"]): 
     groups.append (geompy.CreateGroup(cooler, geompy.ShapeType["FACE"]))
     geompy.AddObject (groups[counter], geompy.GetSubShapeID(cooler, each_face))
-    geompy.addToStudyInFather (cooler, groups[counter], 'face_' + str(counter))
+    geompy.addToStudyInFather (cooler, groups[counter], 'face_' + str(counter+1))
     counter+=1
 
 
@@ -33,16 +33,4 @@ for geom_group in groups:
     mesh_group = cooler_mesh.CreateGroupFromGEOM(SMESH.FACE,geom_group.GetName(),geom_group)
 update_screen()
 
-
-#algo = smesh.Mesh_Algorithm()
-
-#Create(self, mesh, geom, hypo, so='libStdMeshersEngine.so') unbound smesh_algorithm.Mesh_Algorithm method
-# execute dir(smesh.CreateMesh()) to have more info
-
-
-
-#help (smesh.Mesh_Algorithm.Assign)
-#Help on method Assign in module smesh_algorithm:
-
-#Assign(self, algo, mesh, geom) unbound smesh_algorithm.Mesh_Algorithm method
 
