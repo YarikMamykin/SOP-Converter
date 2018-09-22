@@ -1,6 +1,6 @@
 import salome
 import geompy
-import smesh
+import smesh, SMESH
 
 def update_screen():
     if salome.sg.hasDesktop():
@@ -26,6 +26,23 @@ for each_face in geompy.SubShapeAllSortedCentres(cooler, geompy.ShapeType["FACE"
 update_screen()
 
 ## Mesh part ##
+smesh.SetCurrentStudy(salome.myStudy)
 cooler_mesh = smesh.CreateMesh(cooler)
-# execute dir(smesh.CreateMesh()) to have more info
+#update_screen()
+for geom_group in groups:
+    mesh_group = cooler_mesh.CreateGroupFromGEOM(SMESH.FACE,geom_group.GetName(),geom_group)
 update_screen()
+
+
+#algo = smesh.Mesh_Algorithm()
+
+#Create(self, mesh, geom, hypo, so='libStdMeshersEngine.so') unbound smesh_algorithm.Mesh_Algorithm method
+# execute dir(smesh.CreateMesh()) to have more info
+
+
+
+#help (smesh.Mesh_Algorithm.Assign)
+#Help on method Assign in module smesh_algorithm:
+
+#Assign(self, algo, mesh, geom) unbound smesh_algorithm.Mesh_Algorithm method
+
