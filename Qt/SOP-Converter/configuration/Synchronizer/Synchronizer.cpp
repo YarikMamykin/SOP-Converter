@@ -1,14 +1,14 @@
 #include "Synchronizer.h"
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
-#include "../../configuration/FileManager/FileManager.h"
+#include "../../management/FileManager/FileManager.h"
 #include "../../management/IcoFoamManager/IcoFoamManager.h"
 #include <QDebug>
 
 using Parser       = configuration::Parser;
 using ParserId     = configuration::Parser::ParserId;
 using LogManager   = logging::Logger;
-using FileManager  = configuration::FileManager;
+using FileManager  = management::FileManager;
 using IFoamManager = management::IcoFoamManager;
 
 
@@ -20,7 +20,7 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
 []() // p-file syncer
 {
     LogManager::getInstance()->log("file syncer p");
-    std::shared_ptr<QFile> file =FileManager::getInstance()->getSettingFile("p");
+    std::shared_ptr<QFile> file = FileManager::getInstance()->getSettingFile("p");
     if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
         file.get()->close();

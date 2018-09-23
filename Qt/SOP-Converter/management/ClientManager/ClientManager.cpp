@@ -1,12 +1,12 @@
 #include "ClientManager.h"
 #include "../../logging/Logger/Logger.h"
 #include "../../logging/Messanger/Messanger.h"
-#include "../../configuration/FileManager/FileManager.h"
+#include "../../management/FileManager/FileManager.h"
 #include "management/IcoFoamManager/IcoFoamManager.h"
 
 using LogManager = logging::Logger;
 using Messanger = logging::Messanger;
-using FManager = configuration::FileManager;
+using FManager = management::FileManager;
 using IcoFoam = management::IcoFoamManager;
 
 management::ClientManager::ClientManager() :
@@ -71,7 +71,7 @@ void management::ClientManager::selectWorkspace()
         {
             FManager::getInstance()->setPathToDir(FManager::getInstance()->getWorkDir(), selectDialog->selectedFiles()[0]);
         }
-        catch(configuration::FileManager::Exception& e)
+        catch(management::FileManager::Exception& e)
         {
             LogManager::getInstance()->log(e.what());
         }
@@ -90,7 +90,7 @@ void management::ClientManager::selectMeshFile()
         {
             FManager::getInstance()->setPathToFile(FManager::getInstance()->getMeshFile(), selectDialog->selectedFiles()[0]);
         }
-        catch(configuration::FileManager::Exception& e)
+        catch(management::FileManager::Exception& e)
         {
             LogManager::getInstance()->log(e.what());
         }
@@ -109,7 +109,7 @@ void management::ClientManager::selectProjectFile()
         {
             FManager::getInstance()->setPathToFile(FManager::getInstance()->getProjectFile(), selectDialog->selectedFiles()[0]);
         }
-        catch(configuration::FileManager::Exception& e)
+        catch(management::FileManager::Exception& e)
         {
             LogManager::getInstance()->log(e.what());
         }

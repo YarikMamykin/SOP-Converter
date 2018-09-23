@@ -1,8 +1,9 @@
 #include "OFCommandExecutor.h"
 #include "../../logging/Logger/Logger.h"
 #include "../../management/IcoFoamManager/IcoFoamManager.h"
-using LogManager = logging::Logger;
-using IcoFoam    = management::IcoFoamManager;
+using LogManager    = logging::Logger;
+using IcoFoam       = management::IcoFoamManager;
+using FileManager   = management::FileManager;
 
 configuration::OFCommandExecutor::OFCommandExecutor() :
     process(new QProcess),

@@ -14,12 +14,12 @@
 #include <cstdlib>
 #include "../../logging/Messanger/Messanger.h"
 #include "../../logging/Logger/Logger.h"
-#include "../ProjectFile/ProjectFile.h"
+#include "../../configuration/ProjectFile/ProjectFile.h"
 #include "../../general/general.h"
 #include "../../configuration/Parser/Parser.h"
 #include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
 
-namespace configuration
+namespace management
 {
 
 class FileManager final : public QObject
@@ -36,12 +36,12 @@ public:
     enum class ValidatePathsPoint { meshFile, workDir };
     class Exception;
 
-    static configuration::FileManager* getInstance();
+    static management::FileManager* getInstance();
 
     void setPathToFile(std::shared_ptr<QFile> file, const QString& path);
     void setPathToDir(std::shared_ptr<QDir> dir, const QString& path);
 
-    void validatePaths(configuration::FileManager::ValidatePathsPoint point);
+    void validatePaths(management::FileManager::ValidatePathsPoint point);
     bool validateZeroFolder();
     bool validateConstantFolder();
     bool validateConstantBackedUpFolder();

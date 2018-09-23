@@ -7,7 +7,7 @@
 #include "general/general.h"
 #include "logging/Logger/Logger.h"
 #include "logging/Messanger/Messanger.h"
-#include "configuration/FileManager/FileManager.h"
+#include "management/FileManager/FileManager.h"
 #include "configuration/ProjectFile/ProjectFile.h"
 #include "configuration/Parser/Parser.h"
 

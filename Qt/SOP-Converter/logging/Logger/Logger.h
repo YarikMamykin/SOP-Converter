@@ -2,7 +2,7 @@
 #define LOGGER_H
 
 #include <QObject>
-#include "../../configuration/FileManager/FileManager.h"
+#include "../../management/FileManager/FileManager.h"
 #include "../../logging/Messanger/Messanger.h"
 #include <QDateTime>
 #include <QStringList>

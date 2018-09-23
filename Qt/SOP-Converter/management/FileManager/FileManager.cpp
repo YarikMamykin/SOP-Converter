@@ -1,11 +1,12 @@
 #include "FileManager.h"
 #include <QTextStream>
 
-using LogManager = logging::Logger;
-using Message    = logging::Messanger;
-using Parser     = configuration::Parser;
+using LogManager        = logging::Logger;
+using Message           = logging::Messanger;
+using Parser            = configuration::Parser;
+using OFCommandExecutor = configuration::OFCommandExecutor;
 
-configuration::FileManager::FileManager(QWidget* parent) :
+management::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
     maxLogFilesCount(5),
     procExecutor(new QProcess),    
@@ -41,7 +42,7 @@ configuration::FileManager::FileManager(QWidget* parent) :
     logToFile("FileManager constructed");
 }
 
-configuration::FileManager::~FileManager()
+management::FileManager::~FileManager()
 {
     procExecutor->close();
     delete procExecutor;
@@ -54,13 +55,13 @@ configuration::FileManager::~FileManager()
     logToFile("FileManager destructed");    
 }
 
-configuration::FileManager* configuration::FileManager::getInstance()
+management::FileManager* management::FileManager::getInstance()
 {
-    static configuration::FileManager instance;
+    static management::FileManager instance;
     return &instance;
 }
 
-void configuration::FileManager::logToFile(const QString &log)
+void management::FileManager::logToFile(const QString &log)
 {    
     if(logFile->open(QIODevice::Append|QIODevice::Text))
     {
@@ -70,7 +71,7 @@ void configuration::FileManager::logToFile(const QString &log)
     } else {logging::Messanger::getInstance()->showMessage(QString("error opening file"));}    
 }
 
-void configuration::FileManager::createLogFile()
+void management::FileManager::createLogFile()
 {
     QDir logDir("/tmp");
     QStringList logList = logDir.entryList(QDir::Files);
@@ -108,7 +109,7 @@ void configuration::FileManager::createLogFile()
     logFile.get()->close();
 }
 
-bool configuration::FileManager::loadBackupFiles()
+bool management::FileManager::loadBackupFiles()
 {
     LogManager::getInstance()->log("Loading backup files");
     QStringList setDirs;
@@ -131,7 +132,7 @@ bool configuration::FileManager::loadBackupFiles()
         return false;
 }
 
-void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
+void management::FileManager::setPathToFile(std::shared_ptr<QFile> file, const QString& path)
 {
     if(file.get()->fileName() == path)
     { LogManager::getInstance()->log(QString("File %1 is already selected!").arg(path)); return; }
@@ -143,7 +144,7 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
             QStringList emessage;
             emessage << QString("Wrong file type of:");
             emessage << path;
-            throw(configuration::FileManager::Exception(emessage.join(" ")));
+            throw(management::FileManager::Exception(emessage.join(" ")));
         }
     }
 
@@ -154,7 +155,7 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
             QStringList emessage;
             emessage << QString("Wrong file type of:");
             emessage << path;
-            throw(configuration::FileManager::Exception(emessage.join(" ")));
+            throw(management::FileManager::Exception(emessage.join(" ")));
         }
     }
 
@@ -162,7 +163,7 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
     if(file.get()->exists())
     {
         LogManager::getInstance()->log(QString("File selected: ") + file.get()->fileName());
-        validatePaths(configuration::FileManager::ValidatePathsPoint::meshFile);
+        validatePaths(management::FileManager::ValidatePathsPoint::meshFile);
     }
     else
     {
@@ -171,11 +172,11 @@ void configuration::FileManager::setPathToFile(std::shared_ptr<QFile> file, cons
         emessage << QString("No");
         emessage << path;
         emessage << QString("file found");
-        throw(configuration::FileManager::Exception(emessage.join(" ")));
+        throw(management::FileManager::Exception(emessage.join(" ")));
     }
 }
 
-void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const QString& path)
+void management::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const QString& path)
 {
     if(dir.get()->path() != path) dir.get()->setPath(path);
     else { LogManager::getInstance()->log(QString("Dir %1 is already selected!").arg(path)); return;}
@@ -183,7 +184,7 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
     if(dir.get()->exists())
     {
         LogManager::getInstance()->log(QString("Dir selected: ") + dir.get()->path());
-        validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
+        validatePaths(management::FileManager::ValidatePathsPoint::workDir);
     }
     else
     {
@@ -191,26 +192,26 @@ void configuration::FileManager::setPathToDir(std::shared_ptr<QDir> dir, const Q
         emessage << QString("No");
         emessage << path;
         emessage << QString("directory found");
-        throw(configuration::FileManager::Exception(emessage.join(" ")));
+        throw(management::FileManager::Exception(emessage.join(" ")));
     }
 }
 
-std::shared_ptr<QFile> configuration::FileManager::getLogFile()
+std::shared_ptr<QFile> management::FileManager::getLogFile()
 {return logFile;}
-std::shared_ptr<QFile> configuration::FileManager::getIcoFoamLogFile()
+std::shared_ptr<QFile> management::FileManager::getIcoFoamLogFile()
 {return icoFoamLogFile;}
-std::shared_ptr<QFile> configuration::FileManager::getProjectFile()
+std::shared_ptr<QFile> management::FileManager::getProjectFile()
 {return projectFile;}
-std::shared_ptr<QFile> configuration::FileManager::getMeshFile()
+std::shared_ptr<QFile> management::FileManager::getMeshFile()
 {return meshFile;}
-std::shared_ptr<QDir> configuration::FileManager::getWorkDir()
+std::shared_ptr<QDir> management::FileManager::getWorkDir()
 {return workDir;}
-std::shared_ptr<QDir> configuration::FileManager::getBackupDir()
+std::shared_ptr<QDir> management::FileManager::getBackupDir()
 {return backupDir;}
-std::shared_ptr<QFile> configuration::FileManager::getSettingFile(const QString& filename)
+std::shared_ptr<QFile> management::FileManager::getSettingFile(const QString& filename)
 {return settingFiles.find(filename)->second;}
 
-QStringList configuration::FileManager::getListOfSettingFiles()
+QStringList management::FileManager::getListOfSettingFiles()
 {
     QStringList result;
     for(auto e : settingFiles)
@@ -220,7 +221,7 @@ QStringList configuration::FileManager::getListOfSettingFiles()
     return result;
 }
 
-void configuration::FileManager::saveProjectFile(const configuration::ProjectFile& pfile)
+void management::FileManager::saveProjectFile(const configuration::ProjectFile& pfile)
 {
     if(projectFile.get()->open(QIODevice::WriteOnly))
     {
@@ -229,13 +230,13 @@ void configuration::FileManager::saveProjectFile(const configuration::ProjectFil
     }
 }
 
-void configuration::FileManager::validatePaths(configuration::FileManager::ValidatePathsPoint point)
+void management::FileManager::validatePaths(management::FileManager::ValidatePathsPoint point)
 {
     LogManager::getInstance()->log(QString("validating paths..."));
     switch(point)
     {
 //        if(workDir.get()->path() != QString(".")) // by default QDir path is set to "."
-        case configuration::FileManager::ValidatePathsPoint::workDir:
+        case management::FileManager::ValidatePathsPoint::workDir:
         {            
             if(workDir.get()->path().isEmpty()) return;
             QStringList workDirEntryD = workDir.get()->entryList(QDir::Dirs);
@@ -310,23 +311,23 @@ void configuration::FileManager::validatePaths(configuration::FileManager::Valid
                 result.clear();
                 delete executor;
 
-                validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
+                validatePaths(management::FileManager::ValidatePathsPoint::workDir);
             }
         }break;
 
-        case configuration::FileManager::ValidatePathsPoint::meshFile:
+        case management::FileManager::ValidatePathsPoint::meshFile:
         {
             QString rootDir = QFileInfo(meshFile.get()->fileName()).absoluteDir().path();
             LogManager::getInstance()->log(meshFile.get()->fileName());
             LogManager::getInstance()->log(QString("root dir = ") + rootDir);
 
             workDir.get()->setPath(rootDir);
-            validatePaths(configuration::FileManager::ValidatePathsPoint::workDir);
+            validatePaths(management::FileManager::ValidatePathsPoint::workDir);
         }break;
     }
 }
 
-bool configuration::FileManager::validateZeroFolder()
+bool management::FileManager::validateZeroFolder()
 {
     QDir zeroFolder(workDir.get()->path() + QString("/0"));
     if(!zeroFolder.exists()) return false;
@@ -343,7 +344,7 @@ bool configuration::FileManager::validateZeroFolder()
     return true;
 }
 
-bool configuration::FileManager::validateConstantFolder()
+bool management::FileManager::validateConstantFolder()
 {
     QDir constantFolder(workDir.get()->path() + QString("/constant"));
     if(!constantFolder.exists()) return false;
@@ -371,7 +372,7 @@ bool configuration::FileManager::validateConstantFolder()
     return true;
 }
 
-bool configuration::FileManager::validateConstantBackedUpFolder()
+bool management::FileManager::validateConstantBackedUpFolder()
 {
     QDir constantFolder(workDir.get()->path() + QString("/constant"));
     if(!constantFolder.exists()) return false;
@@ -399,7 +400,7 @@ bool configuration::FileManager::validateConstantBackedUpFolder()
     return true;
 }
 
-bool configuration::FileManager::validateSystemFolder()
+bool management::FileManager::validateSystemFolder()
 {
     QDir systemFolder(workDir.get()->path() + QString("/system"));
     if(!systemFolder.exists()) return false;

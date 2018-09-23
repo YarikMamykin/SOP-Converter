@@ -1,12 +1,12 @@
 #include "Parser.h"
 
 #include "../../logging/Logger/Logger.h"
-#include "../../configuration/FileManager/FileManager.h"
+#include "../../management/FileManager/FileManager.h"
 #include "../../configuration/Synchronizer/Synchronizer.h"
 #include "../../management/IcoFoamManager/IcoFoamManager.h"
 
 using LogManager = logging::Logger;
-using FileManager = configuration::FileManager;
+using FileManager = management::FileManager;
 
 // static parsing flags
 std::vector<bool> configuration::Parser::parserFlags(5);
@@ -635,11 +635,11 @@ QString configuration::Parser::parserIdToString(const ParserId& id)
 
 ParserId configuration::Parser::matchParserIdToFile(std::shared_ptr<QFile> file)
 {
-    if(file == configuration::FileManager::getInstance()->getSettingFile("p"))                   return ParserId::p;
-    if(file == configuration::FileManager::getInstance()->getSettingFile("U"))                   return ParserId::U;
-    if(file == configuration::FileManager::getInstance()->getSettingFile("boundary"))            return ParserId::boundary;
-    if(file == configuration::FileManager::getInstance()->getSettingFile("controlDict"))         return ParserId::controlDict;
-    if(file == configuration::FileManager::getInstance()->getSettingFile("transportProperties")) return ParserId::transportProperties;
+    if(file == management::FileManager::getInstance()->getSettingFile("p"))                   return ParserId::p;
+    if(file == management::FileManager::getInstance()->getSettingFile("U"))                   return ParserId::U;
+    if(file == management::FileManager::getInstance()->getSettingFile("boundary"))            return ParserId::boundary;
+    if(file == management::FileManager::getInstance()->getSettingFile("controlDict"))         return ParserId::controlDict;
+    if(file == management::FileManager::getInstance()->getSettingFile("transportProperties")) return ParserId::transportProperties;
 }
 
 std::shared_ptr<QFile> configuration::Parser::matchFileToParserId(ParserId id)
@@ -647,19 +647,19 @@ std::shared_ptr<QFile> configuration::Parser::matchFileToParserId(ParserId id)
     switch(id)
     {
         case ParserId::p:
-            return configuration::FileManager::getInstance()->getSettingFile("p");
+            return management::FileManager::getInstance()->getSettingFile("p");
         break;
         case ParserId::U:
-            return configuration::FileManager::getInstance()->getSettingFile("U");
+            return management::FileManager::getInstance()->getSettingFile("U");
         break;
         case ParserId::boundary:
-            return configuration::FileManager::getInstance()->getSettingFile("boundary");
+            return management::FileManager::getInstance()->getSettingFile("boundary");
         break;
         case ParserId::controlDict:
-            return configuration::FileManager::getInstance()->getSettingFile("controlDict");
+            return management::FileManager::getInstance()->getSettingFile("controlDict");
         break;
         case ParserId::transportProperties:
-            return configuration::FileManager::getInstance()->getSettingFile("transportProperties");
+            return management::FileManager::getInstance()->getSettingFile("transportProperties");
         break;
         default: return nullptr;
     }

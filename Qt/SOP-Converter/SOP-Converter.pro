@@ -25,7 +25,7 @@ SOURCES += main.cpp\
     Ui/Buttons/ButtonsGroup.cpp \
     Ui/Console/ConsoleAndButtonsGroup.cpp \
     Ui/Tables/TableAndEtcGroup.cpp \
-    configuration/FileManager/FileManager.cpp \
+    management/FileManager/FileManager.cpp \
     configuration/ProjectFile/ProjectFile.cpp \
     general/general.cpp \
     configuration/OFCommandExecutor/OFCommandExecutor.cpp \
@@ -46,7 +46,7 @@ HEADERS  += MainWindow.h \
     Ui/Buttons/ButtonsGroup.h \
     Ui/Console/ConsoleAndButtonsGroup.h \
     Ui/Tables/TableAndEtcGroup.h \
-    configuration/FileManager/FileManager.h \
+    management/FileManager/FileManager.h \
     configuration/ProjectFile/ProjectFile.h \    
     general/general.h \
     configuration/OFCommandExecutor/OFCommandExecutor.h \

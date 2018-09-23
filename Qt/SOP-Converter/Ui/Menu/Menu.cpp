@@ -1,6 +1,6 @@
 #include "Menu.h"
-#include "../../configuration/FileManager/FileManager.h"
-using FileManager = configuration::FileManager;
+#include "../../management/FileManager/FileManager.h"
+using FileManager = management::FileManager;
 
 /* ---------------------------------------------------------------------- */
 /* -- Menu -- */
@@ -65,7 +65,7 @@ void Ui::Menu::openProjectFile()
 
 void Ui::Menu::reloadWorkspace()
 {
-    using ValidPoint = configuration::FileManager::ValidatePathsPoint;
+    using ValidPoint = management::FileManager::ValidatePathsPoint;
     FileManager::getInstance()->validatePaths(ValidPoint::workDir);
 }
 

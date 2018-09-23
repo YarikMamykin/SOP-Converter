@@ -8,7 +8,7 @@ logging::Logger::Logger() :
     dateTimeFormat("yyyy-dd-MM hh:mm:ss.zzz"),
     logFileLocker()
 {
-    logFile = configuration::FileManager::getInstance()->getLogFile();
+    logFile = management::FileManager::getInstance()->getLogFile();
     QObject::connect(this,
                      SIGNAL(logToFile(const QString&)),
                      SLOT(writeLogToFile(const QString&)), Qt::DirectConnection);

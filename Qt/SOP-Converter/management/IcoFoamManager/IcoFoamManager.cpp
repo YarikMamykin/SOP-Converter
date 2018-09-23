@@ -1,7 +1,7 @@
 #include "IcoFoamManager.h"
 #include "../../general/general.h"
 #include <QDebug>
-using FileManager = configuration::FileManager;
+using FileManager = management::FileManager;
 using Parser = configuration::Parser;
 using LogManager = logging::Logger;
 using LogDirection = logging::LogDirection;
