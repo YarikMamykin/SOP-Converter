@@ -467,9 +467,7 @@ void configuration::Parser::resetFlags()
 void configuration::Parser::syncFiles()
 {
     management::IcoFoamManager::getInstance()->clearFlags();
-    if( maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::p)].get()->size()
-            ||
-        maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::U)].get()->size())
+    if(!checkMaps())
     {
         for(auto e : *maps[static_cast<int>(ParserId::p)].get()) { delete e; }
         for(auto e : *maps[static_cast<int>(ParserId::U)].get()) { delete e; }
@@ -489,15 +487,32 @@ void configuration::Parser::syncFiles()
     LogManager::getInstance()->log("Start synchronize");
     SyncerThread sthreadP(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::p), static_cast<int>(ParserId::p)));
     SyncerThread sthreadU(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::U), static_cast<int>(ParserId::U)));
-//    SyncerThread sthreadB(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::boundary), static_cast<int>(ParserId::boundary)));
-//    SyncerThread sthreadC(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::controlDict), static_cast<int>(ParserId::controlDict)));
-//    SyncerThread sthreadT(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::transportProperties), static_cast<int>(ParserId::transportProperties)));
     emit sthreadP.start();
     emit sthreadU.start();
-//    emit sthreadB.start();
-//    emit sthreadC.start();
-//    emit sthreadT.start();
+
     LogManager::getInstance()->log("End synchronize");
+}
+
+bool configuration::Parser::checkMaps()
+{
+    if( maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::p)].get()->size()
+            ||
+        maps[static_cast<int>(ParserId::boundary)].get()->size() != maps[static_cast<int>(ParserId::U)].get()->size())
+    {
+        return false;
+    }
+    else
+    {
+        for(auto piter = maps[static_cast<int>(ParserId::p)].get()->begin(), biter = maps[static_cast<int>(ParserId::boundary)].get()->begin();
+            (biter != maps[static_cast<int>(ParserId::boundary)].get()->end() && piter != maps[static_cast<int>(ParserId::boundary)].get()->end()); piter++, biter++)
+        {
+            if((*piter) -> first != (*biter) -> first)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 void configuration::Parser::syncFile(std::shared_ptr<QFile> file)

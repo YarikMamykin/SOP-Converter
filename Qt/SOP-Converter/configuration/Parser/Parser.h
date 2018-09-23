@@ -58,7 +58,8 @@ private slots:
 
     void collectResults();
     void resetFlags();
-    void syncFiles();    
+    void syncFiles();
+    bool checkMaps();
 private:
     static std::vector<bool> parserFlags; // indicates only that parsing has been completed!
     static unsigned char counter; // counts ended parsing operations
