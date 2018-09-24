@@ -4,8 +4,11 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <memory>
+#include <QProcess>
 #include "Buttons.h"
 #include "../../management/ClientManager/ClientManager.h"
+#include "../../management/FileManager/FileManager.h"
+
 
 namespace Ui
 {
@@ -23,7 +26,7 @@ public:
 
 private: // Buttons in group
     Ui::Button* startCalculation;
-    Ui::Button* resetSettings;
+    Ui::Button* launchParaview;
     Ui::Button* stopCalculation;
     Ui::Button* clearConsole;
     QVBoxLayout* layout;

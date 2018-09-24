@@ -104,7 +104,17 @@ void management::IcoFoamManager::removeTempDirs()
     QDir dirbuf;
     for(auto e : wentry)
     {
-        if(e != "0" && e != "constant" && e != "system")
+        if( (e[0] == '0' && e[1] == '.') ||
+            e[0] == '1' ||
+            e[0] == '2' ||
+            e[0] == '3' ||
+            e[0] == '4' ||
+            e[0] == '5' ||
+            e[0] == '6' ||
+            e[0] == '7' ||
+            e[0] == '8' ||
+            e[0] == '9'
+          )
         {
             dirbuf.setPath(workdir.get()->path() + QString("/") + e);
             LogManager::getInstance()->log(QString("Removing %1 --> %2").arg(e).arg(boolToString(dirbuf.removeRecursively())));
@@ -122,7 +132,6 @@ void management::IcoFoamManager::doProcessStandartOut()
     this->blockSignals(true);
     removeTempDirs();
     LogManager::getInstance()->log("doProcessStandartOut\n\nEstablishing connection to file icoFoam.log ...");
-
 
     QThread* executorThread = new QThread;
     QThread* processorThread = new QThread;
@@ -156,7 +165,7 @@ void management::IcoFoamManager::doProcessStandartOut()
     {
         this->blockSignals(true);
 
-        LogManager::getInstance()->log("Stopping icoFoam");
+        LogManager::getInstance()->log("Stopping icoFoam");        
         executor->kill();
         executor->waitForFinished(1500);
         executorThread->quit();

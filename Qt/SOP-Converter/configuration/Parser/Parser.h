@@ -26,8 +26,8 @@ public:
     { p, U, boundary, controlDict, transportProperties };
 
     static configuration::Parser* getInstance();
-    static bool parseIdeasUnvToFoamLog(const QString& result);
-    static bool parseTransformPointsLog(const QString& result);
+    static bool parseIdeasUnvToFoamLog(std::unique_ptr<QString> result);
+    static bool parseTransformPointsLog(std::unique_ptr<QString> result);
     std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> getParserMap(const ParserId&);
     static QString parserIdToString(const ParserId& id);
     static ParserId matchParserIdToFile(std::shared_ptr<QFile> file);

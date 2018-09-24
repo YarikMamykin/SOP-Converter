@@ -37,7 +37,7 @@ signals:
     void logToFile(const QString& log);
 public:
     static logging::Logger* getInstance();
-    bool log(const QString& log,
+    void log(const QString& log,
              const logging::LogDirection& direction = logging::LogDirection::fileAndConsole);
 private:    
     QStringList fullLog;

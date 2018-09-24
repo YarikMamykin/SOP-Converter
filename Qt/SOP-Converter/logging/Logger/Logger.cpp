@@ -49,7 +49,7 @@ void logging::Logger::writeLogToFile(const QString &log)
     logFileLocker.unlock();
 }
 
-bool logging::Logger::log(const QString& log, const logging::LogDirection& direction)
+void logging::Logger::log(const QString& log, const logging::LogDirection& direction)
 {
     if(direction == logging::LogDirection::file)
     {
@@ -63,7 +63,5 @@ bool logging::Logger::log(const QString& log, const logging::LogDirection& direc
     {
         emit getInstance()->logToFile(formatLog(log));
         emit getInstance()->logToConsole(QString("-> ") + log);
-    }
-
-    return true;
+    }    
 }

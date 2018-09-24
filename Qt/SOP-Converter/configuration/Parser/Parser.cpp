@@ -598,14 +598,19 @@ std::string configuration::Parser::formatNode(const std::string& name, const std
 std::shared_ptr<QMutex> configuration::Parser::getFormatNodeLocker()
 { return formatNodeLocker; }
 
-bool configuration::Parser::parseIdeasUnvToFoamLog(const QString& result)
+bool configuration::Parser::parseIdeasUnvToFoamLog(std::unique_ptr<QString> result)
 {
-    QStringList iufres = result.split("\n");
-    iufres.removeAll(QString(""));
-    if(iufres[iufres.size() - 1] != QString("End"))
-        return false;
-    else
-        return true;
+    QStringList splittedResult = result->split("\n");
+    splittedResult.removeAll(QString(""));
+    result.release();
+
+    for(auto i = splittedResult.size() - 1; i >= 0; i--)
+    {
+        if(splittedResult[i] == QString("End"))
+            return true;
+    }
+
+    return false;
 }
 
 int configuration::Parser::getMapsCount()
@@ -613,14 +618,19 @@ int configuration::Parser::getMapsCount()
     return this->maps.size();
 }
 
-bool configuration::Parser::parseTransformPointsLog(const QString& result)
+bool configuration::Parser::parseTransformPointsLog(std::unique_ptr<QString> result)
 {
-    QStringList tplres = result.split("\n");
-    tplres.removeAll(QString(""));
-    if(tplres[tplres.size() - 1] != QString("Writing points into directory \"%1\"").arg(FileManager::getInstance()->getWorkDir().get()->path()+QString("/constant/polyMesh")))
-        return false;
-    else
-        return true;
+    QStringList splittedResult = result->split("\n");
+    splittedResult.removeAll(QString(""));
+    result.release();
+
+    for(auto i = splittedResult.size() - 1; i >= 0; i--)
+    {
+        if(splittedResult[i] == QString("Writing points into directory \"%1\"").arg(FileManager::getInstance()->getWorkDir().get()->path()+QString("/constant/polyMesh")))
+            return true;
+    }
+
+    return false;
 }
 
 std::shared_ptr<std::vector<std::pair<std::string, std::string>*>> configuration::Parser::getParserMap(const ParserId& id)

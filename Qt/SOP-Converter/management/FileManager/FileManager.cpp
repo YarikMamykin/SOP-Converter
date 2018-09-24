@@ -4,7 +4,7 @@
 using LogManager        = logging::Logger;
 using Message           = logging::Messanger;
 using Parser            = configuration::Parser;
-using OFCommandExecutor = configuration::OFCommandExecutor;
+using CommandExecutor = configuration::CommandExecutor;
 
 management::FileManager::FileManager(QWidget* parent) :
     QObject(parent),
@@ -12,6 +12,8 @@ management::FileManager::FileManager(QWidget* parent) :
     procExecutor(new QProcess),    
     logFile(std::make_shared<QFile>()),
     icoFoamLogFile(std::make_shared<QFile>()),
+    ideasUnvToFoamLogFile(std::make_shared<QFile>()),
+    transformPointsLogFile(std::make_shared<QFile>()),
     backupDir(std::make_shared<QDir>("/opt/openfoam211/tutorials/incompressible/icoFoam/cavity")),
     zeroFolderEntryValid(new QStringList),
     polyMeshFolderEntryValid(new QStringList),
@@ -200,6 +202,10 @@ std::shared_ptr<QFile> management::FileManager::getLogFile()
 {return logFile;}
 std::shared_ptr<QFile> management::FileManager::getIcoFoamLogFile()
 {return icoFoamLogFile;}
+std::shared_ptr<QFile> management::FileManager::getIdeasUnvToFoamLogFile()
+{return ideasUnvToFoamLogFile;}
+std::shared_ptr<QFile> management::FileManager::getTransformPointsLogFile()
+{return transformPointsLogFile;}
 std::shared_ptr<QFile> management::FileManager::getProjectFile()
 {return projectFile;}
 std::shared_ptr<QFile> management::FileManager::getMeshFile()
@@ -283,37 +289,39 @@ void management::FileManager::validatePaths(management::FileManager::ValidatePat
             }
             else if(!meshFile.get()->fileName().isEmpty())
             {
-                LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));
-
-                // --------------------------------------------- //
+                LogManager::getInstance()->log(QString("Loading backup files --> ") + boolToString(loadBackupFiles()));                
+                ideasUnvToFoamLogFile.get()->setFileName(workDir.get()->path() + QString("/ideasUnvToFoam.log"));
+                transformPointsLogFile.get()->setFileName(workDir.get()->path() + QString("/transformPoints.log"));
 
                 /* Execute and check ideasUnvToFoam conversion */
+
                 QStringList command;
                 command << "ideasUnvToFoam" << QString(QFileInfo(*meshFile.get()).fileName());
-                LogManager::getInstance()->log(QString("Executing ") + command.join(" "));
 
-                OFCommandExecutor* executor = new OFCommandExecutor(command, workDir);
-                QString result(executor->execute());
-                LogManager::getInstance()->log(QString("Parsing ideasUnvToFoamLog --> ") + boolToString(Parser::parseIdeasUnvToFoamLog(result)));
+                CommandExecutor* executor = new CommandExecutor(command, workDir, ideasUnvToFoamLogFile);
+                executor->setTimeout(60000);
+                executor->execute();
+                bool convertionResult = Parser::parseIdeasUnvToFoamLog(executor->getOutput());
+                LogManager::getInstance()->log(QString("Parsing ideasUnvToFoamLog --> ") + boolToString(convertionResult));
 
-                // --------------------------------------------- //
 
                 /* Execute and check transformPoints operation */
-                command.clear();
-                result.clear();
 
-                command << "transformPoints" << "-scale" << "(0.001 0.001 0.001)";
+                command.clear();
+                command << "transformPoints" << "-scale" << "\"(0.001 0.001 0.001)\"";
+
                 executor->setCommand(command);
-                result = executor->execute();
-                LogManager::getInstance()->log(QString("Parsing transformPoints.log --> ") + boolToString(Parser::parseTransformPointsLog(result)));
-
+                executor->setFile(transformPointsLogFile);
+                executor->execute();
+                convertionResult = convertionResult && Parser::parseTransformPointsLog(executor->getOutput());
+                LogManager::getInstance()->log(QString("Parsing transformPoints.log --> ") + boolToString(convertionResult));
                 command.clear();
-                result.clear();
                 delete executor;
 
-                validatePaths(management::FileManager::ValidatePathsPoint::workDir);
+                convertionResult ? validatePaths(management::FileManager::ValidatePathsPoint::workDir) :
+                                   LogManager::getInstance()->log("Error in converting files to OpenFOAM format!");
             }
-        }break;
+        } break;
 
         case management::FileManager::ValidatePathsPoint::meshFile:
         {

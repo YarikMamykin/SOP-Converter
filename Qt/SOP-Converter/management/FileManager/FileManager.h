@@ -17,7 +17,7 @@
 #include "../../configuration/ProjectFile/ProjectFile.h"
 #include "../../general/general.h"
 #include "../../configuration/Parser/Parser.h"
-#include "../../configuration/OFCommandExecutor/OFCommandExecutor.h"
+#include "../../configuration/CommandExecutor/CommandExecutor.h"
 
 namespace management
 {
@@ -49,6 +49,8 @@ public:
 
     std::shared_ptr<QFile> getLogFile();
     std::shared_ptr<QFile> getIcoFoamLogFile();
+    std::shared_ptr<QFile> getIdeasUnvToFoamLogFile();
+    std::shared_ptr<QFile> getTransformPointsLogFile();
     std::shared_ptr<QFile> getProjectFile();
     std::shared_ptr<QFile> getMeshFile();
     std::shared_ptr<QDir> getWorkDir();
@@ -63,6 +65,8 @@ private:
     QProcess* procExecutor;    
     std::shared_ptr<QFile> logFile;
     std::shared_ptr<QFile> icoFoamLogFile;
+    std::shared_ptr<QFile> ideasUnvToFoamLogFile;
+    std::shared_ptr<QFile> transformPointsLogFile;
     std::shared_ptr<QDir> backupDir;
     QStringList* zeroFolderEntryValid;
     QStringList* polyMeshFolderEntryValid;

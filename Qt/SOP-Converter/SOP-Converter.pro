@@ -28,7 +28,7 @@ SOURCES += main.cpp\
     management/FileManager/FileManager.cpp \
     configuration/ProjectFile/ProjectFile.cpp \
     general/general.cpp \
-    configuration/OFCommandExecutor/OFCommandExecutor.cpp \
+    configuration/CommandExecutor/CommandExecutor.cpp \
     Ui/TransportPropertiesField/TransportPropertiesField.cpp \
     configuration/Synchronizer/Synchronizer.cpp \    
     management/ClientManager/ClientManager.cpp \
@@ -49,7 +49,7 @@ HEADERS  += MainWindow.h \
     management/FileManager/FileManager.h \
     configuration/ProjectFile/ProjectFile.h \    
     general/general.h \
-    configuration/OFCommandExecutor/OFCommandExecutor.h \
+    configuration/CommandExecutor/CommandExecutor.h \
     Ui/TransportPropertiesField/TransportPropertiesField.h \
     configuration/Synchronizer/Synchronizer.h \    
     management/ClientManager/ClientManager.h \
