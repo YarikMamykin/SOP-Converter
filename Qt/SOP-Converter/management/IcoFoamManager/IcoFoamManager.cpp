@@ -100,9 +100,9 @@ void management::IcoFoamManager::removeTempDirs()
 {
     LogManager::getInstance()->log("removing old temporary dirs");
     auto workdir = FileManager::getInstance()->getWorkDir();
-    QStringList wentry(workdir.get()->entryList(QDir::AllDirs | QDir::NoDotAndDotDot));
+    QStringList* wentry = new QStringList(workdir.get()->entryList(QDir::AllDirs | QDir::NoDotAndDotDot));
     QDir dirbuf;
-    for(auto e : wentry)
+    for(auto e : *wentry)
     {
         if( (e[0] == '0' && e[1] == '.') ||
             e[0] == '1' ||
@@ -120,6 +120,7 @@ void management::IcoFoamManager::removeTempDirs()
             LogManager::getInstance()->log(QString("Removing %1 --> %2").arg(e).arg(boolToString(dirbuf.removeRecursively())));
         }
     }
+    delete wentry;
 }
 
 QMetaObject::Connection& management::IcoFoamManager::getStopExecutionConn()
@@ -164,12 +165,13 @@ void management::IcoFoamManager::doProcessStandartOut()
     stopExecutionConn = QObject::connect(this, &IcoFoamManager::stopExecution, [executor, executorThread, this]()
     {
         this->blockSignals(true);
+        int pid = executor->pid();
 
-        LogManager::getInstance()->log("Stopping icoFoam");        
+        LogManager::getInstance()->log(QString("Stopping icoFoam (%1)").arg(pid), LogDirection::file);
         executor->kill();
         executor->waitForFinished(1500);
         executorThread->quit();
-        QProcess::execute("killall icoFoam");
+        QProcess::execute(QString("kill -9 %1").arg(pid));
         LogManager::getInstance()->log("icoFoam process killed!");
         QObject::disconnect(this->getStopExecutionConn());
 

@@ -578,9 +578,9 @@ std::string configuration::Parser::formatNode(const std::string& name, const std
     std::string type("");
     std::string value("");
 
-    if(buffer.contains("fixedValue"))
+    if(buffer.split(" ").size() > 1)
     {
-        type = bigtab + std::string("fixedValue");
+        type = bigtab + buffer.split(" ")[0].toStdString();
         if(buffer.contains("("))
             value.append(buffer.toStdString().substr(buffer.indexOf('('), buffer.indexOf(')') - buffer.indexOf('(') + 1));
         else
