@@ -17,66 +17,64 @@ FoamFile
 
 10
 (
-    outlet_pipe
-    {
-        type            wall;
-        nFaces          384;
-        startFace       54199;
-    }
-    back
-    {
-        type            wall;
-        nFaces          1548;
-        startFace       54583;
-    }
     inlet
     {
         type            patch;
-        nFaces          64;
-        startFace       56131;
+        nFaces          307;
+        startFace       148318;
     }
-    outlet
-    {
-        type            patch;
-        nFaces          64;
-        startFace       56195;
-    }
-    front
+    inpipe
     {
         type            wall;
-        nFaces          4026;
-        startFace       56259;
+        nFaces          1930;
+        startFace       148625;
     }
-    in_plane
+    forward
     {
         type            wall;
-        nFaces          364;
-        startFace       60285;
-    }
-    out_plane
-    {
-        type            wall;
-        nFaces          364;
-        startFace       60649;
+        nFaces          1537;
+        startFace       150555;
     }
     top
     {
         type            wall;
-        nFaces          288;
-        startFace       61013;
+        nFaces          1490;
+        startFace       152092;
+    }
+    outpipe
+    {
+        type            wall;
+        nFaces          1930;
+        startFace       153582;
+    }
+    right
+    {
+        type            wall;
+        nFaces          1772;
+        startFace       155512;
+    }
+    left
+    {
+        type            wall;
+        nFaces          1772;
+        startFace       157284;
     }
     bottom
     {
         type            wall;
-        nFaces          288;
-        startFace       61301;
+        nFaces          1490;
+        startFace       159056;
     }
-    inlet_pipe
+    back
     {
         type            wall;
-        nFaces          384;
-        startFace       61589;
+        nFaces          1537;
+        startFace       160546;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          307;
+        startFace       162083;
     }
 )
-
-// ************************************************************************* //
