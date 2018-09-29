@@ -1,0 +1,88 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 2.1.1-221db2718bbb
+Exec   : ideasUnvToFoam Mesh_1.unv
+Date   : Sep 27 2018
+Time   : 21:05:15
+Host   : "yarik-VirtualBox"
+PID    : 15266
+Case   : /home/yarik/Documents/diploma/lab3
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster
+allowSystemOperations : Disallowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Processing tag:164
+Starting reading units at line 3.
+l:1
+units:"  SI: Meter (newton)"
+unitType:2
+Unit factors:
+    Length scale       : 1
+    Force scale        : 1
+    Temperature scale  : 1
+    Temperature offset : 273.15
+
+
+Processing tag:2420
+Skipping tag 2420 on line 9
+Skipping section at line 9.
+
+Processing tag:2411
+Starting reading points at line 20.
+Read 14387 points.
+
+Processing tag:2412
+Starting reading cells at line 28797.
+First occurrence of element type 11 for cell 1 at line 28798
+First occurrence of element type 41 for cell 497 at line 30286
+First occurrence of element type 111 for cell 14903 at line 59098
+Read 62409 cells and 14406 boundary faces.
+
+Processing tag:2467
+Starting reading patches at line 183918.
+For group 1 named inlet trying to read 307 patch face indices.
+For group 2 named inpipe trying to read 1822 patch face indices.
+For group 3 named outlet trying to read 307 patch face indices.
+For group 4 named outpipe trying to read 1822 patch face indices.
+For group 5 named top trying to read 2502 patch face indices.
+For group 6 named right trying to read 1712 patch face indices.
+For group 7 named back trying to read 1206 patch face indices.
+For group 8 named forward trying to read 1206 patch face indices.
+For group 9 named left trying to read 1712 patch face indices.
+For group 10 named bottom trying to read 1810 patch face indices.
+
+Sorting boundary faces according to group (patch)
+0: inlet is patch
+1: inpipe is patch
+2: outlet is patch
+3: outpipe is patch
+4: top is patch
+5: right is patch
+6: back is patch
+7: forward is patch
+8: left is patch
+9: bottom is patch
+
+Constructing mesh with non-default patches of size:
+    inlet	307
+    inpipe	1822
+    outlet	307
+    outpipe	1822
+    top	2502
+    right	1712
+    back	1206
+    forward	1206
+    left	1712
+    bottom	1810
+
+End
+

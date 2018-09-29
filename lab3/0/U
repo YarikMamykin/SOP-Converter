@@ -20,54 +20,53 @@ internalField   uniform (0 0 0);
 
 boundaryField
 {
-    left
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
-    right
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
-    back
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
-    bottom
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
-    inlet_pipe
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
-    outlet_pipe
-    {
-        type            fixedValue;
-	value		uniform (0 0 0);
-    }
     inlet
     {
-        type            fixedValue;
-	value		uniform (0 0 0.01);
+        type        fixedValue;
+        value        uniform (0 -0.05 0);
+    }
+    inpipe
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
     }
     outlet
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
-    front
+    outpipe
     {
-        type            zeroGradient;
+        type        fixedValue;
+        value        uniform (0 0 0);
     }
     top
     {
-        type            fixedValue;
-	value		uniform (0 0 0);
+        type        fixedValue;
+        value        uniform (0 0 0);
+    }
+    right
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
+    }
+    back
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
+    }
+    forward
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
+    }
+    left
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
+    }
+    bottom
+    {
+        type        fixedValue;
+        value        uniform (0 0 0);
     }
 }
-
-// ************************************************************************* //
