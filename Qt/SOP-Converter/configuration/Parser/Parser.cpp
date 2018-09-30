@@ -66,15 +66,20 @@ void configuration::Parser::ParseAll()
     parserThreads.append(new configuration::ParserThread(Parser::ParserId::controlDict));
     parserThreads.append(new configuration::ParserThread(Parser::ParserId::transportProperties));
 
-    for(auto e : parserThreads) { e->start(); }
-
     LogManager::getInstance()->log("Threads started!");
 
-    for(auto e : parserThreads)
+    for(auto e : parserThreads) // temporary fix of Parser crash. Need to investigate and return to multithreading!
     {
+        e->start();
         e->wait();
         delete e;
     }
+
+//    for(auto e : parserThreads)
+//    {
+//        e->wait();
+//        delete e;
+//    }
 
     parserThreads.clear();
 
