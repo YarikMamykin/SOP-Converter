@@ -68,18 +68,17 @@ void configuration::Parser::ParseAll()
 
     LogManager::getInstance()->log("Threads started!");
 
-    for(auto e : parserThreads) // temporary fix of Parser crash. Need to investigate and return to multithreading!
+    for(auto e : parserThreads)
     {
         e->start();
+        QThread::msleep(10); // need this pause to retreive shared_ptr on setting file from FileManager instance!
+    }
+
+    for(auto e : parserThreads)
+    {
         e->wait();
         delete e;
     }
-
-//    for(auto e : parserThreads)
-//    {
-//        e->wait();
-//        delete e;
-//    }
 
     parserThreads.clear();
 

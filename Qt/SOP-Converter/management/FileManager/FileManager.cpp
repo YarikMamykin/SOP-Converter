@@ -258,8 +258,7 @@ void management::FileManager::validatePaths(management::FileManager::ValidatePat
                 return;
             }
             else if(workDirEntryF.size() > 1)
-            {
-                // if one or more mesh file --> select first-trapped in entry list
+            {                
                 QStringList message;
                 message << QString("WARNING! Multiple mesh files are present in workspace --> %1 :").arg(workDir.get()->path());
                 message << workDirEntryF.join("\n");

@@ -272,6 +272,7 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
                                   arg(boolToString(res)));
     IFoamManager::getInstance()->addSyncResult(static_cast<int>(ParserId::transportProperties), res);
 }
+
 }
 );
 
@@ -301,6 +302,8 @@ void configuration::Synchronizer::execute()
     } catch(FileManager::Exception& e)
     {
         LogManager::getInstance()->log(e.what());
+        emit finished();
+        return;
     }
 
     emit finished();
