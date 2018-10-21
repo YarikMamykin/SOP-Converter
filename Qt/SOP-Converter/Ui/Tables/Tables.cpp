@@ -106,78 +106,65 @@ void Ui::SetTable::syncMaps()
 {
     LogManager::getInstance()->log("Synchronize maps :: SetTable");
 
-    SyncerThread sthreadP(new Syncer([this]()
+    auto iter = cells[static_cast<int>(Column::value_p)]->begin();
+    auto buffer = pMap.get()->begin();
+
+    for(auto e : *cells[static_cast<int>(Column::type_p)])
     {
-        auto iter = cells[static_cast<int>(Column::value_p)]->begin();
-        auto buffer = pMap.get()->begin();
-
-        for(auto e : *cells[static_cast<int>(Column::type_p)])
+        buffer = findKey(e->getMapIndexPatchName(), *pMap.get());
+        (*buffer)->second = e->getMapIndexPatchTypeValue();
+        if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
         {
-            buffer = findKey(e->getMapIndexPatchName(), *pMap.get());
-            (*buffer)->second = e->getMapIndexPatchTypeValue();
-            if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
-            {
-                (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
-            }
-            ++iter;
+            (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
         }
+        ++iter;
+    }
 
-        for(auto e : *this->pMap.get())
-        {
-            LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e->first.c_str()).
-                                           arg(e->second.c_str()));
-        }
-
-        Syncer::executeFileSyncRunner(Syncer::ID::p);
-    }, static_cast<int>(ParserId::p)));
-
-    SyncerThread sthreadU(new Syncer([this]()
+    for(auto e : *this->pMap.get())
     {
-        auto iter = cells[static_cast<int>(Column::value_U)]->begin();
-        auto buffer = uMap.get()->begin();
+        LogManager::getInstance()->log(QString("%1 === %2").
+                                       arg(e->first.c_str()).
+                                       arg(e->second.c_str()));
+    }
 
-        for(auto e : *cells[static_cast<int>(Column::type_U)])
-        {
-            buffer = findKey(e->getMapIndexPatchName(), *uMap.get());
-            (*buffer)->second = e->getMapIndexPatchTypeValue();
-            if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
-            {
-                (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
-            }
-            ++iter;
-        }
 
-        for(auto e : *this->uMap.get())
-        {
-            LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e->first.c_str()).
-                                           arg(e->second.c_str()));
-        }
 
-        Syncer::executeFileSyncRunner(Syncer::ID::U);
-    }, static_cast<int>(ParserId::U)));
+    iter = cells[static_cast<int>(Column::value_U)]->begin();
+    buffer = uMap.get()->begin();
 
-    SyncerThread sthreadB(new Syncer([this]()
+    for(auto e : *cells[static_cast<int>(Column::type_U)])
     {
-        for(auto e : *cells[static_cast<int>(Column::type_boundary)])
+        buffer = findKey(e->getMapIndexPatchName(), *uMap.get());
+        (*buffer)->second = e->getMapIndexPatchTypeValue();
+        if((*iter)->getMapIndexPatchTypeValue() != std::string("-"))
         {
-            (*findKey(e->getMapIndexPatchName(), *boundaryMap.get()))->second = e->getMapIndexPatchTypeValue();
+            (*buffer)->second.append(std::string(" ") + (*iter)->getMapIndexPatchTypeValue());
         }
+        ++iter;
+    }
 
-        for(auto e : *this->boundaryMap.get())
-        {
-            LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e->first.c_str()).
-                                           arg(e->second.c_str()));
-        }
+    for(auto e : *this->uMap.get())
+    {
+        LogManager::getInstance()->log(QString("%1 === %2").
+                                       arg(e->first.c_str()).
+                                       arg(e->second.c_str()));
+    }
 
-        Syncer::executeFileSyncRunner(Syncer::ID::boundary);
-    }, static_cast<int>(ParserId::boundary)));
+    for(auto e : *cells[static_cast<int>(Column::type_boundary)])
+    {
+        (*findKey(e->getMapIndexPatchName(), *boundaryMap.get()))->second = e->getMapIndexPatchTypeValue();
+    }
 
-    emit sthreadP.start();
-    emit sthreadU.start();
-    emit sthreadB.start();
+    for(auto e : *this->boundaryMap.get())
+    {
+        LogManager::getInstance()->log(QString("%1 === %2").
+                                       arg(e->first.c_str()).
+                                       arg(e->second.c_str()));
+    }
+
+    Syncer::executeFileSyncRunner(Syncer::ID::p);
+    Syncer::executeFileSyncRunner(Syncer::ID::U);
+    Syncer::executeFileSyncRunner(Syncer::ID::boundary);
 }
 
 void Ui::SetTable::loadMaps()
@@ -411,8 +398,8 @@ void Ui::ControlDictTable::syncMaps()
 {
     LogManager::getInstance()->log("Synchronize maps :: ControlDictTable");
 
-    SyncerThread sthread(new Syncer([this]()
-    {
+//    SyncerThread sthread(new Syncer([this]()
+//    {
         for(auto e : cells)
         {
             (*findKey(e->getMapIndexPatchName(), *controlDictMap.get()))->second = e->getMapIndexPatchTypeValue();
@@ -426,9 +413,9 @@ void Ui::ControlDictTable::syncMaps()
         }
 
         Syncer::executeFileSyncRunner(Syncer::ID::controlDict);
-    }, static_cast<int>(ParserId::controlDict)));
+//    }, static_cast<int>(ParserId::controlDict)));
 
-    emit sthread.start();
+//    emit sthread.start();
 }
 
 void Ui::ControlDictTable::loadMaps()

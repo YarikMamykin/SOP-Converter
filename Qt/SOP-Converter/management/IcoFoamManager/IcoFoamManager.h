@@ -13,6 +13,7 @@
 #include <atomic>
 #include "../../configuration/Parser/Parser.h"
 #include "../../logging/Logger/Logger.h"
+#include "../../configuration/CommandExecutor/CommandExecutor.h"
 
 namespace management
 {

@@ -489,10 +489,9 @@ void configuration::Parser::syncFiles()
     using SyncerThread = configuration::SynchronizerThread;
 
     LogManager::getInstance()->log("Start synchronize");
-    SyncerThread sthreadP(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::p), static_cast<int>(ParserId::p)));
-    SyncerThread sthreadU(new Syncer(Syncer::getFileSyncRunner(Syncer::ID::U), static_cast<int>(ParserId::U)));
-    emit sthreadP.start();
-    emit sthreadU.start();
+
+    Syncer::executeFileSyncRunner(Syncer::ID::p);
+    Syncer::executeFileSyncRunner(Syncer::ID::U);
 
     LogManager::getInstance()->log("End synchronize");
 }

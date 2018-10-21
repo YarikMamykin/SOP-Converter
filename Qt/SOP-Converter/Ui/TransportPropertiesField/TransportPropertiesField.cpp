@@ -118,26 +118,19 @@ void Ui::TransportPropertiesField::syncMaps()
 {
     LogManager::getInstance()->log("Synchronize maps :: TransportPropertiesField");
     using Syncer = configuration::Synchronizer;
-    using SyncerThread = configuration::SynchronizerThread;
-
-    SyncerThread sthread(new Syncer([this]()
+    for(auto e : this->tpMap)
     {
-        for(auto e : this->tpMap)
-        {
-            (*findKey(e->first, *tpParserMap.get()))->second = e->second;
-        }
+        (*findKey(e->first, *tpParserMap.get()))->second = e->second;
+    }
 
-        for(auto e : *this->tpParserMap.get())
-        {
-            LogManager::getInstance()->log(QString("%1 === %2").
-                                           arg(e->first.c_str()).
-                                           arg(e->second.c_str()));
-        }
+    for(auto e : *this->tpParserMap.get())
+    {
+        LogManager::getInstance()->log(QString("%1 === %2").
+                                       arg(e->first.c_str()).
+                                       arg(e->second.c_str()));
+    }
 
-        Syncer::executeFileSyncRunner(Syncer::ID::transportProperties);
-
-    }, static_cast<int>(ParserId::transportProperties)));
-    emit sthread.start();
+    Syncer::executeFileSyncRunner(Syncer::ID::transportProperties);
 }
 
 void Ui::TransportPropertiesField::reset()
