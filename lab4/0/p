@@ -20,43 +20,45 @@ internalField   uniform 0;
 
 boundaryField
 {
-    inlet
+    outpipe
     {
-        type            zeroGradient;
-    }
-    outlet
-    {
-        type            fixedValue;
-	value		uniform 0;
-    }
-    inlet_pipe
-    {
-        type            zeroGradient;
-    }
-    outlet_pipe
-    {
-        type            zeroGradient;
+        type        zeroGradient;
     }
     top
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
-    front
+    left_forward
     {
-        type            symmetryPlane;
+        type        zeroGradient;
+    }
+    right_forward
+    {
+        type        zeroGradient;
+    }
+    left_back
+    {
+        type        zeroGradient;
+    }
+    right_back
+    {
+        type        zeroGradient;
     }
     bottom
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
-    left_board
+    inlet
     {
-        type            zeroGradient;
+        type        zeroGradient;
     }
-    right_board
+    inpipe
     {
-        type            zeroGradient;
+        type        zeroGradient;
+    }
+    outlet
+    {
+        type        fixedValue;
+        value        uniform 0;
     }
 }
-
-// ************************************************************************* //
