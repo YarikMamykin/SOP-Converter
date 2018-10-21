@@ -6,6 +6,7 @@
 #include "../../logging/Messanger/Messanger.h"
 #include <QDateTime>
 #include <QStringList>
+#include <QMutexLocker>
 #include <memory>
 #include <string>
 
@@ -45,6 +46,7 @@ private:
     QString dateTimeFormat;
     std::shared_ptr<QFile> logFile;
     QMutex logFileLocker;
+    QMutex instanceLocker;
 };
 
 }

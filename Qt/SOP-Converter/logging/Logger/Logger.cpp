@@ -6,7 +6,8 @@ logging::Logger::Logger() :
     fullLog(),
     currentDateTime(),
     dateTimeFormat("yyyy-dd-MM hh:mm:ss.zzz"),
-    logFileLocker()
+    logFileLocker(),
+    instanceLocker()
 {
     logFile = management::FileManager::getInstance()->getLogFile();
     QObject::connect(this,
@@ -21,8 +22,9 @@ logging::Logger::~Logger()
 }
 
 logging::Logger* logging::Logger::getInstance()
-{
+{    
     static logging::Logger instance;
+//    QMutexLocker locker(&instance.instanceLocker);
     return &instance;
 }
 

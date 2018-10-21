@@ -19,7 +19,8 @@ management::IcoFoamManager::IcoFoamManager() :
     timer(new QTimer),
     elapsedTime(new QElapsedTimer),
     syncResults(new std::map<int, bool>()),
-    stopExecutionConn()
+    stopExecutionConn(),
+    instanceLocker()
 {
     QObject::connect(timer.get(),
                      SIGNAL(timeout()),
@@ -46,6 +47,7 @@ management::IcoFoamManager::~IcoFoamManager()
 management::IcoFoamManager* management::IcoFoamManager::getInstance()
 {
     static IcoFoamManager instance;
+    QMutexLocker locker(&instance.instanceLocker);
     return &instance;
 }
 

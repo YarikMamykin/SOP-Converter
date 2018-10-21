@@ -8,6 +8,7 @@
 #include <QStringList>
 #include <QProcess>
 #include <QMutex>
+#include <QMutexLocker>
 #include <exception>
 #include <memory>
 #include <map>
@@ -80,6 +81,8 @@ private:
     bool zeroFolderValid;
     bool constantFolderValid;
     bool systemFolderValid;
+
+    QMutex instanceLocker;
 };
 
 class FileManager::Exception : public std::exception

@@ -20,7 +20,8 @@ management::FileManager::FileManager(QWidget* parent) :
     systemFolderEntryValid(new QStringList),
     projectFile(std::make_shared<QFile>("/tmp/Test.xml")),
     meshFile(std::make_shared<QFile>()),
-    workDir(std::make_shared<QDir>())
+    workDir(std::make_shared<QDir>()),
+    instanceLocker()
 {
     createLogFile();
     // init vector of files
@@ -58,8 +59,9 @@ management::FileManager::~FileManager()
 }
 
 management::FileManager* management::FileManager::getInstance()
-{
+{    
     static management::FileManager instance;
+//    QMutexLocker locker(&instance.instanceLocker);
     return &instance;
 }
 

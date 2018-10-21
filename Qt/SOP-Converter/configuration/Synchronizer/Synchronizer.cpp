@@ -165,7 +165,7 @@ const std::vector<std::function<void()>> configuration::Synchronizer::fileSyncRu
 []() // controlDict-file syncer
 {
     LogManager::getInstance()->log("file syncer controlDict");
-    std::shared_ptr<QFile> file =FileManager::getInstance()->getSettingFile("controlDict");
+    std::shared_ptr<QFile> file = FileManager::getInstance()->getSettingFile("controlDict");
     if(!file.get()->open(QIODevice::ReadOnly|QIODevice::Text))
     {
         file.get()->close();
@@ -326,7 +326,7 @@ std::function<void()> configuration::Synchronizer::getFileSyncRunner(ID id)
 /* -- SynchronizerThread -- */
 /* ---------------------------------------------------------------------- */
 
-configuration::SynchronizerThread::SynchronizerThread(Synchronizer* _syncer) :
+configuration::SynchronizerThread:: SynchronizerThread(Synchronizer* _syncer) :
     thread(new QThread),
     syncer(_syncer)
 {

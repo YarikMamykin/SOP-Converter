@@ -70,6 +70,7 @@ private:
     std::unique_ptr<std::map<int, bool>> syncResults;
 
     QMetaObject::Connection stopExecutionConn;
+    QMutex instanceLocker;
 };
 
 
