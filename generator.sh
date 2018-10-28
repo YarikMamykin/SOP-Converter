@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 #-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-#
 #										          #
@@ -96,7 +96,7 @@ done
 #=========================================================================================#
 # converting mesh file
 echo "Converting $work_dir/$work_file to Foam format..."
-cd $work_dir ; ideasUnvToFoam $work_file
+cd $work_dir ; ideasUnvToFoam $work_file; transformPoints -scale '(0.001 0.001 0.001)';
 
 #=========================================================================================#
 # check convertion
@@ -249,6 +249,7 @@ function process_p {
 }
 
 function process_u {
+	IFS=$'\n';
 	for ((i = 0; i < ${#array_of_patches[*]} ; i++))
 	    do
 		echo "    ${array_of_patches[$i]}" >> "$each_file.new"
@@ -272,15 +273,18 @@ function process_u {
         
 		echo "    }" >> "$each_file.new"
 	    done
+	unset IFS
 }
 
-IFS=$'\n'
+
 
 for each_file in $p_file $u_file
 do 
     wait_for_opening_scope=0
     write_down_patches=0
     
+    IFS=$'\n';
+
     for line in $(cat $each_file)
     do
         # copy file till word boundaryField
@@ -310,12 +314,50 @@ do
     
     echo "}" >> "$each_file.new"
     echo "// ************************************************************************* //" >> "$each_file.new"
+    IFS=' ';
 done 
 
 rm -f "$boundary_path" "$p_file" "$u_file"
 mv "$new_boundary" "$boundary_path"
 mv "$p_file.new" "$p_file"
 mv "$u_file.new" "$u_file"
+
+proc_count=$(cat /proc/cpuinfo | grep processor | wc -l)
+
+if [ $proc_count -gt 1 ]
+then
+	# generate decomposeParDict
+echo -e "FoamFile\n\
+{\n\
+    version     2.0;\n\
+    format      ascii;\n\
+    class       dictionary;\n\
+    note        \"mesh decomposition control dictionary\";\n\
+    location    \"system\";\n\
+    object      decomposeParDict;\n\
+}" >> system/decomposeParDict
+
+echo -e "numberOfSubdomains  $proc_count;" >> system/decomposeParDict
+echo -e "method          scotch;" >> system/decomposeParDict
+echo -e "scotchCoeffs\n\
+{\n\
+    processorWeights\n\
+    (" >> system/decomposeParDict
+for((i = 0; i < $proc_count; ++i))
+do
+echo "        1" >> system/decomposeParDict
+done
+
+echo "    );" >> system/decomposeParDict
+echo "        writeGraph false;" >> system/decomposeParDict
+echo "}" >> system/decomposeParDict
+
+echo "manualCoeffs" >> system/decomposeParDict
+echo "{" >> system/decomposeParDict
+echo "    dataFile    \"\";" >> system/decomposeParDict
+echo "}" >> system/decomposeParDict
+
+fi
 
 echo "All files are generated!"
 exit 0;
