@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     Ui/TransportPropertiesField/TransportPropertiesField.cpp \
     configuration/Synchronizer/Synchronizer.cpp \    
     management/ClientManager/ClientManager.cpp \
-    management/IcoFoamManager/IcoFoamManager.cpp
+    management/IcoFoamManager/IcoFoamManager.cpp \
+    filetypes/FoamFile.cpp \
+    filetypes/FoamFiles.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -53,7 +55,9 @@ HEADERS  += MainWindow.h \
     Ui/TransportPropertiesField/TransportPropertiesField.h \
     configuration/Synchronizer/Synchronizer.h \    
     management/ClientManager/ClientManager.h \
-    management/IcoFoamManager/IcoFoamManager.h
+    management/IcoFoamManager/IcoFoamManager.h \
+    filetypes/FoamFile.h \
+    filetypes/FoamFiles.h
 
 
 

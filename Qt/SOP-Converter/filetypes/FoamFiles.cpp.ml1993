@@ -1,0 +1,63 @@
+#include "FoamFiles.h"
+#include "logging/Logger/Logger.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
+using Log = logging::Logger;
+
+types::FileP::FileP(std::string& path, QObject* /*parent*/) : FoamFile(path)
+    , fileType("p")
+{
+}
+
+types::FileP::~FileP()
+{
+}
+
+types::FoamFileParsingError types::FileP::parse(void)
+{
+    std::ifstream file(this->path);
+    if(!file.is_open()) return FoamFileParsingError::NoFile;
+    std::string buffer = "";
+
+    while(buffer != std::string("FoamFile")) { getline(file, buffer); } // shift to header
+    getline(file, buffer); // omit '{'
+
+    std::map<std::string, std::string> header;
+    std::string subbuffer;
+    std::pair<std::string, std::string> pair;
+
+    // read header
+    while(getline(file, buffer) && buffer != std::string("}"))
+    {
+        std::istringstream splitter(buffer);
+        while(getline(splitter, subbuffer, ' '))
+        {
+            if(subbuffer.length() > 1)
+            {
+                if(subbuffer[subbuffer.length() - 1] == ';')
+                {
+                    pair.second = subbuffer.substr(0, subbuffer.length()-1);
+                    this->header.insert(pair);
+                }
+                else
+                {
+                    pair.first = subbuffer;
+                }
+            }
+        }
+        splitter.str("");
+        std::cout << pair.first << " " << pair.second << std::endl;
+    }
+
+    std::map<std::string, std::string>::iterator fileType = this->header.find("object");
+    if(!fileType)
+        { return FoamFileParsingError::CorruptedData; }
+    else if (fileType->second != this->fileType)
+        { return FoamFileParsingError::HeaderMismatch; }
+
+    // read main data
+    while(buffer != std::string("{")) { getline(file, buffer); } // shift to data
+
+    return FoamFileParsingError::NoError;
+}
