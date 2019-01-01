@@ -20,7 +20,8 @@ namespace filetypes
         NoError = 0,
         NoFile = 1,
         HeaderMismatch = 2,
-        CorruptedData = 4
+        CorruptedData = 4,
+        FileSaveError = 8
     };
 
     class FoamFile : public QObject
@@ -41,6 +42,7 @@ namespace filetypes
         const std::string&& getFileType(void);
 
         FoamFileError parseHeader(void);
+        FoamFileError saveHeader(void);
 
     public:
         virtual FoamFileError parse(void) = 0;

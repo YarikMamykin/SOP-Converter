@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
             std::cout << ee.first << " " << ee.second << std::endl;
         }
     }
+    std::cout << static_cast<int>(f.save()) << std::endl;
 //    configuration::ProjectFile pf;
 //    pf.setFileStructure();
 //    configuration::FileManager::getInstance()->saveProjectFile(pf);

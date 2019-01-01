@@ -305,25 +305,144 @@ filetypes::FoamFileError filetypes::FileTransportProperties::parse(void)
 
 filetypes::FoamFileError filetypes::FileP::save(void)
 {
+    filetypes::FoamFileError headerSaveError = saveHeader();
+    if(headerSaveError != filetypes::FoamFileError::NoError)
+    {
+        this->file.close();
+        return headerSaveError;
+    }
 
+    this->file << std::endl
+               << this->dimensions
+               << std::endl << std::endl
+               << this->internalField
+               << std::endl << std::endl
+               << "boundaryField" << std::endl
+               << "{" << std::endl;
+
+    for(auto& e : *this->data.get())
+    {
+        this->file << "    " << e.first << std::endl
+                   << "    {" << std::endl;
+        for(auto& ee : e.second)
+        {
+            this->file << "        " << ee.first
+                       << "    " << ee.second << ";" << std::endl;
+        }
+        this->file << "    }" << std::endl << std::endl;
+    }
+
+    this->file << "}" << std::endl;
+    this->file.close();
+    return FoamFileError::NoError;
 }
 
 filetypes::FoamFileError filetypes::FileU::save(void)
 {
+    filetypes::FoamFileError headerSaveError = saveHeader();
+    if(headerSaveError != filetypes::FoamFileError::NoError)
+    {
+        this->file.close();
+        return headerSaveError;
+    }
 
+    this->file << std::endl
+               << this->dimensions
+               << std::endl << std::endl
+               << this->internalField
+               << std::endl << std::endl
+               << "boundaryField" << std::endl
+               << "{" << std::endl;
+
+    for(auto& e : *this->data.get())
+    {
+        this->file << "    " << e.first << std::endl
+                   << "    {" << std::endl;
+        for(auto& ee : e.second)
+        {
+            this->file << "        " << ee.first
+                       << "    " << ee.second << ";" << std::endl;
+        }
+        this->file << "    }" << std::endl << std::endl;
+    }
+
+    this->file << "}" << std::endl;
+    this->file.close();
+    return FoamFileError::NoError;
 }
 
 filetypes::FoamFileError filetypes::FileBoundary::save(void)
 {
+    filetypes::FoamFileError headerSaveError = saveHeader();
+    if(headerSaveError != filetypes::FoamFileError::NoError)
+    {
+        this->file.close();
+        return headerSaveError;
+    }
 
+    this->file << std::endl << std::endl
+               << std::to_string(this->data.get()->size()) << std::endl
+               << "(" << std::endl;
+
+    for(auto& e : *this->data.get())
+    {
+        this->file << "    " << e.first << std::endl
+                   << "    {" << std::endl;
+        for(auto& ee : e.second)
+        {
+            this->file << "        " << ee.first
+                       << "    " << ee.second << ";" << std::endl;
+        }
+        this->file << "    }" << std::endl << std::endl;
+    }
+
+    this->file << ")" << std::endl;
+    this->file.close();
+    return FoamFileError::NoError;
 }
 
 filetypes::FoamFileError filetypes::FileControlDict::save(void)
 {
+    filetypes::FoamFileError headerSaveError = saveHeader();
+    if(headerSaveError != filetypes::FoamFileError::NoError)
+    {
+        this->file.close();
+        return headerSaveError;
+    }
 
+    for(auto& e : *this->data.get())
+    {
+        for(auto& ee : e.second)
+        {
+            this->file << ee.first << "    "
+                       << ee.second << ";" << std::endl << std::endl;
+        }
+    }
+
+    this->file.close();
+    return FoamFileError::NoError;
 }
 
 filetypes::FoamFileError filetypes::FileTransportProperties::save(void)
 {
+    filetypes::FoamFileError headerSaveError = saveHeader();
+    if(headerSaveError != filetypes::FoamFileError::NoError)
+    {
+        this->file.close();
+        return headerSaveError;
+    }
 
+    for(auto& e : *this->data.get())
+    {
+        this->file << e.first << "        " << e.first << " [ ";
+        for(auto& ee : e.second)
+        {
+            if(ee.first == "value")
+            { this->file << "] "; }
+            this->file << ee.second << " ";
+        }
+    }
+    this->file << std::endl;
+    this->file.close();
+    return FoamFileError::NoError;
 }

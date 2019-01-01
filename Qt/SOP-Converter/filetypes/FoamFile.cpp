@@ -108,3 +108,18 @@ filetypes::FoamFileError filetypes::FoamFile::parseHeader(void)
 
     return FoamFileError::NoError;
 }
+
+filetypes::FoamFileError filetypes::FoamFile::saveHeader(void)
+{
+    this->file.open(this->path, std::ios_base::out);
+    if(!file.is_open())
+    { return FoamFileError::FileSaveError; }
+
+    this->file << "FoamFile" << std::endl << "{" << std::endl;
+    for(auto& e : this->header)
+    {
+        this->file << "    " << e.first << " " << e.second << ";" << std::endl;
+    }
+    this->file << "}" << std::endl;
+    return FoamFileError::NoError;
+}
