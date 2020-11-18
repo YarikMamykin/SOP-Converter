@@ -15,10 +15,11 @@
 
 int main(int argc, char *argv[])
 {
-//    QApplication a(argc, argv);
-//    logging::Logger::getInstance()->log(QString("App start"), logging::LogDirection::file);
-//    MainWindow w;
-//    w.show();
+   QApplication a(argc, argv);
+   logging::Logger::getInstance()->log(QString("App start"), logging::LogDirection::file);
+   MainWindow w;
+   w.show();
+   w.getClientManager();
 
 //    filetypes::FileBoundary f("/home/yarik/Documents/diploma/lab2/constant/polyMesh/boundary");
 //    filetypes::FileU f("/home/yarik/Documents/diploma/lab2/0/U");
