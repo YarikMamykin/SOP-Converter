@@ -43,5 +43,5 @@ int main(int argc, char *argv[])
 //    int retcode = a.exec();
 //    logging::Logger::getInstance()->log(QString("App END. Retcode = %1").arg(retcode));
 //    return retcode;
-    return 0;
+    return a.exec();
 }
